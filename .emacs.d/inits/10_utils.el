@@ -170,3 +170,16 @@
 
 ;; smartchr
 (require 'smartchr)
+
+;; skk
+(load "skk")
+(require 'skk-autoloads)
+(setq skk-large-jisyo
+      (expand-file-name "~/.emacs.d/site-lisp/skk/SKK-JISYO.L"))
+(setq Info-default-directory-list
+      (cons "~/.emacs.d/site-lisp/skk/info" Info-default-directory-list))
+(setq skk-tut-file
+      (expand-file-name "~/.emacs.d/site-lisp/skk/SKK.tut"))
+;(global-set-key "¥C-x¥C-j" 'skk-mode)
+;(global-set-key "¥C-xj" 'skk-auto-fill-mode)
+;(global-set-key "¥C-xt" 'skk-tutorial)

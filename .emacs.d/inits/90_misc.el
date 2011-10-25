@@ -49,3 +49,6 @@
   "Major mode for editing Markdown files" t)
 (setq auto-mode-alist
       (cons '("\\.text" . markdown-mode) auto-mode-alist))
+
+;; w3m
+(require 'w3m-load)

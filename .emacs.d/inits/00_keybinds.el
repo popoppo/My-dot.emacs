@@ -33,7 +33,7 @@
 (global-unset-key "\C-x\C-c")
 (global-set-key "\C-x\C-f" 'anything-find-file)
 ;(global-set-key (kbd "=") (smartchr '(" = " "=" " == " "==")))
-(global-set-key (kbd "-") (smartchr '("-" "_")))
+;(global-set-key (kbd "-") (smartchr '("-" "_")))
 (global-set-key "\M-p" '(lambda () (interactive) (next-line -4)))
 (global-set-key "\M-n" '(lambda () (interactive) (next-line 4)))
 (global-set-key "\M-m" 'just-one-space)
@@ -177,7 +177,3 @@
         sticky-list)
 (define-key sticky-map sticky-key '(lambda ()(interactive)(insert sticky-key)))
 
-;; gtags
-(global-set-key (kbd "C-x g t") 'gtags-find-tag)
-(global-set-key (kbd "C-x g r") 'gtags-find-rtag)
-(global-set-key (kbd "C-x g s") 'gtags-find-symbol)

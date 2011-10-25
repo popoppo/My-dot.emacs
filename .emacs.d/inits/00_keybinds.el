@@ -130,6 +130,10 @@
 (key-chord-define-global "gl" 'goto-line)
 ;(key-chord-define-global "ff" 'find-file-at-point)
 ;(key-chord-define-global "jf" 'anything-for-files)
+(key-chord-define-global "QQ" 'skk-mode)
+;(global-set-key "¥C-x¥C-j" 'skk-mode)
+;(global-set-key "¥C-xj" 'skk-auto-fill-mode)
+;(global-set-key "¥C-xt" 'skk-tutorial)
 (key-chord-define-global "MS" 'start-kbd-macro)
 (key-chord-define-global "ME" 'end-kbd-macro)
 ;(key-chord-define-global "ll" 'recenter-top-bottom)
@@ -153,10 +157,10 @@
                                      ;;(setq next-line-add-newlines saved)
                                      (let ((e (point)))
                                        (clipboard-kill-ring-save b e))))))
-(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
+;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
 
 ;; Sticky Shift
-(defvar sticky-key "`")
+(defvar sticky-key "/")
 (defvar sticky-list
   '(("a" . "A")("b" . "B")("c" . "C")("d" . "D")("e" . "E")("f" . "F")("g" . "G")
     ("h" . "H")("i" . "I")("j" . "J")("k" . "K")("l" . "L")("m" . "M")("n" . "N")
@@ -177,3 +181,10 @@
         sticky-list)
 (define-key sticky-map sticky-key '(lambda ()(interactive)(insert sticky-key)))
 
+(eval-after-load "skk"
+  '(progn
+     (define-key skk-j-mode-map sticky-key sticky-map)
+     (define-key skk-jisx0208-latin-mode-map sticky-key sticky-map)
+     (define-key skk-abbrev-mode-map sticky-key sticky-map)))
+(eval-after-load "skk-isearch"
+  '(define-key skk-isearch-mode-map sticky-key sticky-map))

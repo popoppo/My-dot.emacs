@@ -28,9 +28,9 @@
 ;             howm-keyword-to-kill-ring))
 
 
-; (require 'uniquify)
-; (setq-default uniquify-min-dir-content 1)
-; (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+(require 'uniquify)
+(setq-default uniquify-min-dir-content 1)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
 
 ;; keisen
@@ -49,6 +49,3 @@
   "Major mode for editing Markdown files" t)
 (setq auto-mode-alist
       (cons '("\\.text" . markdown-mode) auto-mode-alist))
-
-;; w3m
-(require 'w3m-load)

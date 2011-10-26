@@ -169,7 +169,7 @@
 (yas/load-directory "~/.emacs.d/site-lisp/yasnippet/snippets")
 
 ;; smartchr
-(require 'smartchr)
+;(require 'smartchr)
 
 ;; skk
 (load "skk")
@@ -180,6 +180,9 @@
       (cons "~/.emacs.d/site-lisp/skk/info" Info-default-directory-list))
 (setq skk-tut-file
       (expand-file-name "~/.emacs.d/site-lisp/skk/SKK.tut"))
-;(global-set-key "¥C-x¥C-j" 'skk-mode)
-;(global-set-key "¥C-xj" 'skk-auto-fill-mode)
-;(global-set-key "¥C-xt" 'skk-tutorial)
+
+(eval-after-load "skk"
+  '(progn
+     (define-key skk-j-mode-map sticky-key sticky-map)
+     (define-key skk-jisx0208-latin-mode-map sticky-key sticky-map)
+     (define-key skk-abbrev-mode-map sticky-key sticky-map)))

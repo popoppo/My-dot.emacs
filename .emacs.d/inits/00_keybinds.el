@@ -1,4 +1,4 @@
-(require 'smartchr)
+;(require 'smartchr)
 (defun my-move-to-window-line (arg)
   (interactive "P")
   (if (not (null arg))
@@ -130,6 +130,7 @@
 (key-chord-define-global "gl" 'goto-line)
 ;(key-chord-define-global "ff" 'find-file-at-point)
 ;(key-chord-define-global "jf" 'anything-for-files)
+(key-chord-define-global "QQ" 'skk-mode)
 (key-chord-define-global "MS" 'start-kbd-macro)
 (key-chord-define-global "ME" 'end-kbd-macro)
 ;(key-chord-define-global "ll" 'recenter-top-bottom)
@@ -153,7 +154,7 @@
                                      ;;(setq next-line-add-newlines saved)
                                      (let ((e (point)))
                                        (clipboard-kill-ring-save b e))))))
-(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
+;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
 
 ;; Sticky Shift
 (defvar sticky-key "`")
@@ -177,3 +178,7 @@
         sticky-list)
 (define-key sticky-map sticky-key '(lambda ()(interactive)(insert sticky-key)))
 
+;; gtags
+(global-set-key (kbd "C-x g t") 'gtags-find-tag)
+(global-set-key (kbd "C-x g r") 'gtags-find-rtag)
+(global-set-key (kbd "C-x g s") 'gtags-find-symbol)

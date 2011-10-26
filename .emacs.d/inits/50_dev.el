@@ -24,18 +24,24 @@
   (interactive)
   (print *gtags-current-buffer-alist*))
 
-(add-hook 'c-mode-hook 
-      '(lambda() 
-         (gtags-mode 1) 
-         (gtags-make-complete-list)))
+(add-hook 'c-mode-hook
+          '(lambda()
+             (setq tab-width 4)
+             (setq c-basic-offset tab-width)
+             (setq indent-tabs-mode nil)
+             (gtags-mode 1)
+             (gtags-make-complete-list)))
 
-(add-hook 'c++-mode-hook 
-      '(lambda() 
-         (gtags-mode 1)))
+(add-hook 'c++-mode-hook
+          '(lambda()
+             (setq tab-width 4)
+             (setq c-basic-offset tab-width)
+             (setq indent-tabs-mode nil)
+             (gtags-mode 1)))
 
 (add-hook 'java-mode-hook
-      '(lambda() 
-         (gtags-mode 1)))
+          '(lambda()
+             (gtags-mode 1)))
 
 
 ;; jdee

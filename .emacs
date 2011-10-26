@@ -17,10 +17,11 @@
              (expand-file-name "~/.emacs.d/site-lisp/jde/lisp") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/elib") t)
+(add-to-list 'load-path
+             (expand-file-name "~/.emacs.d/site-lisp/skk") t)
 
 (setq exec-path (append exec-path '(expand-file-name "~/bin")))
 
-(setq org-directory "~/local/org/")
 
 ;; INSTALL
 (require 'init-loader)
@@ -73,11 +74,3 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  )
-
-
-
-
-
-
-
-

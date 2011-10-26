@@ -21,7 +21,8 @@
 (setq default-frame-alist
       (append (list '(width . 100)
                     '(height . 60)
-                    '(font . "-unknown-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1"))
+;                    '(font . "-unknown-DejaVu LGC Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+)
               default-frame-alist))
 
 
@@ -53,9 +54,8 @@
 (setq next-screen-context-lines 10) ;; for C-v, M-v
 ;(setq pop-up-windows nil)
 (setq ring-bell-function 'ignore)
-(setq scroll-step 1) ;; C-n, C-p
+(setq scroll-step 5) ;; C-n, C-p
 (setq transient-mark-mode t)
-;(setq scroll-margin 0)
 
 (setq-default indent-tabs-mode nil)
 ;(setq-default truncate-lines t)

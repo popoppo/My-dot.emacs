@@ -147,9 +147,13 @@
 (key-chord-define-global "PP" 'backward-sexp)
 (key-chord-define-global "qq" 'toggle-view-mode)
 (key-chord-define-global "qw" 'query-replace-regexp)
+(key-chord-define-global "UU" '(lambda () (interactive)
+                                 (let ((e (point)))
+                                   (beginning-of-line)
+                                   (kill-region (point) e))))
 (key-chord-define-global "yy" '(lambda () (interactive)
                                  (save-excursion
-                                   (beginning-of-line) 
+                                   (beginning-of-line)
                                    (let ((b (point))
                                          (saved next-line-add-newlines))
                                      ;;(setq next-line-add-newlines 1)
@@ -160,7 +164,7 @@
 ;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
 
 ;; Sticky Shift
-(defvar sticky-key "/")
+(defvar sticky-key "'")
 (defvar sticky-list
   '(("a" . "A")("b" . "B")("c" . "C")("d" . "D")("e" . "E")("f" . "F")("g" . "G")
     ("h" . "H")("i" . "I")("j" . "J")("k" . "K")("l" . "L")("m" . "M")("n" . "N")

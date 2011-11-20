@@ -14,13 +14,16 @@
 
 ;; User profiles
 ;(setq user-full-name "Koji Takahashi")
-;(setq user-mail-address "koji-takahashi@isp.co.jp")
+;(setq user-mail-address "kj.takahasi@gmail.com")
 
 
 ;; Default frame config
 (setq default-frame-alist
       (append (list '(width . 100)
                     '(height . 60)
+                    '(top . 20)
+                    '(left . 1000)
+                    '(alpha . (20 30 50 30))
                     '(font . "-unknown-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1"))
               default-frame-alist))
 
@@ -61,6 +64,8 @@
 ;(setq-default truncate-lines t)
 (setq-default truncate-lines nil)
 (setq-default truncate-partial-width-windows t)
+
+(add-hook 'shell-mode-hook 'pcomplete-shell-setup)
 
 ;; Backup file dir
 (setq make-backup-files t)

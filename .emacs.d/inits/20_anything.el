@@ -30,3 +30,16 @@
 (setq anything-display-function 'anything-compilation-window-root)
 ;(anything :source 'anything-c-source-buffers
 ;          :display-function 'display-buffer-function--split-root)
+
+;; for eshell
+(defun anything-eshell ()
+  (interactive)
+  (anything
+   (list
+    anything-c-eshell-command-history
+    anything-c-eshell-directory-history
+    anything-c-source-files-in-current-dir+
+    anything-c-source-recentf
+    anything-c-source-buffers+
+    anything-c-source-bookmarks
+    )))

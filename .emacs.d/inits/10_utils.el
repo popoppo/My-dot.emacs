@@ -180,3 +180,7 @@
       (cons "~/.emacs.d/site-lisp/skk/info" Info-default-directory-list))
 (setq skk-tut-file
       (expand-file-name "~/.emacs.d/site-lisp/skk/SKK.tut"))
+
+;; +x
+(add-hook 'after-save-hook
+          'executable-make-buffer-file-executable-if-script-p)

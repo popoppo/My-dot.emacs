@@ -1,7 +1,10 @@
 ;; color-theme
+;; Use /usr/share/emacs/site-lisp or /usr/share/emacs/site-lisp/goodies if exists.
 (require 'color-theme)
-(color-theme-resolve)
-
+(eval-after-load "color-theme"
+  '(progn
+     (color-theme-initialize)
+     (color-theme-resolve)))
 
 ;; windows
 (require 'windows)

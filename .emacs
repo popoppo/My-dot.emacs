@@ -35,6 +35,9 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(ac-auto-start nil)
+ '(ac-ignores nil)
+ '(ac-use-fuzzy t)
  '(bookmark-save-flag 1)
  '(jde-ant-enable-find t)
  '(jde-ant-home "/usr/local/dev/ant")
@@ -65,6 +68,8 @@
  '(org-time-stamp-rounding-minutes 5)
  '(org-timeline-show-empty-dates t)
  '(org-use-fast-todo-selection t)
+ '(pcomplete-cycle-completions nil)
+ '(pcomplete-cycle-cutoff-length 5)
  '(tab-width 4))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.

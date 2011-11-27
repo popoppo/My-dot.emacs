@@ -1,4 +1,6 @@
 ;; eshell
+(setq password-cache-expiry 600) ;; sec
+
 (defvar anything-c-eshell-directory-history
   '((name . "Directory History")
     (candidates . (lambda () 

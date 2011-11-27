@@ -12,8 +12,8 @@
 (define-key anything-map (kbd "C-n") 'anything-next-line)
 (define-key anything-map (kbd "M-p") 'anything-previous-source)
 (define-key anything-map (kbd "M-n") 'anything-next-source)
-;(define-key anything-map (kbd "C-v") 'anything-next-source)
-;(define-key anything-map (kbd "M-v") 'anything-previous-source)
+(define-key anything-map (kbd "C-v") 'anything-next-page)
+(define-key anything-map (kbd "M-v") 'anything-previous-page)
 
 
 ;;split-root
@@ -43,3 +43,5 @@
     anything-c-source-buffers+
     anything-c-source-bookmarks
     )))
+
+(require 'recentf-ext)

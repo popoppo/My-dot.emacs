@@ -30,8 +30,10 @@
 ;;remove backword in mini buffer
 (define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
 
+(global-unset-key "\C-x\C-b")
 (global-unset-key "\C-x\C-c")
-(global-set-key "\C-x\C-f" 'anything-find-file)
+;(global-set-key "\C-x\C-f" 'anything-find-file)
+(global-set-key "\C-x\C-f" 'anything-find-files)
 ;(global-set-key (kbd "=") (smartchr '(" = " "=" " == " "==")))
 ;(global-set-key (kbd "-") (smartchr '("-" "_")))
 (global-set-key "\M-p" '(lambda () (interactive) (next-line -4)))
@@ -52,7 +54,9 @@
 (global-set-key "\M-w" 'clipboard-kill-ring-save)
 (global-set-key [?\C-\;] 'dabbrev-expand)
 (global-set-key "\C-h" 'delete-backward-char)
+(global-set-key (kbd "C-,") 'auto-complete)
 ;(global-set-key "\C-c\C-z" 'suspend-frame)
+(global-set-key "\C-x\C-c\C-k" 'kill-buffer-and-window)
 (global-set-key "\C-x\C-c\C-z" 'kill-emacs)
 ;(global-set-key [?\C-,] '(lambda () (interactive)
 ;                           (let ((lines (lines-from-top (point))))

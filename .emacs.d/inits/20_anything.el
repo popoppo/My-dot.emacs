@@ -14,7 +14,9 @@
 (define-key anything-map (kbd "M-n") 'anything-next-source)
 (define-key anything-map (kbd "C-v") 'anything-next-page)
 (define-key anything-map (kbd "M-v") 'anything-previous-page)
-
+(define-key anything-find-files-map (kbd "C-k") 'kill-line)
+(define-key anything-find-files-map (kbd "C-h C-b") 'undefined)
+(define-key anything-find-files-map (kbd "C-h") 'delete-backward-char)
 
 ;;split-root
 ;横長のウィンドウを作成

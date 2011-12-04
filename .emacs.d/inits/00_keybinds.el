@@ -105,7 +105,7 @@
 ;                             (backward-char))))
 (global-set-key "\M-t" 'anything-filelist+)
 (global-set-key "\M-r" 'my-move-to-window-line)
-(global-set-key (kbd "C-x b") 'anything-filelist+)
+(global-set-key (kbd "C-.") 'anything-filelist+)
 
 
 (require 'key-chord)
@@ -166,6 +166,10 @@
                                      (let ((e (point)))
                                        (clipboard-kill-ring-save b e))))))
 ;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
+(key-chord-define-global ";f" 'anything-find-files)
+(key-chord-define-global ";d" (lambda () (interactive) (anything-find-files-history)))
+(key-chord-define-global ";b" 'anything-bookmarks)
+
 
 ;; Sticky Shift
 (defvar sticky-key "'")
@@ -191,6 +195,7 @@
 
 (eval-after-load "skk"
   '(progn
+     (key-chord-define skk-latin-mode-map "jj" 'skk-kakutei)
      (define-key skk-j-mode-map sticky-key sticky-map)
      (define-key skk-jisx0208-latin-mode-map sticky-key sticky-map)
      (define-key skk-abbrev-mode-map sticky-key sticky-map)))

@@ -25,6 +25,18 @@
 ;;   (insert command)
 ;;   (eshell-send-input))
 
+(defun anything-eshell ()
+  (interactive)
+  (anything
+   (list
+    anything-c-eshell-command-history
+    anything-c-eshell-directory-history
+    anything-c-source-files-in-current-dir+
+    anything-c-source-recentf
+    anything-c-source-buffers+
+    anything-c-source-bookmarks
+    )))
+
 ;(when (require 'pcmpl-auto nil t)
 ;  (when (require 'pcmpl-ssh nil t)
 ;(add-hook 'eshell-mode-hook 'pcomplete-shell-setup)
@@ -49,7 +61,7 @@
                                                (kill-region (point) e))))
 ;            (auto-complete-mode t)
             (my-ac-eshell-mode)
-            (define-key eshell-mode-map (kbd "C-i") 'auto-complete)
+;            (define-key eshell-mode-map (kbd "C-i") 'auto-complete)
             (define-key eshell-mode-map (kbd "C-o") 'anything-eshell)))
 
 (use-anything-show-completion 'anything-complete-shell-history

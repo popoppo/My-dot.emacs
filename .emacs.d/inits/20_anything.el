@@ -17,6 +17,32 @@
 (define-key anything-find-files-map (kbd "C-k") 'kill-line)
 (define-key anything-find-files-map (kbd "C-h C-b") 'undefined)
 (define-key anything-find-files-map (kbd "C-h") 'delete-backward-char)
+
+(define-anything-type-attribute 'my:file
+  `((action
+     ("cd on eshell" . (lambda (slct)
+                         (setq anything-ff-default-directory
+                               (if (file-directory-p slct)
+                                   slct
+                                 (file-name-directory slct)))
+                         (anything-ff-switch-to-eshell nil))))
+    (persistent-help . "Show this file")
+    (action-transformer anything-c-transform-file-load-el
+                        anything-c-transform-file-browse-url)
+    (candidate-transformer anything-c-w32-pathname-transformer
+                           anything-c-skip-current-file
+                           anything-c-skip-boring-files
+                           anything-c-shorten-home-path))
+  "File name.")
+(defun my:anything-ff-to-eshell ()
+  (interactive)
+  (let ((src (anything-find-files-history :comp-read nil)))
+    (anything-other-buffer
+     '((name . "Directory history")
+       (candidates . src)
+       (type . my:file))
+     "*anything for dir history*")))
+
 (define-key anything-map (kbd "M-e") (lambda ()
                                        (interactive)
                                        (let ((slct (anything-get-selection)))
@@ -40,7 +66,11 @@
             REST)))
 
 (setq anything-enable-shortcuts 'prefix)
-(define-key anything-map ";" 'anything-select-with-prefix-shortcut)
+(define-key anything-map "," 'anything-select-with-prefix-shortcut)
+
+(key-chord-define-global ";f" 'anything-find-files)
+(key-chord-define-global ";d" 'my:anything-ff-to-eshell)
+(key-chord-define-global ";b" 'anything-bookmarks)
 
 
 ;;split-root

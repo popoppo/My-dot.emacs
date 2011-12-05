@@ -166,9 +166,6 @@
                                      (let ((e (point)))
                                        (clipboard-kill-ring-save b e))))))
 ;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
-(key-chord-define-global ";f" 'anything-find-files)
-(key-chord-define-global ";d" (lambda () (interactive) (anything-find-files-history)))
-(key-chord-define-global ";b" 'anything-bookmarks)
 
 
 ;; Sticky Shift

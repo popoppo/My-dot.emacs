@@ -34,14 +34,6 @@
                            anything-c-skip-boring-files
                            anything-c-shorten-home-path))
   "File name.")
-(defun my:anything-ff-to-eshell ()
-  (interactive)
-  (let ((src (anything-find-files-history :comp-read nil)))
-    (anything-other-buffer
-     '((name . "Directory history")
-       (candidates . src)
-       (type . my:file))
-     "*anything for dir history*")))
 
 (define-key anything-map (kbd "M-e") (lambda ()
                                        (interactive)
@@ -67,6 +59,25 @@
 
 (setq anything-enable-shortcuts 'prefix)
 (define-key anything-map "," 'anything-select-with-prefix-shortcut)
+
+; For directory listing.
+(defun my:expand-and-remove-tail-slash (lst)
+  (mapcar (lambda (elm)
+            (replace-regexp-in-string "\\(.+\\)/$" "\\1" (expand-file-name elm)))
+          lst))
+
+(defun my:anything-ff-to-eshell ()
+  (interactive)
+  (let ((dir-src1 (anything-find-files-history :comp-read nil))
+        (dir-src2 (progn
+                    (set-buffer "*eshell*")
+                    (ring-elements eshell-last-dir-ring))))
+    (anything-other-buffer
+     `((name . "Directory history")
+       (candidates . ,(delete-dups (my:expand-and-remove-tail-slash
+                                    (append dir-src1 dir-src2))))
+       (type . my:file))
+     "*anything for dir history*")))
 
 (key-chord-define-global ";f" 'anything-find-files)
 (key-chord-define-global ";d" 'my:anything-ff-to-eshell)

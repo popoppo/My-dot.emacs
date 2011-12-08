@@ -76,7 +76,7 @@
 (global-set-key "\C-s" 'isearch-forward-regexp)
 (global-set-key "\M-q" 'query-replace-regexp)
 (global-set-key "\C-xrp" 'string-insert-rectangle)
-;          ("\C-cm" compile)
+(global-set-key "\C-cm" 'compile)
 ;          ("\C-c\C-t" (lambda () (interactive)
 ;                       (insert (format-time-string "%H:%M:%S"))))
 (global-set-key "\M-h" '(lambda () (interactive)

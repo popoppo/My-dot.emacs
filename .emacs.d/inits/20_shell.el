@@ -1,10 +1,14 @@
 ;; eshell
 (setq password-cache-expiry 600) ;; sec
 
+; Handle escape sequency properly.
+(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+(add-hook 'eshell-mode-hook 'ansi-color-for-comint-mode-on)
+
 (defvar anything-c-eshell-directory-history
   '((name . "Directory History")
-    (candidates . (lambda () 
-                    (set-buffer "*eshell*") 
+    (candidates . (lambda ()
+                    (set-buffer "*eshell*")
                     (delete-dups (ring-elements eshell-last-dir-ring))))
     (action . (("Change Directory" . anything-eshell-change-directory)))))
 

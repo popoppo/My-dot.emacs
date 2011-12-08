@@ -226,7 +226,8 @@ Many Magit faces inherit from this one by default."
   '((((class color) (background light))
      :foreground "grey11")
     (((class color) (background dark))
-     :foreground "grey30"))
+;     :foreground "grey30"))
+     :foreground "white smoke"))
   "Face for the graph element of the log output."
   :group 'magit)
 

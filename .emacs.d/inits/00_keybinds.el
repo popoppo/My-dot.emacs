@@ -76,7 +76,7 @@
 (global-set-key "\C-s" 'isearch-forward-regexp)
 (global-set-key "\M-q" 'query-replace-regexp)
 (global-set-key "\C-xrp" 'string-insert-rectangle)
-;          ("\C-cm" compile)
+(global-set-key "\C-cm" 'compile)
 ;          ("\C-c\C-t" (lambda () (interactive)
 ;                       (insert (format-time-string "%H:%M:%S"))))
 (global-set-key "\M-h" '(lambda () (interactive)
@@ -105,7 +105,7 @@
 ;                             (backward-char))))
 (global-set-key "\M-t" 'anything-filelist+)
 (global-set-key "\M-r" 'my-move-to-window-line)
-(global-set-key (kbd "C-x b") 'anything-filelist+)
+(global-set-key (kbd "C-.") 'anything-filelist+)
 
 
 (require 'key-chord)
@@ -167,6 +167,7 @@
                                        (clipboard-kill-ring-save b e))))))
 ;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
 
+
 ;; Sticky Shift
 (defvar sticky-key "'")
 (defvar sticky-list
@@ -191,6 +192,7 @@
 
 (eval-after-load "skk"
   '(progn
+     (key-chord-define skk-latin-mode-map "jj" 'skk-kakutei)
      (define-key skk-j-mode-map sticky-key sticky-map)
      (define-key skk-jisx0208-latin-mode-map sticky-key sticky-map)
      (define-key skk-abbrev-mode-map sticky-key sticky-map)))

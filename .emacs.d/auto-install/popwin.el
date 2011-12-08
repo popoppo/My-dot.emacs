@@ -95,10 +95,10 @@ minibuffer window is selected."
   (eq (car (last (buffer-list))) buffer))
 
 (defun popwin:called-interactively-p ()
-  (with-no-warnings
-    (if (>= emacs-major-version 23)
-        (called-interactively-p 'any)
-      (called-interactively-p))))
+;  (with-no-warnings
+;    (if (>= emacs-major-version 23)
+;        (called-interactively-p 'any)
+      (called-interactively-p));))
 
 (defvar popwin:empty-buffer nil
   "Marker buffer of indicating a window of the buffer is being a

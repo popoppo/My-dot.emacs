@@ -1,10 +1,14 @@
 ;; eshell
 (setq password-cache-expiry 600) ;; sec
 
+(autoload 'ansi-color-for-comint-mode-on "ansi-color"
+  "Set `ansi-color-for-comint-mode' to t." t)
+(add-hook 'eshell-mode-hook 'ansi-color-for-comint-mode-on)
+
 (defvar anything-c-eshell-directory-history
   '((name . "Directory History")
-    (candidates . (lambda () 
-                    (set-buffer "*eshell*") 
+    (candidates . (lambda ()
+                    (set-buffer "*eshell*")
                     (delete-dups (ring-elements eshell-last-dir-ring))))
     (action . (("Change Directory" . anything-eshell-change-directory)))))
 
@@ -24,6 +28,18 @@
 ;; (defun anything-eshell-exec-command (command)
 ;;   (insert command)
 ;;   (eshell-send-input))
+
+(defun anything-eshell ()
+  (interactive)
+  (anything
+   (list
+    anything-c-eshell-command-history
+    anything-c-eshell-directory-history
+    anything-c-source-files-in-current-dir+
+    anything-c-source-recentf
+    anything-c-source-buffers+
+    anything-c-source-bookmarks
+    )))
 
 ;(when (require 'pcmpl-auto nil t)
 ;  (when (require 'pcmpl-ssh nil t)
@@ -49,7 +65,6 @@
                                                (kill-region (point) e))))
 ;            (auto-complete-mode t)
             (my-ac-eshell-mode)
-            (define-key eshell-mode-map (kbd "C-i") 'auto-complete)
             (define-key eshell-mode-map (kbd "C-o") 'anything-eshell)))
 
 (use-anything-show-completion 'anything-complete-shell-history
@@ -124,6 +139,12 @@ Completion is available."))
              ;; otherwise, just jump to the bookmark 
              (bookmark-jump bookmark))
          (error "%s is not a bookmark" bookmark))))))
+
+;; aliases
+(add-to-list 'eshell-command-aliases-list (list "la" "ls -a $1"))
+(add-to-list 'eshell-command-aliases-list (list "ll" "ls -l $1"))
+(add-to-list 'eshell-command-aliases-list (list "fw" "find-file $1"))
+(add-to-list 'eshell-command-aliases-list (list "fw" "find-file-other-window $1"))
 
 
 ;; shell

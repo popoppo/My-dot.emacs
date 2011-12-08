@@ -87,7 +87,7 @@ Creates a buffer if necessary."
 ;; popwin
 (require 'popwin)
 (setq display-buffer-function 'popwin:display-buffer)
-(define-key dired-mode-map "o" #'(lambda ()
-                                   (interactive)
-                                   (popwin:find-file (dired-get-file-for-visit))))
+(define-key dired-mode-map "o" '(lambda ()
+                                  (interactive)
+                                  (popwin:find-file (dired-get-file-for-visit))))
 (add-to-list 'popwin:special-display-config '("\*Man \*" :regexp t :height 30))

@@ -21,10 +21,10 @@
 (setq default-frame-alist
       (append (list '(width . 100)
                     '(height . 60)
-                    '(top . 20)
-                    '(left . 1000)
-                    '(alpha . (20 30 50 30))
-                    '(font . "-unknown-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1"))
+;                    '(top . 20)
+;                    '(left . 1000)
+                    '(alpha . 80)
+                    '(font . "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1"))
               default-frame-alist))
 
 
@@ -34,10 +34,10 @@
 (ffap-bindings)
 ;(hide-ifdef-mode)
 (iswitchb-mode)
-(menu-bar-mode nil)
+;(menu-bar-mode nil)
 (set-scroll-bar-mode nil)
 (show-paren-mode t)
-(tool-bar-mode nil)
+;(setq tool-bar-mode nil)
 (windmove-default-keybindings)
 (window-body-height nil)
 

@@ -1,0 +1,9 @@
+.emacs.d/site-list/magit.el
+@@ -226,7 +226,8 @@
+   '((((class color) (background light))
+      :foreground "grey11")
+     (((class color) (background dark))
+-     :foreground "grey30"))
++;     :foreground "grey30"))
++     :foreground "white smoke"))
+   "Face for the graph element of the log output."

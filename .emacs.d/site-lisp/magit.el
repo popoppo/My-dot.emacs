@@ -224,9 +224,9 @@ Many Magit faces inherit from this one by default."
 
 (defface magit-log-graph
   '((((class color) (background light))
-     :foreground "grey11")
+     :foreground "gray11")
     (((class color) (background dark))
-;     :foreground "grey30"))
+     ;:foreground "gray30"))
      :foreground "white smoke"))
   "Face for the graph element of the log output."
   :group 'magit)

@@ -75,8 +75,8 @@
 (setq eshell-cmpl-ignore-case t)  ; 補完時に大文字小文字を区別しない
 (setq eshell-glob-include-dot-dot nil) ; ../ を * でマッチさせない
 (setq eshell-ask-to-save-history (quote always)) ; 確認なしでヒストリ保存
-;(setq eshell-cmpl-cycle-completions t) ; 補完時にサイクルする
-;(setq eshell-cmpl-cycle-cutoff-length 5) ;補完候補がこの数値以下だとサイクル
+(setq eshell-cmpl-cycle-completions nil) ; 補完時にサイクルする
+(setq eshell-cmpl-cycle-cutoff-length 1) ;補完候補がこの数値以下だとサイクル
 ;  (setq eshell-history-file-name "~/.zsh_history") ; zsh のヒストリと共有
 (setq eshell-history-size 10000)                ; ヒストリサイズ
 (setq eshell-last-dir-ring-size 1000)

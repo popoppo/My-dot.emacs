@@ -32,8 +32,8 @@
 
 (global-unset-key "\C-x\C-b")
 (global-unset-key "\C-x\C-c")
-;(global-set-key "\C-x\C-f" 'anything-find-file)
-(global-set-key "\C-x\C-f" 'anything-find-files)
+(global-set-key "\C-x\C-f" 'anything-find-file)
+;(global-set-key "\C-x\C-f" 'anything-find-files)
 ;(global-set-key (kbd "=") (smartchr '(" = " "=" " == " "==")))
 ;(global-set-key (kbd "-") (smartchr '("-" "_")))
 (global-set-key "\M-p" '(lambda () (interactive) (next-line -4)))
@@ -103,9 +103,7 @@
 ;                             (forward-char)
 ;                             (search-forward-regexp (char-to-string arg))
 ;                             (backward-char))))
-(global-set-key "\M-t" 'anything-filelist+)
 (global-set-key "\M-r" 'my-move-to-window-line)
-(global-set-key (kbd "C-.") 'anything-filelist+)
 
 
 (require 'key-chord)

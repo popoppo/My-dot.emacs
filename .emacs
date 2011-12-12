@@ -19,8 +19,10 @@
              (expand-file-name "~/.emacs.d/site-lisp/elib") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/skk") t)
+(add-to-list 'load-path
+             (expand-file-name "~/.emacs.d/site-lisp/color-theme") t)
 
-(setq exec-path (append exec-path '(expand-file-name "~/bin")))
+;(setq exec-path (append exec-path '(expand-file-name "~/bin")))
 
 ;; INSTALL
 (require 'init-loader)
@@ -49,7 +51,7 @@
  '(jde-gen-final-methods nil)
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
  '(pcomplete-cycle-completions nil)
- '(pcomplete-cycle-cutoff-length 5)
+ '(pcomplete-cycle-cutoff-length 1)
  '(tab-width 4))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.

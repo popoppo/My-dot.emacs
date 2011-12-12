@@ -24,18 +24,22 @@
   (interactive)
   (print *gtags-current-buffer-alist*))
 
-(add-hook 'c-mode-hook 
-      '(lambda() 
-         (gtags-mode 1) 
-         (gtags-make-complete-list)))
+(add-hook 'c-mode-hook
+    '(lambda ()
+       (gtags-mode 1)
+       (gtags-make-complete-list)))
 
-(add-hook 'c++-mode-hook 
-      '(lambda() 
-         (gtags-mode 1)))
+(add-hook 'c++-mode-hook
+    '(lambda ()
+       (gtags-mode 1)))
 
 (add-hook 'java-mode-hook
-      '(lambda() 
-         (gtags-mode 1)))
+    '(lambda ()
+       (gtags-mode 1)))
+
+(add-hook 'php-mode-hook
+    '(lambda ()
+       (local-unset-key (kbd "C-."))))
 
 
 ;; jdee
@@ -124,3 +128,8 @@
 (global-set-key (kbd "{") 'skeleton-pair-insert-maybe)
 (global-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
 (global-set-key (kbd "\'") 'skeleton-pair-insert-maybe)
+
+
+;; imenu
+(setq imenu-auto-rescan t)
+(setq imenu-after-jump-hook (lambda () (recenter 10)))

@@ -13,7 +13,7 @@
              (expand-file-name "~/.emacs.d/site-lisp/cedet/common") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/cedet/eieio") t)
-(add-to-list 'load-path 
+(add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/jde/lisp") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/elib") t)
@@ -26,7 +26,6 @@
 (require 'init-loader)
 (setq init-loader-show-log-after-init nil)
 (init-loader-load (expand-file-name "~/.emacs.d/inits"))
-(setq init-loader-show-log-after-init nil)
 
 ;; 00 ... Basic configration.
 ;; 10 ... Pre-execution, environment constraction, and utilites.
@@ -41,7 +40,6 @@
  '(ac-ignores nil)
  '(ac-use-fuzzy t)
  '(bookmark-save-flag 1)
- '(init-loader-show-log-after-init nil)
  '(jde-ant-enable-find t)
  '(jde-ant-home "/usr/local/dev/ant")
  '(jde-ant-program "/usr/local/dev/ant/bin/ant" t)

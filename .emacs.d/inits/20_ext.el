@@ -13,7 +13,8 @@
 
 
 ;; Jump to top of the word when finish searching.
-(add-hook 'isearch-mode-end-hook 
+(add-hook 'isearch-mode-end-hook
           '(lambda ()
-             (if isearch-forward
-                 (search-backward-regexp isearch-string))))
+             (if (and isearch-forward (not (null isearch-success)))
+                 (backward-char (length isearch-string)))))
+

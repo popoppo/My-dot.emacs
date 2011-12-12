@@ -34,10 +34,10 @@
 (ffap-bindings)
 ;(hide-ifdef-mode)
 (iswitchb-mode)
-;(menu-bar-mode nil)
+(menu-bar-mode -1)
 (set-scroll-bar-mode nil)
 (show-paren-mode t)
-;(setq tool-bar-mode nil)
+(tool-bar-mode -1)
 (windmove-default-keybindings)
 (window-body-height nil)
 

@@ -40,7 +40,6 @@
  '(ac-ignores nil)
  '(ac-use-fuzzy t)
  '(bookmark-save-flag 1)
- '(init-loader-show-log-after-init nil)
  '(jde-ant-enable-find t)
  '(jde-ant-home "/usr/local/dev/ant")
  '(jde-ant-program "/usr/local/dev/ant/bin/ant" t)
@@ -50,8 +49,9 @@
  '(jde-gen-final-methods nil)
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
  '(pcomplete-cycle-completions nil)
- '(pcomplete-cycle-cutoff-length 5)
- '(tab-width 4))
+ '(pcomplete-cycle-cutoff-length 1)
+ '(tab-width 4)
+ '(deault-tab-width 4))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.

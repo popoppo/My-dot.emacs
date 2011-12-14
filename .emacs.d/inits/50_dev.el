@@ -111,7 +111,8 @@
 
 
 ;;; Autoloads for magit
-(autoload 'magit-status "magit" nil t)
+;(autoload 'magit-status "magit" nil t)
+(require 'magit)
 
 
 ;; Complete parentheses

@@ -26,8 +26,8 @@
 
 (add-hook 'c-mode-hook
     '(lambda ()
-       (gtags-mode 1)
-       (gtags-make-complete-list)))
+       (gtags-mode 1)))
+       ;(gtags-make-complete-list)))
 
 (add-hook 'c++-mode-hook
     '(lambda ()

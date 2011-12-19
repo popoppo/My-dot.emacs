@@ -100,6 +100,30 @@
                                 (anything 'anything-c-source-files-in-current-dir)))
 
 
+(defun my:upto-parent-dir ()
+  (interactive)
+  (declare (special prompt default-filename require-match predicate additional-attrs))
+  (setq arfn-followed t)
+  (let* ((sel "../")
+         (f (expand-file-name sel arfn-dir)))
+    (cond ((and (file-directory-p f) (not (string-match "/\\.$" sel)))
+           (with-selected-window (minibuffer-window) (delete-minibuffer-contents))
+           (setq anything-pattern "")
+           ;;(setq arfn-dir f)
+           (anything-set-sources
+            (arfn-sources
+             prompt f default-filename require-match nil predicate additional-attrs))
+           (anything-update))
+          ((string-match "^\\(.+\\)/\\([^/]+\\)$" sel)
+           (with-selected-window (minibuffer-window)
+             (delete-minibuffer-contents)
+             (insert (match-string 2 sel)))
+           (anything-set-sources
+            (arfn-sources
+             prompt (expand-file-name (match-string 1 sel) arfn-dir) nil require-match (match-string 2 sel) predicate additional-attrs))
+           (anything-update)))))
+
+
 ;; obsolete??
 (defvar my:anything-find-file-additional-sources nil)
 (defun my:anything-find-file ()
@@ -113,7 +137,10 @@
                             ;; handle (display . real) candidates
                             (candidate-transformer)
                             (type . file))))
-    (anything-other-buffer (append (arfn-sources prompt default-directory
+    (define-key anything-map (kbd "C-.") (lambda () (interactive)
+                                           (my:upto-parent-dir)))
+    (anything-other-buffer (append (arfn-sources prompt
+                                                 default-directory
                                                  nil nil nil nil additional-attrs)
                                    my:anything-find-file-additional-sources)
                            "*anything find-file*")))
@@ -125,6 +152,44 @@
 (key-chord-define-global ";b" 'anything-bookmarks)
 (key-chord-define-global ";t" 'anything-gtags-select)
 (key-chord-define-global ";r" 'anything-resume)
+
+(defun my:_switch-window (window file)
+  (let*((window (or window
+                    (if (< last-command-char 0)
+                        (- last-command-char ?\M-0)
+                      (- last-command-char win:base-key))))
+        (wc (aref win:configs window)))
+    (if (aref win:configs window)
+        ;;if target window already exists.
+        (progn
+          (win:switch-window window)
+          (find-file file))
+      ;;if target window does not exist.
+      (win:switch-window window nil t)
+      (delete-other-windows)
+      (switch-to-buffer (get-buffer-create "*scratch*"))
+      (sit-for 0)
+      (find-file file))))
+
+(defun my:switch-window ()
+  (interactive)
+  (let ((num (read-from-minibuffer "Window number: "))
+        (file (read-file-name "Find file on new window: ")))
+    (my:switch-window (string-to-int num) file)))
+
+(key-chord-define-global ";w" 'my:switch-window)
+(anything-c-arrange-type-attribute 'file
+  '((action REST
+            ("open in other window(with widonw.el)" .
+             (lambda (slct)
+               (let ((num (read-from-minibuffer "Window number: ")))
+                 (my:_switch-window (string-to-int num) (concat default-directory slct))))))))
+(anything-c-arrange-type-attribute 'buffer
+  '((action REST
+            ("open in other window(with widonw.el)" .
+             (lambda (slct)
+               (let ((num (read-from-minibuffer "Window number: ")))
+                 (my:_switch-window (string-to-int num) (concat default-directory slct))))))))
 
 (global-set-key (kbd "C-.") 'anything-for-files)
 

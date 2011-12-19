@@ -26,6 +26,9 @@
 
 (setq exec-path (append exec-path '(expand-file-name "~/bin")))
 
+;; org
+(setq org-directory "~/Dropbox/org/")
+
 ;; INSTALL
 (require 'init-loader)
 (setq init-loader-show-log-after-init nil)
@@ -64,7 +67,3 @@
  '(eshell-prompt ((t (:foreground "White" :weight bold)))))
 
 (add-hook 'after-init-hook  (lambda() (eshell)))
-
-;; org
-(setq org-directory "~/Dropbox/org/")
-

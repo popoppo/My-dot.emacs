@@ -62,7 +62,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- `(org-agenda-files ,@(list (concat org-directory "gtd.org") (concat org-directory "notes.org")))
+ `(org-agenda-files ,(list (concat org-directory "gtd.org") (concat org-directory "notes.org")))
  '(org-agenda-include-diary nil)
  '(org-agenda-ndays 7)
  '(org-agenda-repeating-timestamp-show-all t)

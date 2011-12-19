@@ -1,4 +1,5 @@
 ;; eshell
+(setq password-cache t)
 (setq password-cache-expiry 600) ;; sec
 
 ; Handle escape sequency properly.

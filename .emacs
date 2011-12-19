@@ -21,8 +21,10 @@
              (expand-file-name "~/.emacs.d/site-lisp/skk") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/color-theme") t)
+(add-to-list 'load-path
+             (expand-file-name "~/.emacs.d/site-lisp/magit") t)
 
-;(setq exec-path (append exec-path '(expand-file-name "~/bin")))
+(setq exec-path (append exec-path '(expand-file-name "~/bin")))
 
 ;; INSTALL
 (require 'init-loader)
@@ -62,3 +64,7 @@
  '(eshell-prompt ((t (:foreground "White" :weight bold)))))
 
 (add-hook 'after-init-hook  (lambda() (eshell)))
+
+;; org
+(setq org-directory "~/Dropbox/org/")
+

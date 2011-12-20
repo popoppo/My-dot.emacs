@@ -92,8 +92,35 @@
   '((action ("cd on eshell" . my:cd-to-bmk)
             REST)))
 
+
+
+(defun my:anything-select-with-shortcut-internal (types get-key-func)
+  (if (memq anything-enable-shortcuts types)
+      (save-selected-window
+        (select-window (anything-window))
+        (let* ((key (funcall get-key-func))
+               (overlay (ignore-errors (nth (position key anything-shortcut-keys)
+                                            anything-digit-overlays))))
+          (if (not (and overlay (overlay-buffer overlay)))
+              (when (numberp key)
+                (select-window (minibuffer-window))
+                (self-insert-command 1))
+            (goto-char (overlay-start overlay))
+            (anything-mark-current-line)
+            ;(anything-exit-minibuffer)
+            (my:anything-smart-exit-minibuffer)
+            )))
+    (self-insert-command 1)))
+
+(defun my:anything-select-with-prefix-shortcut ()
+  "Invoke default action with prefix shortcut."
+  (interactive)
+  (my:anything-select-with-shortcut-internal
+   '(prefix)
+   (lambda () (read-event "Select shortcut key: "))))
+
 (setq anything-enable-shortcuts 'prefix)
-(define-key anything-map "," 'anything-select-with-prefix-shortcut)
+(define-key anything-map "," 'my:anything-select-with-prefix-shortcut)
 
 (key-chord-define-global ";c" (lambda ()
                                 (interactive)
@@ -114,11 +141,12 @@
             (my:arfn-sources
              prompt f default-filename require-match nil predicate additional-attrs))
            (anything-update)))))
-(defun my:anything-read-file-name-follow-directory ()
+
+(defun my:anything-read-file-name-follow-directory (&optional slct)
   (interactive)
   (declare (special prompt default-filename require-match predicate additional-attrs))
   (setq arfn-followed t)
-  (let* ((sel (anything-get-selection))
+  (let* ((sel (or slct (anything-get-selection)))
          (f (expand-file-name sel arfn-dir)))
     (cond ((and (file-directory-p f) (not (string-match "/\\.$" sel)))
            (with-selected-window (minibuffer-window) (delete-minibuffer-contents))
@@ -172,36 +200,16 @@
 ;      ,new-input-source
       ,history-source)))
 
-(defun my:anything-smart-exit-minibuffer ()
+(defun my:anything-smart-exit-minibuffer (&optional sel)
   "Select the current candidate by exiting the minibuffer."
   (interactive)
   (declare (special anything-iswitchb-candidate-selected))
-  (let ((sel (anything-get-selection)))
+  (let ((sel (or sel (anything-get-selection))))
     (if (file-directory-p sel)
         (my:anything-read-file-name-follow-directory)
       (setq anything-iswitchb-candidate-selected sel)
-      (exit-minibuffer))))
-
-(defun my:anything-smart-exit-minibuffer1 (sel)
-  "Select the current candidate by exiting the minibuffer."
-  (interactive)
-  (declare (special anything-iswitchb-candidate-selected))
-  (if (file-directory-p sel)
-      (my:anything-read-file-name-follow-directory)
-    (setq anything-iswitchb-candidate-selected sel)
-    (exit-minibuffer)))
-
-(define-anything-type-attribute 'my:find-file
-  `((action
-     ("Open file or goto dir" . my:anything-smart-exit-minibuffer1)
-    (persistent-help . "Show this file")
-    (action-transformer anything-c-transform-file-load-el
-                        anything-c-transform-file-browse-url)
-    (candidate-transformer anything-c-w32-pathname-transformer
-                           anything-c-skip-current-file
-                           anything-c-skip-boring-files
-                           anything-c-shorten-home-path))
-  "File name."))
+      (exit-minibuffer)
+      (find-file sel))))
 
 (defun my:anything-find-file ()
   "Replacement of `find-file'."
@@ -213,7 +221,7 @@
         (additional-attrs '(;; because anything-c-skip-boring-files cannot
                             ;; handle (display . real) candidates
                             (candidate-transformer)
-                            (type . my:find-file))))
+                            (type . file))))
     (define-key anything-map (kbd "C-.") 'my:upto-parent-dir)
     (define-key anything-map (kbd "C-i") 'my:anything-read-file-name-follow-directory)
     (define-key anything-map (kbd "<tab>") 'my:anything-read-file-name-follow-directory)

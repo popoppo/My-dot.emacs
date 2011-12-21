@@ -15,7 +15,7 @@
 (define-key anything-map (kbd "C-v") 'anything-next-page)
 (define-key anything-map (kbd "M-v") 'anything-previous-page)
 (define-key anything-find-files-map (kbd "C-k") 'kill-line)
-(define-key anything-find-files-map (kbd "C-h C-b") 'undefined)
+;(define-key anything-find-files-map (kbd "C-h C-b") 'undefined)
 (define-key anything-find-files-map (kbd "C-h") 'delete-backward-char)
 
 (defun my:anything-ff-switch-to-eshell (candidate)
@@ -111,7 +111,21 @@
            (setq anything-pattern "")
            ;;(setq arfn-dir f)
            (anything-set-sources
-            (arfn-sources
+            (my:arfn-sources
+             prompt f default-filename require-match nil predicate additional-attrs))
+           (anything-update)))))
+(defun my:anything-read-file-name-follow-directory ()
+  (interactive)
+  (declare (special prompt default-filename require-match predicate additional-attrs))
+  (setq arfn-followed t)
+  (let* ((sel (anything-get-selection))
+         (f (expand-file-name sel arfn-dir)))
+    (cond ((and (file-directory-p f) (not (string-match "/\\.$" sel)))
+           (with-selected-window (minibuffer-window) (delete-minibuffer-contents))
+           (setq anything-pattern "")
+           ;;(setq arfn-dir f)
+           (anything-set-sources
+            (my:arfn-sources
              prompt f default-filename require-match nil predicate additional-attrs))
            (anything-update))
           ((string-match "^\\(.+\\)/\\([^/]+\\)$" sel)
@@ -119,13 +133,76 @@
              (delete-minibuffer-contents)
              (insert (match-string 2 sel)))
            (anything-set-sources
-            (arfn-sources
+            (my:arfn-sources
              prompt (expand-file-name (match-string 1 sel) arfn-dir) nil require-match (match-string 2 sel) predicate additional-attrs))
            (anything-update)))))
 
-
 ;; obsolete??
-(defvar my:anything-find-file-additional-sources nil)
+(defun* my:arfn-sources (prompt dir default-filename require-match initial-input predicate &optional (additional-attrs '((action . identity))))
+  (setq arfn-dir dir)
+  (let* ((dir (or dir default-directory))
+         (transformer-func
+          (if predicate
+              `(candidate-transformer
+                . (lambda (cands)
+                    (remove-if-not
+                     (lambda (c) (,predicate (if (consp c) (cdr c) c))) cands)))))
+;         (new-input-source (ac-new-input-source
+;                            prompt nil
+;                            (append '((display-to-real . (lambda (f) (expand-file-name f arfn-dir))))
+;                                    additional-attrs)))
+         (history-source (unless require-match
+                           `((name . "History")
+                             (candidates . file-name-history)
+                             (persistent-action . find-file)
+                             ,@additional-attrs))))
+    `(((name . "Default")
+       (candidates . ,(if default-filename (list default-filename)))
+       (persistent-action . find-file)
+       (filtered-candidate-transformer
+        . (lambda (cands source)
+            (if (and (not arfn-followed) (string= anything-pattern "")) cands nil)))
+       (display-to-real . (lambda (f) (expand-file-name f ,dir)))
+       ,@additional-attrs)
+      ((name . ,dir)
+       (candidates . (lambda () (arfn-candidates ,dir)))
+       (persistent-action . find-file)
+       ,@additional-attrs
+       ,transformer-func)
+;      ,new-input-source
+      ,history-source)))
+
+(defun my:anything-smart-exit-minibuffer ()
+  "Select the current candidate by exiting the minibuffer."
+  (interactive)
+  (declare (special anything-iswitchb-candidate-selected))
+  (let ((sel (anything-get-selection)))
+    (if (file-directory-p sel)
+        (my:anything-read-file-name-follow-directory)
+      (setq anything-iswitchb-candidate-selected sel)
+      (exit-minibuffer))))
+
+(defun my:anything-smart-exit-minibuffer1 (sel)
+  "Select the current candidate by exiting the minibuffer."
+  (interactive)
+  (declare (special anything-iswitchb-candidate-selected))
+  (if (file-directory-p sel)
+      (my:anything-read-file-name-follow-directory)
+    (setq anything-iswitchb-candidate-selected sel)
+    (exit-minibuffer)))
+
+(define-anything-type-attribute 'my:find-file
+  `((action
+     ("Open file or goto dir" . my:anything-smart-exit-minibuffer1)
+    (persistent-help . "Show this file")
+    (action-transformer anything-c-transform-file-load-el
+                        anything-c-transform-file-browse-url)
+    (candidate-transformer anything-c-w32-pathname-transformer
+                           anything-c-skip-current-file
+                           anything-c-skip-boring-files
+                           anything-c-shorten-home-path))
+  "File name."))
+
 (defun my:anything-find-file ()
   "Replacement of `find-file'."
   (interactive)
@@ -136,13 +213,14 @@
         (additional-attrs '(;; because anything-c-skip-boring-files cannot
                             ;; handle (display . real) candidates
                             (candidate-transformer)
-                            (type . file))))
-    (define-key anything-map (kbd "C-.") (lambda () (interactive)
-                                           (my:upto-parent-dir)))
-    (anything-other-buffer (append (arfn-sources prompt
-                                                 default-directory
-                                                 nil nil nil nil additional-attrs)
-                                   my:anything-find-file-additional-sources)
+                            (type . my:find-file))))
+    (define-key anything-map (kbd "C-.") 'my:upto-parent-dir)
+    (define-key anything-map (kbd "C-i") 'my:anything-read-file-name-follow-directory)
+    (define-key anything-map (kbd "<tab>") 'my:anything-read-file-name-follow-directory)
+    (define-key anything-map (kbd "<RET>") 'my:anything-smart-exit-minibuffer)
+    (anything-other-buffer  (my:arfn-sources prompt
+                                             default-directory
+                                             nil nil nil nil additional-attrs)
                            "*anything find-file*")))
 ;;(anything-find-file)
 
@@ -180,13 +258,13 @@
 (key-chord-define-global ";w" 'my:switch-window)
 (anything-c-arrange-type-attribute 'file
   '((action REST
-            ("open in other window(with widonw.el)" .
+            ("open in other window(with widonws.el)" .
              (lambda (slct)
                (let ((num (read-from-minibuffer "Window number: ")))
                  (my:_switch-window (string-to-int num) (concat default-directory slct))))))))
 (anything-c-arrange-type-attribute 'buffer
   '((action REST
-            ("open in other window(with widonw.el)" .
+            ("open in other window(with widonws.el)" .
              (lambda (slct)
                (let ((num (read-from-minibuffer "Window number: ")))
                  (my:_switch-window (string-to-int num) (concat default-directory slct))))))))
@@ -228,6 +306,7 @@
       anything-c-moccur-enable-auto-look-flag t ; 現在選択中の候補の位置を他のwindowに表示する
       anything-c-moccur-enable-initial-pattern t) ; `anything-c-moccur-occur-by-moccur'の起動時にポイントの位置の単語を初期パターンにする
 
+;;; キーバインドの割当(好みに合わせて設定してください)
 (key-chord-define-global ";l" 'anything-c-moccur-occur-by-moccur) ;バッファ内検索
 (key-chord-define-global ";o" 'anything-c-moccur-dmoccur) ;ディレクトリ
 (add-hook 'dired-mode-hook ;dired

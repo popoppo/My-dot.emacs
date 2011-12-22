@@ -57,6 +57,7 @@
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
+ '(py-shell-switch-buffers-on-execute nil)
  '(tab-width 4)
  '(default-tab-width 4))
 (custom-set-faces

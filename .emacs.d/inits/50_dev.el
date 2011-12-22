@@ -42,6 +42,29 @@
        (local-unset-key (kbd "C-."))))
 
 ;; Python
+;(require 'python-mode)
+;(autoload 'pymacs-apply "pymacs")
+;(autoload 'pymacs-call "pymacs")
+;(autoload 'pymacs-eval "pymacs" nil t)
+;(autoload 'pymacs-exec "pymacs" nil t)
+;(autoload 'pymacs-load "pymacs" nil t)
+;;(setq pymacs-mutable-strings t)
+;;(eval-after-load "pymacs"
+;;  '(add-to-list 'pymacs-load-path "~/.emacs.d/site-lisp/Pymacs"))
+;;
+;(require 'pysmell)
+;(defvar ac-source-pysmell
+;  '((candidates
+;     . (lambda ()
+;         (pysmell-get-all-completions))))
+;  "Source for PySmell")
+
+(add-hook 'python-mode-hook
+    '(lambda ()
+       (pysmell-mode 1)
+       (set (make-local-variable 'ac-sources) (append ac-sources '(ac-source-pysmell)))
+       (define-key python-mode-map "\C-m" 'newline-and-indent)))
+
 ;; python-mode
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 (setq interpreter-mode-alist (cons '("python" . python-mode)

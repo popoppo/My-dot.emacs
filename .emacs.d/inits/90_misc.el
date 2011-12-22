@@ -91,3 +91,4 @@ Creates a buffer if necessary."
                                   (interactive)
                                   (popwin:find-file (dired-get-file-for-visit))))
 (add-to-list 'popwin:special-display-config '("\*Man \*" :regexp t :height 30))
+(add-to-list 'popwin:special-display-config '("\*IPython Completions\*"))

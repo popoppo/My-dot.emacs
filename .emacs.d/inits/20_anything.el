@@ -232,6 +232,8 @@
                            "*anything find-file*")))
 ;;(anything-find-file)
 
+(require 'anything-gtags)
+
 ;(key-chord-define-global ";f" 'anything-find-files)
 (key-chord-define-global ";f" 'my:anything-find-file)
 (key-chord-define-global ";d" 'my:anything-ff-to-eshell)

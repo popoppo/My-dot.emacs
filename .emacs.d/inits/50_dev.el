@@ -67,7 +67,20 @@
           (lambda ()
             (pysmell-mode 1)
             (set (make-local-variable 'ac-sources)
-                 (append ac-sources '(ac-source-pysmell)))))
+                 (append ac-sources '(ac-source-pysmell)))
+            (require 'pymacs)
+            (unless (fboundp 'py-imenu-make-imenu)
+              (pymacs-load "py_imenu" "py-imenu-"))
+            (setq imenu-create-index-function
+                  (lambda ()
+                    (let (menu)
+                      (message "creating imenu index...")
+                      (condition-case nil
+                          (setq menu (py-imenu-make-imenu))
+                        (error nil
+                               (setq menu (py-imenu-create-index-function))))
+                      (message "creating imenu index...done")
+                      menu)))))
 
 ;; python-mode
 (require 'python-mode)
@@ -92,7 +105,7 @@
              (expand-file-name "~/.emacs.d/site-lisp/cedet/eieio"))
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/cedet/speedbar"))
-(add-to-list 'load-path 
+(add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/jde/lisp"))
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/elib"))

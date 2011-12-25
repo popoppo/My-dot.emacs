@@ -60,13 +60,12 @@
 
 (add-hook 'eshell-mode-hook
           (lambda ()
-            (key-chord-define-global "UU" '(lambda () (interactive)
+            (key-chord-define eshell-mode-map "UU" '(lambda () (interactive)
                                              (let ((e (point)))
                                                (eshell-bol)
                                                (kill-region (point) e))))
 ;            (auto-complete-mode t)
             (my-ac-eshell-mode)
-;            (define-key eshell-mode-map (kbd "C-i") 'auto-complete)
             (define-key eshell-mode-map (kbd "C-o") 'anything-eshell)))
 
 (use-anything-show-completion 'anything-complete-shell-history
@@ -100,10 +99,11 @@
          (if (= (user-uid) 0) "]\n# " "]\n$ "))))
 (setq eshell-prompt-regexp "^[^#$]*[$#] ")
 
-(defun pcomplete/sudo ()
-  "Completion rules for the `sudo' command."
-  (let ((pcomplete-help "complete after sudo"))
-    (pcomplete-here (pcomplete-here (eshell-complete-commands-list)))))
+;(defun pcomplete/sudo ()
+;  "Completion rules for the `sudo' command."
+;  (let ((pcomplete-help "complete after sudo"))
+;    (pcomplete-here (pcomplete-here (eshell-complete-commands-list)))))
+(defalias 'pcomplete/sudo 'pcomplete/xargs)
 
 ;; eshell/bmk - version 0.1.3
 (defun pcomplete/eshell-mode/bmk ()

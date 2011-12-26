@@ -42,7 +42,12 @@
        (local-unset-key (kbd "C-."))))
 
 ;; Python
+;; python-mode
 (require 'python-mode)
+(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+(setq interpreter-mode-alist (cons '("python" . python-mode)
+                                   interpreter-mode-alist))
+(autoload 'python-mode "python-mode" "Python editing mode." t)
 
 ;; Pymacs
 (autoload 'pymacs-apply "pymacs")
@@ -50,12 +55,10 @@
 (autoload 'pymacs-eval "pymacs" nil t)
 (autoload 'pymacs-exec "pymacs" nil t)
 (autoload 'pymacs-load "pymacs" nil t)
-;(eval-after-load "pymacs"
-;  '(add-to-list 'pymacs-load-path "~/app/emacs/pymacs-elisp"))
+(eval-after-load "pymacs"
+  '(add-to-list 'pymacs-load-path "~/.emacs.d/pymacs-elisp"))
 
 ;; pysmell
-(require 'pysmell)
-
 (defvar ac-source-pysmell
   '((candidates
      . (lambda ()
@@ -82,12 +85,17 @@
                       (message "creating imenu index...done")
                       menu)))))
 
-;; python-mode
-(require 'python-mode)
-(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-(setq interpreter-mode-alist (cons '("python" . python-mode)
-                                   interpreter-mode-alist))
-(autoload 'python-mode "python-mode" "Python editing mode." t)
+(defadvice py-execute-region (around my-py-execute-region)
+  "back to the original buffer when py-execute-region finished."
+  (require 'pysmell)
+  (if (get-buffer "*Python Output*")
+      (kill-buffer "*Python Output*"))
+  (let* ((coding-system-for-write buffer-file-coding-system))
+    ad-do-it)
+  (shrink-window-if-larger-than-buffer)
+  (other-window -1))
+(ad-enable-advice 'py-execute-region 'around 'my-py-execute-region)
+(ad-activate 'py-execute-region)
 
 ;; ipython
 (setq ipython-command "/usr/bin/ipython")

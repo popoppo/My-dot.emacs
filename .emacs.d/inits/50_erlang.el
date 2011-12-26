@@ -1,7 +1,8 @@
 ;; Earlang
-(setq erlang-root-dir "/home/takahashi/lib/erlang")
-(setq load-path (cons "/home/takahashi/lib/erlang/lib/tools-2.6.5.1/emacs" load-path))
-(setq exec-path (cons "/home/takahashi/lib/erlang/bin" exec-path))
+(setq erlang-root-dir "/usr/lib/erlang")
+;(setq erlang-root-dir "/home/takahashi/lib/erlang")
+;(setq load-path (cons "/home/takahashi/lib/erlang/lib/tools-2.6.5.1/emacs" load-path))
+;(setq exec-path (cons "/home/takahashi/lib/erlang/bin" exec-path))
 (add-to-list 'load-path 
              (expand-file-name "~/.emacs.d/site-lisp/erlang"))
 (require 'erlang-start)

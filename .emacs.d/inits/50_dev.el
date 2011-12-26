@@ -69,18 +69,30 @@
             (set (make-local-variable 'ac-sources)
                  (append ac-sources '(ac-source-pysmell)))
             (require 'pymacs)
-            (unless (fboundp 'py-imenu-make-imenu)
-              (pymacs-load "py_imenu" "py-imenu-"))
-            (setq imenu-create-index-function
-                  (lambda ()
-                    (let (menu)
-                      (message "creating imenu index...")
-                      (condition-case nil
-                          (setq menu (py-imenu-make-imenu))
-                        (error nil
-                               (setq menu (py-imenu-create-index-function))))
-                      (message "creating imenu index...done")
-                      menu)))))
+            ))
+;            (unless (fboundp 'py-imenu-make-imenu)
+;              (pymacs-load "py_imenu" "py-imenu-"))
+;            (setq imenu-create-index-function
+;                  (lambda ()
+;                    (let (menu)
+;                      (message "creating imenu index...")
+;                      (condition-case nil
+;                          (setq menu (py-imenu-make-imenu))
+;                        (error nil
+;                               (setq menu (py-imenu-create-index-function))))
+;                      (message "creating imenu index...done")
+;                      menu)))))
+
+(defadvice py-execute-region (around my-py-execute-region)
+  "back to the original buffer when py-execute-region finished."
+  (if (get-buffer "*Python Output*")
+      (kill-buffer "*Python Output*"))
+  (let* ((coding-system-for-write buffer-file-coding-system))
+    ad-do-it)
+  (shrink-window-if-larger-than-buffer)
+  (other-window -1))
+(ad-enable-advice 'py-execute-region 'around 'my-py-execute-region)
+(ad-activate 'py-execute-region)
 
 ;; python-mode
 (require 'python-mode)

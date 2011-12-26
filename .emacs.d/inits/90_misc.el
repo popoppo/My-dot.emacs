@@ -54,6 +54,8 @@
 ;(require 'w3m-load)
 
 ;; For dired
+(setq dired-listing-switches "-alh")
+
 (defun dired-my-advertised-find-file ()
   (interactive)
   (let ((kill-target (current-buffer))

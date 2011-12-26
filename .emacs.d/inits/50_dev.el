@@ -42,12 +42,7 @@
        (local-unset-key (kbd "C-."))))
 
 ;; Python
-;; python-mode
 (require 'python-mode)
-(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-(setq interpreter-mode-alist (cons '("python" . python-mode)
-                                   interpreter-mode-alist))
-(autoload 'python-mode "python-mode" "Python editing mode." t)
 
 ;; Pymacs
 (autoload 'pymacs-apply "pymacs")
@@ -55,24 +50,44 @@
 (autoload 'pymacs-eval "pymacs" nil t)
 (autoload 'pymacs-exec "pymacs" nil t)
 (autoload 'pymacs-load "pymacs" nil t)
-;;(eval-after-load "pymacs"
-;;  '(add-to-list 'pymacs-load-path "~/.emacs.d/site-lisp/Pymacs"))
-;;
+;(eval-after-load "pymacs"
+;  '(add-to-list 'pymacs-load-path "~/app/emacs/pymacs-elisp"))
 
+;; pysmell
 (require 'pysmell)
+
 (defvar ac-source-pysmell
   '((candidates
      . (lambda ()
+         (require 'pysmell)
          (pysmell-get-all-completions))))
   "Source for PySmell")
 
 (add-hook 'python-mode-hook
-    '(lambda ()
-       (pysmell-mode 1)
-       (setq pymacs-mutable-strings nil)
-       (set (make-local-variable 'ac-sources)
-            (append ac-sources '(ac-source-pysmell)))))
-       ;(define-key python-mode-map "\C-m" 'newline-and-indent)))
+          (lambda ()
+            (pysmell-mode 1)
+            (set (make-local-variable 'ac-sources)
+                 (append ac-sources '(ac-source-pysmell)))
+            (require 'pymacs)
+            (unless (fboundp 'py-imenu-make-imenu)
+              (pymacs-load "py_imenu" "py-imenu-"))
+            (setq imenu-create-index-function
+                  (lambda ()
+                    (let (menu)
+                      (message "creating imenu index...")
+                      (condition-case nil
+                          (setq menu (py-imenu-make-imenu))
+                        (error nil
+                               (setq menu (py-imenu-create-index-function))))
+                      (message "creating imenu index...done")
+                      menu)))))
+
+;; python-mode
+(require 'python-mode)
+(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+(setq interpreter-mode-alist (cons '("python" . python-mode)
+                                   interpreter-mode-alist))
+(autoload 'python-mode "python-mode" "Python editing mode." t)
 
 ;; ipython
 (setq ipython-command "/usr/bin/ipython")
@@ -90,7 +105,7 @@
              (expand-file-name "~/.emacs.d/site-lisp/cedet/eieio"))
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/cedet/speedbar"))
-(add-to-list 'load-path 
+(add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/jde/lisp"))
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/elib"))

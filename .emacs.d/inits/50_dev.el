@@ -42,7 +42,12 @@
        (local-unset-key (kbd "C-."))))
 
 ;; Python
+;; python-mode
 (require 'python-mode)
+(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+(setq interpreter-mode-alist (cons '("python" . python-mode)
+                                   interpreter-mode-alist))
+(autoload 'python-mode "python-mode" "Python editing mode." t)
 
 ;; Pymacs
 (autoload 'pymacs-apply "pymacs")
@@ -54,8 +59,6 @@
 ;  '(add-to-list 'pymacs-load-path "~/app/emacs/pymacs-elisp"))
 
 ;; pysmell
-(require 'pysmell)
-
 (defvar ac-source-pysmell
   '((candidates
      . (lambda ()
@@ -65,26 +68,27 @@
 
 (add-hook 'python-mode-hook
           (lambda ()
-            (pysmell-mode 1)
+            ;(pysmell-mode 1)
             (set (make-local-variable 'ac-sources)
                  (append ac-sources '(ac-source-pysmell)))
             (require 'pymacs)
-            ))
-;            (unless (fboundp 'py-imenu-make-imenu)
-;              (pymacs-load "py_imenu" "py-imenu-"))
-;            (setq imenu-create-index-function
-;                  (lambda ()
-;                    (let (menu)
-;                      (message "creating imenu index...")
-;                      (condition-case nil
-;                          (setq menu (py-imenu-make-imenu))
-;                        (error nil
-;                               (setq menu (py-imenu-create-index-function))))
-;                      (message "creating imenu index...done")
-;                      menu)))))
+            ;; Hacks for imenu
+            (unless (fboundp 'py-imenu-make-imenu)
+              (pymacs-load "py_imenu" "py-imenu-"))
+            (setq imenu-create-index-function
+                  (lambda ()
+                    (let (menu)
+                      (message "creating imenu index...")
+                      (condition-case nil
+                          (setq menu (py-imenu-make-imenu))
+                        (error nil
+                               (setq menu (py-imenu-create-index-function))))
+                      (message "creating imenu index...done")
+                      menu)))))
 
 (defadvice py-execute-region (around my-py-execute-region)
   "back to the original buffer when py-execute-region finished."
+  (require 'pysmell)
   (if (get-buffer "*Python Output*")
       (kill-buffer "*Python Output*"))
   (let* ((coding-system-for-write buffer-file-coding-system))
@@ -93,13 +97,6 @@
   (other-window -1))
 (ad-enable-advice 'py-execute-region 'around 'my-py-execute-region)
 (ad-activate 'py-execute-region)
-
-;; python-mode
-(require 'python-mode)
-(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-(setq interpreter-mode-alist (cons '("python" . python-mode)
-                                   interpreter-mode-alist))
-(autoload 'python-mode "python-mode" "Python editing mode." t)
 
 ;; ipython
 (setq ipython-command "/usr/bin/ipython")

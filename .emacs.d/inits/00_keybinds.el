@@ -108,6 +108,7 @@
 ;                             (search-forward-regexp (char-to-string arg))
 ;                             (backward-char))))
 (global-set-key "\M-r" 'my-move-to-window-line)
+(global-set-key "\M-`" '(lambda () (interactive) (eshell t)))
 
 
 (require 'key-chord)
@@ -149,7 +150,7 @@
 (key-chord-define-global "NB" '(lambda () (interactive)
                                            (search-forward-regexp "[/ ]")))
 (key-chord-define-global "MD" 'mark-defun)
-(key-chord-define-global "NN" '(lambda () (interactive)
+(key-chord-define-global "qn" '(lambda () (interactive)
                           (next-line 1)
                           (let ((p1 0) (p2 0))
                             (save-excursion
@@ -163,7 +164,7 @@
                             (if (> p1 p2)
                                 (goto-char p1)
                               (goto-char p2)))))
-(key-chord-define-global "PP" '(lambda () (interactive)
+(key-chord-define-global "qp" '(lambda () (interactive)
                           (previous-line 1)
                           (let ((p1 0) (p2 0))
                             (save-excursion
@@ -199,6 +200,8 @@
                                      (let ((e (point)))
                                        (clipboard-kill-ring-save b e))))))
 ;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
+(key-chord-define-global "`n" 'next-error)
+(key-chord-define-global "`p" 'previous-error)
 
 
 ;; Sticky Shift

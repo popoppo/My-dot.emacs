@@ -60,6 +60,7 @@
 (setq transient-mark-mode t)
 ;(setq scroll-margin 0)
 (setq-default c-basic-offset 4)
+(setq truncate-partial-width-windows nil)
 
 (setq-default indent-tabs-mode nil)
 ;(setq-default truncate-lines t)

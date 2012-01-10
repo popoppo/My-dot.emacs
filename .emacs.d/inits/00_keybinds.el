@@ -179,11 +179,10 @@
                           (next-line 1)
                           (let ((p1 0) (p2 0))
                             (save-excursion
-                              (search-forward-regexp "^[ \n\t]*$")
-                              (previous-line)
+                              (search-forward-regexp "^[ \t]*$")
                               (setq p1 (point)))
                             (save-excursion
-                              (search-forward-regexp "[^ \n\t]")
+                              (search-forward-regexp "[^ \t]")
                               (beginning-of-line)
                               (setq p2 (point)))
                             (if (> p1 p2)
@@ -193,10 +192,10 @@
                           (previous-line 1)
                           (let ((p1 0) (p2 0))
                             (save-excursion
-                              (search-backward-regexp "^[ \n\t]*$")
+                              (search-backward-regexp "^[ \t]*$")
                               (setq p1 (point)))
                             (save-excursion
-                              (search-backward-regexp "[^ \n\t]")
+                              (search-backward-regexp "[^ \t]")
                               (beginning-of-line)
                               (setq p2 (point)))
                             (if (< p1 p2)

@@ -68,7 +68,7 @@
 
 (add-hook 'python-mode-hook
           (lambda ()
-            (pysmell-mode 1)
+            ;(pysmell-mode 1)
             (set (make-local-variable 'ac-sources)
                  (append ac-sources '(ac-source-pysmell)))
             (require 'pymacs)
@@ -83,7 +83,8 @@
                         (error nil
                                (setq menu (py-imenu-create-index-function))))
                       (message "creating imenu index...done")
-                      menu)))))
+                      menu))))
+          t)
 
 (defadvice py-execute-region (around my-py-execute-region)
   "back to the original buffer when py-execute-region finished."

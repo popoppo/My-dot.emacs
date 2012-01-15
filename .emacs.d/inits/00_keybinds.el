@@ -161,6 +161,8 @@
 (key-chord-define-global "EE" 'end-of-buffer)
 (key-chord-define-global "II" 'anything-imenu)
 (key-chord-define-global "GL" 'goto-line)
+(key-chord-define-global "HS" 'hs-minor-mode)
+(key-chord-define-global "HX" 'hs-toggle-hiding)
 (key-chord-define-global "QQ" 'skk-mode)
 ;(global-set-key "¥C-x¥C-j" 'skk-mode)
 ;(global-set-key "¥C-xj" 'skk-auto-fill-mode)

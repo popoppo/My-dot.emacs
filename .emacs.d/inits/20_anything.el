@@ -242,7 +242,7 @@
 (key-chord-define-global ";r" 'anything-resume)
 
 (defun my:_switch-window (window file)
-  (let*((window (or window
+  (let* ((window (or window
                     (if (< last-command-char 0)
                         (- last-command-char ?\M-0)
                       (- last-command-char win:base-key))))
@@ -263,7 +263,7 @@
   (interactive)
   (let ((num (read-from-minibuffer "Window number: "))
         (file (read-file-name "Find file on new window: ")))
-    (my:switch-window (string-to-int num) file)))
+    (my:_switch-window (string-to-int num) file)))
 
 (key-chord-define-global ";w" 'my:switch-window)
 (anything-c-arrange-type-attribute 'file
@@ -280,6 +280,8 @@
                  (my:_switch-window (string-to-int num) (concat default-directory slct))))))))
 
 (global-set-key (kbd "C-.") 'anything-for-files)
+(global-set-key (kbd "C-x C-.") '(lambda () (interactive)
+                                   (setq anything-enable-shortcuts 'prefix)))
 
 ;;split-root
 ;横長のウィンドウを作成

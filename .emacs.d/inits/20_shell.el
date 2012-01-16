@@ -6,6 +6,47 @@
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
 (add-hook 'eshell-mode-hook 'ansi-color-for-comint-mode-on)
 
+; Open eshell on current directory
+(defun eshell-cd-default-directory ()
+  (interactive)
+  (let ((dir default-directory))
+    (eshell)
+    (cd dir)
+    (eshell-interactive-print (concat "cd " dir "\n"))
+    (eshell-emit-prompt)))
+(key-chord-define-global "EO" 'eshell-cd-default-directory)
+
+; Command line stack
+(defvar *eshell-command-stack* nil
+  "Command line stack")
+(make-variable-buffer-local '*eshell-command-stack*)
+
+(defun eshell-push-command (cmd)
+  "Add cmd to command line stack"
+  (interactive
+   (let ((str (progn
+                (eshell-bol)
+                (buffer-substring (point) (point-max)))))
+     (delete-region (point) (point-max))
+     (list str)))
+  (unless (equal cmd "")
+    (push cmd *eshell-command-stack*)))
+
+;(defadvice eshell-send-input (after esh-pop-com activate)
+;  (when *eshell-command-stack*
+;    (insert (pop *eshell-command-stack*))))
+
+(defun eshell-pop-command ()
+  (interactive)
+  (when *eshell-command-stack*
+    (insert (pop *eshell-command-stack*))))
+
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (local-set-key "\M-q" 'eshell-push-command)
+            (local-set-key "\M-e" 'eshell-pop-command)))
+
+; defvars
 (defvar anything-c-eshell-directory-history
   '((name . "Directory History")
     (candidates . (lambda ()

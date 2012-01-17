@@ -1,10 +1,56 @@
 ;; eshell
+(setq password-cache t)
 (setq password-cache-expiry 600) ;; sec
 
+; Handle escape sequency properly.
+(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+(add-hook 'eshell-mode-hook 'ansi-color-for-comint-mode-on)
+
+; Open eshell on current directory
+(defun eshell-cd-default-directory ()
+  (interactive)
+  (let ((dir default-directory))
+    (eshell)
+    (cd dir)
+    (eshell-interactive-print (concat "cd " dir "\n"))
+    (eshell-emit-prompt)))
+(key-chord-define-global "EO" 'eshell-cd-default-directory)
+
+; Command line stack
+(defvar *eshell-command-stack* nil
+  "Command line stack")
+(make-variable-buffer-local '*eshell-command-stack*)
+
+(defun eshell-push-command (cmd)
+  "Add cmd to command line stack"
+  (interactive
+   (let ((str (progn
+                (eshell-bol)
+                (buffer-substring (point) (point-max)))))
+     (delete-region (point) (point-max))
+     (list str)))
+  (unless (equal cmd "")
+    (push cmd *eshell-command-stack*)))
+
+;(defadvice eshell-send-input (after esh-pop-com activate)
+;  (when *eshell-command-stack*
+;    (insert (pop *eshell-command-stack*))))
+
+(defun eshell-pop-command ()
+  (interactive)
+  (when *eshell-command-stack*
+    (insert (pop *eshell-command-stack*))))
+
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (local-set-key "\M-q" 'eshell-push-command)
+            (local-set-key "\M-e" 'eshell-pop-command)))
+
+; defvars
 (defvar anything-c-eshell-directory-history
   '((name . "Directory History")
-    (candidates . (lambda () 
-                    (set-buffer "*eshell*") 
+    (candidates . (lambda ()
+                    (set-buffer "*eshell*")
                     (delete-dups (ring-elements eshell-last-dir-ring))))
     (action . (("Change Directory" . anything-eshell-change-directory)))))
 
@@ -55,13 +101,12 @@
 
 (add-hook 'eshell-mode-hook
           (lambda ()
-            (key-chord-define-global "UU" '(lambda () (interactive)
+            (key-chord-define eshell-mode-map "UU" '(lambda () (interactive)
                                              (let ((e (point)))
                                                (eshell-bol)
                                                (kill-region (point) e))))
 ;            (auto-complete-mode t)
             (my-ac-eshell-mode)
-;            (define-key eshell-mode-map (kbd "C-i") 'auto-complete)
             (define-key eshell-mode-map (kbd "C-o") 'anything-eshell)))
 
 (use-anything-show-completion 'anything-complete-shell-history
@@ -71,8 +116,8 @@
 (setq eshell-cmpl-ignore-case t)  ; 補完時に大文字小文字を区別しない
 (setq eshell-glob-include-dot-dot nil) ; ../ を * でマッチさせない
 (setq eshell-ask-to-save-history (quote always)) ; 確認なしでヒストリ保存
-;(setq eshell-cmpl-cycle-completions t) ; 補完時にサイクルする
-;(setq eshell-cmpl-cycle-cutoff-length 5) ;補完候補がこの数値以下だとサイクル
+(setq eshell-cmpl-cycle-completions nil) ; 補完時にサイクルする
+(setq eshell-cmpl-cycle-cutoff-length 1) ;補完候補がこの数値以下だとサイクル
 ;  (setq eshell-history-file-name "~/.zsh_history") ; zsh のヒストリと共有
 (setq eshell-history-size 10000)                ; ヒストリサイズ
 (setq eshell-last-dir-ring-size 1000)
@@ -95,10 +140,11 @@
          (if (= (user-uid) 0) "]\n# " "]\n$ "))))
 (setq eshell-prompt-regexp "^[^#$]*[$#] ")
 
-(defun pcomplete/sudo ()
-  "Completion rules for the `sudo' command."
-  (let ((pcomplete-help "complete after sudo"))
-    (pcomplete-here (pcomplete-here (eshell-complete-commands-list)))))
+;(defun pcomplete/sudo ()
+;  "Completion rules for the `sudo' command."
+;  (let ((pcomplete-help "complete after sudo"))
+;    (pcomplete-here (pcomplete-here (eshell-complete-commands-list)))))
+(defalias 'pcomplete/sudo 'pcomplete/xargs)
 
 ;; eshell/bmk - version 0.1.3
 (defun pcomplete/eshell-mode/bmk ()

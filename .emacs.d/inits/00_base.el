@@ -60,6 +60,7 @@
 (setq scroll-step 1) ;; C-n, C-p
 (setq transient-mark-mode t)
 ;(setq scroll-margin 0)
+(setq-default c-basic-offset 4)
 
 (setq-default indent-tabs-mode nil)
 ;(setq-default truncate-lines t)

@@ -51,8 +51,9 @@
  '(jde-gen-final-methods nil)
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
  '(pcomplete-cycle-completions nil)
- '(pcomplete-cycle-cutoff-length 5)
- '(tab-width 4))
+ '(pcomplete-cycle-cutoff-length 1)
+ '(tab-width 4)
+ '(default-tab-width 4))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.

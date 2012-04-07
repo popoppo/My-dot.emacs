@@ -26,7 +26,7 @@
 ;(setq auto-insert-query nil)
 
 (setq auto-insert-alist
-      (append '(("\\.h" . "template-header-cpp.txt")) 
+      (append '(("\\.h" . "template-header-cpp.txt"))
               auto-insert-alist))
 
 ;;Redo
@@ -90,7 +90,7 @@
 ;; icicles
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic"))
-(add-to-list 'load-path 
+(add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/icicles"))
 (load "icicles")
 
@@ -119,10 +119,17 @@
      (setq index (1+ index)))))
 
 
+(defadvice kill-region (around kill-word-or-kill-region activate)
+      (if (and (interactive-p) transient-mark-mode (not mark-active))
+          (backward-kill-word 1)
+        ad-do-it))
+
+(define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
+
 ;; grep settings
 (setq grep-host-defaults-alist nil)
-;(setq grep-template "lgrep <C> -n <R> <F> <N>") 
-;(setq grep-find-template "find . <X> -type f <F> -print0 | sort -z | xargs -0 grep <C> -nH -e <R>") 
+;(setq grep-template "lgrep <C> -n <R> <F> <N>")
+;(setq grep-find-template "find . <X> -type f <F> -print0 | sort -z | xargs -0 grep <C> -nH -e <R>")
 
 ;; Highlight tab, zenkaku space and space at eol.
 ;;(defface my-face-r-1 '((t (:background "gray15"))) nil)

@@ -145,7 +145,7 @@
 ;;(key-chord-define-global "fl" '(lambda () (interactive)
 ;;                                 (let ((l (read-from-minibuffer "")))
 ;;                                   (forward-line (string-to-number l)))))
-(key-chord-define-global "qk" 'anything-show-kill-ring)
+(key-chord-define-global "qy" 'anything-show-kill-ring)
 (key-chord-define-global "qm" 'anything-mark-ring)
 (key-chord-define-global "qh" '(lambda () (interactive)
                                  (backward-char)

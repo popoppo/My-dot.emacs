@@ -3,8 +3,15 @@
 (setq password-cache-expiry 600) ;; sec
 
 ; Handle escape sequency properly.
+(require 'ansi-color)
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
 (add-hook 'eshell-mode-hook 'ansi-color-for-comint-mode-on)
+
+;;(defun eshell-handle-ansi-color ()
+;;  (ansi-color-apply-on-region eshell-last-output-start
+;;                              eshell-last-output-end))
+;;(add-to-list 'eshell-output-filter-functions 'eshell-handle-ansi-color)
+
 
 ; Open eshell on current directory
 (defun eshell-cd-default-directory ()
@@ -14,7 +21,18 @@
     (cd dir)
     (eshell-interactive-print (concat "cd " dir "\n"))
     (eshell-emit-prompt)))
-(key-chord-define-global "EO" 'eshell-cd-default-directory)
+;(key-chord-define-global "EO" 'eshell-cd-default-directory)
+(key-chord-define-global "EO" '(lambda () (interactive)
+                                 (if (require 'shell-pop nil t)
+                                     (let ((dir default-directory)
+                                           (shl shell-pop-internal-mode-shell))
+                                       (shell-pop-set-internal-mode "eshell")
+                                       (shell-pop)
+                                       (cd dir)
+                                       (eshell-interactive-print (concat "cd " dir "\n"))
+                                       (eshell-emit-prompt)
+                                       (setq shell-pop-internal-mode-shell shl))
+                                     eshell-cd-default-directory)))
 
 ; Command line stack
 (defvar *eshell-command-stack* nil
@@ -159,7 +177,7 @@ For usage, execute without arguments."
         filename name)
     (cond
      ((eq nil args)
-      (format "Usage: 
+      (format "Usage:
 * bmk BOOKMARK to
 ** either change directory pointed to by BOOKMARK
 ** or bookmark-jump to the BOOKMARK if it is not a directory.
@@ -179,7 +197,7 @@ Completion is available."))
            ;; If it points to a directory, change to it.
            (if (file-directory-p filename)
                (eshell/cd filename)
-             ;; otherwise, just jump to the bookmark 
+             ;; otherwise, just jump to the bookmark
              (bookmark-jump bookmark))
          (error "%s is not a bookmark" bookmark))))))
 
@@ -194,12 +212,64 @@ Completion is available."))
     (use-anything-show-completion 'anything-complete-shell-history
                                   '(length anything-c-source-complete-shell-history))))
 
+;; Term
+(require 'term)
+(global-set-key "\C-ct" '(lambda ()(interactive)(ansi-term "/bin/bash")))
+
+(defvar ansi-term-after-hook nil)
+(add-hook 'ansi-term-after-hook
+          (function
+           (lambda ()
+             (define-key term-raw-map "\C-ct"
+               '(lambda ()(interactive)(ansi-term "/bin/bash"))))))
+
+(defadvice ansi-term (after ansi-term-after-advice (arg))
+  "run hook as after advice"
+  (run-hooks 'ansi-term-after-hook))
+(ad-activate 'ansi-term)
+
+
+(add-hook 'term-mode-hook '(lambda ()
+                             (define-key term-raw-map "\C-y" 'term-paste)
+;                             (define-key term-raw-map "\C-q" 'move-beginning-of-line)
+;                             (define-key term-raw-map "\C-r" 'term-send-raw)
+;                             (define-key term-raw-map "\C-s" 'term-send-raw)
+;                             (define-key term-raw-map "\C-f" 'forward-char)
+;                             (define-key term-raw-map "\C-b" 'backward-char)
+;                             (define-key term-raw-map "\C-t" 'set-mark-command)
+;                             (define-key term-raw-map (kbd "ESC") 'term-send-raw)
+;                             (define-key term-raw-map [delete] 'term-send-raw)
+                             (define-key term-raw-map "\C-cp" 'shell-pop)
+                             (define-key term-raw-map (kbd "M-x") 'nil)
+;                             (define-key term-raw-map (kbd "C-w") 'nil)
+                             (define-key term-raw-map (kbd "C-k")
+                               (lambda (&optional arg) (interactive "P")
+                                 (funcall 'kill-line arg) (term-send-raw)))
+                             (define-key term-raw-map "\C-z"
+                               (lookup-key (current-global-map) "\C-z"))))
+
+
 ;; ansi-colorでエスケープシーケンスをfontifyする設定
 ;; http://d.hatena.ne.jp/rubikitch/20081102/1225601754
 (autoload 'ansi-color-for-comint-mode-on "ansi-color"
   "Set `ansi-color-for-comint-mode' to t." t)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-(when (require 'shell-pop nil t)
-  (setq shell-pop-window-height 60) ; percentage for shell-buffer window height
-  (define-key global-map [(super t)] 'shell-pop))
+(define-key global-map "\C-cp" '(lambda () (interactive)
+                                  (when (require 'shell-pop nil t)
+                                    (cond
+                                     ((or (equal (buffer-name) shell-pop-internal-mode-buffer)
+                                            (equal (buffer-name) "*eshell*"))
+                                        (shell-pop))
+                                     (t
+                                      (shell-pop-set-internal-mode "ansi-term")
+                                      (shell-pop-set-internal-mode-shell "/bin/bash")
+                                      (setq shell-pop-window-height 30)
+                                      (shell-pop))))))
+
+;; Toggle term-char-mode/term-line-mode
+(key-chord-define-global ",," '(lambda () (interactive)
+                                 (if (string= "Term" mode-name)
+                                     (if (term-in-char-mode)
+                                         (term-line-mode)
+                                       (term-char-mode)))))

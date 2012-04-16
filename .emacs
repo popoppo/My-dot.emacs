@@ -31,7 +31,7 @@
 
 ;; INSTALL
 (require 'init-loader)
-;(setq init-loader-show-log-after-init nil)
+(setq init-loader-show-log-after-init nil)
 (init-loader-load (expand-file-name "~/.emacs.d/inits"))
 
 ;; 00 ... Basic configration.

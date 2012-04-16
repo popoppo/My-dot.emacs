@@ -73,6 +73,7 @@
 
 (defun anything-eshell ()
   (interactive)
+  (eshell-kill-input)
   (anything
    (list
     anything-c-eshell-command-history
@@ -102,9 +103,9 @@
 (add-hook 'eshell-mode-hook
           (lambda ()
             (key-chord-define eshell-mode-map "UU" '(lambda () (interactive)
-                                             (let ((e (point)))
-                                               (eshell-bol)
-                                               (kill-region (point) e))))
+                                                      (let ((e (point)))
+                                                        (eshell-bol)
+                                                        (kill-region (point) e))))
 ;            (auto-complete-mode t)
             (my-ac-eshell-mode)
             (define-key eshell-mode-map (kbd "C-o") 'anything-eshell)))

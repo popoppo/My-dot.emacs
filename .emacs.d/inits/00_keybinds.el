@@ -48,9 +48,9 @@
                             (if (string= c1 "'")
                                 (progn
                                   (search-backward-regexp "[^\\]?[[\(\'\"]")
+                                  (setq c2 (buffer-substring-no-properties s (1+ s)))
                                   (forward-char)
                                   (setq s (point))
-                                  (setq c2 (buffer-substring-no-properties (- s 1) s))
                                   (if (string= c1 c2)
                                       (kill-region s e)
                                     (search-forward-regexp c2)
@@ -145,7 +145,7 @@
 ;;(key-chord-define-global "fl" '(lambda () (interactive)
 ;;                                 (let ((l (read-from-minibuffer "")))
 ;;                                   (forward-line (string-to-number l)))))
-(key-chord-define-global "qk" 'anything-show-kill-ring)
+(key-chord-define-global "qy" 'anything-show-kill-ring)
 (key-chord-define-global "qm" 'anything-mark-ring)
 (key-chord-define-global "qh" '(lambda () (interactive)
                                  (backward-char)
@@ -255,8 +255,49 @@
 (eval-after-load "skk"
   '(progn
      (key-chord-define skk-latin-mode-map "jj" 'skk-kakutei)
+     (key-chord-define skk-j-mode-map ">>" '(lambda () (interactive) (insert ".")))
+     (key-chord-define skk-j-mode-map "<<" '(lambda () (interactive) (insert ",")))
      (define-key skk-j-mode-map sticky-key sticky-map)
      (define-key skk-jisx0208-latin-mode-map sticky-key sticky-map)
      (define-key skk-abbrev-mode-map sticky-key sticky-map)))
 (eval-after-load "skk-isearch"
   '(define-key skk-isearch-mode-map sticky-key sticky-map))
+
+;;;(defun scratch:sample () 
+;;;  (interactive)
+;;;  (let ((s (scratch:find-close-brace))
+;;;        (e (scratch:find-open-brace)))
+;;;    (kill-region s e)))
+;;;
+;;;(defun scratch:find-close-brace ()
+;;;  ;; Complex string may cause exception.
+;;;  (let ((open-regex  "[[\(\'\"]")
+;;;        (close-regex "[]\)\'\"]")
+;;;        (all-target-regex "[][\(\)\'\"]")
+;;;        (escape-slash "[^\\]"))
+;;;    (search-forward-regexp (concat escape-slash all-target-regex))
+;;;    (setq e (point))
+;;;    (setq c1 (buffer-substring-no-properties (- e 1) e))
+;;;    (setq index (string-match c1 open-regex))
+;;;    (if index
+;;;        (progn
+;;;          (search-forward-regexp (concat escape-slash (substring close-regex index (1+ index))))
+;;;          (scratch:find-close-brace))
+;;;      (point))))
+;;;
+;;;(defun scratch:find-open-brace ()
+;;;  ;; Complex string may cause exception.
+;;;  (let ((open-regex  "[[\(\'\"]")
+;;;        (close-regex "[]\)\'\"]")
+;;;        (all-target-regex "[][\(\)\'\"]")
+;;;        (escape-slash "[^\\]"))
+;;;    (search-backward-regexp (concat escape-slash all-target-regex))
+;;;    (setq e (point))
+;;;    (setq c1 (buffer-substring-no-properties (1+ e) (+ e 2)))
+;;;    (setq index (string-match c1 close-regex))
+;;;    (if index
+;;;        (progn
+;;;          (search-backward-regexp (concat escape-slash (substring open-regex index (1+ index))))
+;;;          (scratch:find-open-brace))
+;;;      (forward-char)
+;;;      (point))))

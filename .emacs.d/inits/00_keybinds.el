@@ -48,9 +48,9 @@
                             (if (string= c1 "'")
                                 (progn
                                   (search-backward-regexp "[^\\]?[[\(\'\"]")
-                                  (setq c2 (buffer-substring-no-properties s (1+ s)))
                                   (forward-char)
                                   (setq s (point))
+                                  (setq c2 (buffer-substring-no-properties (- s 1) s))
                                   (if (string= c1 c2)
                                       (kill-region s e)
                                     (search-forward-regexp c2)
@@ -229,7 +229,6 @@
 (key-chord-define-global "`n" 'next-error)
 (key-chord-define-global "`p" 'previous-error)
 
-
 ;; Sticky Shift
 (defvar sticky-key "'")
 (defvar sticky-list
@@ -255,6 +254,7 @@
 (eval-after-load "skk"
   '(progn
      (key-chord-define skk-latin-mode-map "jj" 'skk-kakutei)
+     (key-chord-define skk-j-mode-map "--" '(lambda () (interactive) (insert "-")))
      (key-chord-define skk-j-mode-map ">>" '(lambda () (interactive) (insert ".")))
      (key-chord-define skk-j-mode-map "<<" '(lambda () (interactive) (insert ",")))
      (define-key skk-j-mode-map sticky-key sticky-map)
@@ -263,7 +263,9 @@
 (eval-after-load "skk-isearch"
   '(define-key skk-isearch-mode-map sticky-key sticky-map))
 
+
 ;;;(defun scratch:sample () 
+;;;  (interactive)
 ;;;  (interactive)
 ;;;  (let ((s (scratch:find-close-brace))
 ;;;        (e (scratch:find-open-brace)))

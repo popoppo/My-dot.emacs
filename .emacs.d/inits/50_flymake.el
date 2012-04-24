@@ -13,8 +13,8 @@
 ;(add-hook 'find-file-hook 'flymake-find-file-hook)
 
 ;; move command
-(global-set-key "\C-cp" 'flymake-goto-prev-error)
-(global-set-key "\C-cn" 'flymake-goto-next-error)
+;(global-set-key "\C-cp" 'flymake-goto-prev-error)
+;(global-set-key "\C-cn" 'flymake-goto-next-error)
 
 ;; display error/warning line
 ;(global-set-key "\C-cd" 'flymake-display-err-menu-for-current-line)

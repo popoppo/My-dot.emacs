@@ -253,6 +253,8 @@
 (eval-after-load "skk"
   '(progn
      (key-chord-define skk-latin-mode-map "jj" 'skk-kakutei)
+     (key-chord-define skk-j-mode-map ">>" '(lambda () (interactive) (insert ".")))
+     (key-chord-define skk-j-mode-map "<<" '(lambda () (interactive) (insert ",")))
      (define-key skk-j-mode-map sticky-key sticky-map)
      (define-key skk-jisx0208-latin-mode-map sticky-key sticky-map)
      (define-key skk-abbrev-mode-map sticky-key sticky-map)))

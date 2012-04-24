@@ -38,7 +38,7 @@
 (menu-bar-mode nil)
 (set-scroll-bar-mode nil)
 (show-paren-mode t)
-(tool-bar-mode nil)
+(tool-bar-mode -1)
 (windmove-default-keybindings)
 (window-body-height nil)
 

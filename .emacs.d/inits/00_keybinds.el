@@ -226,8 +226,8 @@
                                      (let ((e (point)))
                                        (clipboard-kill-ring-save b e))))))
 ;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
-(key-chord-define-global "``" 'next-error)
-(key-chord-define-global "~~" 'previous-error)
+(key-chord-define-global "`n" 'next-error)
+(key-chord-define-global "`p" 'previous-error)
 
 ;; Sticky Shift
 (defvar sticky-key "'")

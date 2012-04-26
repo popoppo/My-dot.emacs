@@ -196,3 +196,23 @@
 ;; +x
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
+
+
+;; other window
+(defun other-window-or-split ()
+  (interactive)
+  (when (one-window-p)
+    (split-window-horizontally))
+  (other-window 1))
+
+(global-set-key (kbd "C-=") 'other-window-or-split)
+
+
+;; ace-jump-mode
+(require 'ace-jump-mode)
+(key-chord-define-global "z." 'ace-jump-mode)
+
+;; jaunte
+(require 'jaunte)
+(key-chord-define-global "z," 'jaunte)
+(setq jaunte-hint-unit 'whitespace)

@@ -216,3 +216,10 @@
 (require 'jaunte)
 (key-chord-define-global "z," 'jaunte)
 (setq jaunte-hint-unit 'whitespace)
+
+;; point-undo
+(require 'point-undo)
+;(define-key global-map [f5] 'point-undo)
+;(define-key global-map [f6] 'point-redo)
+(key-chord-define-global "z[" 'point-undo)
+(key-chord-define-global "z]" 'point-redo)

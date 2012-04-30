@@ -64,8 +64,8 @@
 
 (setq-default indent-tabs-mode nil)
 ;(setq-default truncate-lines t)
-(setq-default truncate-lines nil)
-(setq-default truncate-partial-width-windows t)
+;(setq-default truncate-lines nil)
+;(setq-default truncate-partial-width-windows t)
 
 (add-hook 'shell-mode-hook 'pcomplete-shell-setup)
 

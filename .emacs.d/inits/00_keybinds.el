@@ -33,9 +33,6 @@
 (global-unset-key "\C-x\C-c")
 (global-set-key "\C-x\C-f" 'anything-find-file)
 ;(global-set-key "\C-x\C-f" 'anything-find-files)
-;(require 'smartchr)
-;(global-set-key (kbd "=") (smartchr '(" = " "=" " == " "==")))
-;(global-set-key (kbd "-") (smartchr '("-" "_")))
 (global-set-key "\M-p" '(lambda () (interactive) (next-line -4)))
 (global-set-key "\M-n" '(lambda () (interactive) (next-line 4)))
 (global-set-key "\M-m" 'just-one-space)
@@ -59,7 +56,7 @@
                                     (kill-region s e)
                                   ))
                               (search-backward-regexp (cond ((string= c1 "]")
-                                                             "[")
+                                                             "\\[")
                                                             ((string= c1 ")")
                                                              "(")
                                                             (t c1)))
@@ -184,7 +181,7 @@
                               (search-forward-regexp "^[ \t]*$")
                               (setq p1 (point)))
                             (save-excursion
-                              (search-forward-regexp "[^ \t]")
+                              (search-forward-regexp "[^ \t\n]")
                               (beginning-of-line)
                               (setq p2 (point)))
                             (if (> p1 p2)
@@ -197,7 +194,7 @@
                               (search-backward-regexp "^[ \t]*$")
                               (setq p1 (point)))
                             (save-excursion
-                              (search-backward-regexp "[^ \t]")
+                              (search-backward-regexp "[^ \t\n]")
                               (beginning-of-line)
                               (setq p2 (point)))
                             (if (< p1 p2)
@@ -254,52 +251,19 @@
 (eval-after-load "skk"
   '(progn
      (key-chord-define skk-latin-mode-map "jj" 'skk-kakutei)
-     (key-chord-define skk-j-mode-map "--" '(lambda () (interactive) (insert "-")))
-     (key-chord-define skk-j-mode-map ">>" '(lambda () (interactive) (insert ".")))
-     (key-chord-define skk-j-mode-map "<<" '(lambda () (interactive) (insert ",")))
      (define-key skk-j-mode-map sticky-key sticky-map)
      (define-key skk-jisx0208-latin-mode-map sticky-key sticky-map)
      (define-key skk-abbrev-mode-map sticky-key sticky-map)))
 (eval-after-load "skk-isearch"
   '(define-key skk-isearch-mode-map sticky-key sticky-map))
 
+;(require 'smartchr)
+;(global-set-key (kbd "=") (smartchr '(" = " "=" " == " "==")))
+;(global-set-key (kbd "-") (smartchr '("-" "_")))
 
-;;;(defun scratch:sample () 
-;;;  (interactive)
-;;;  (interactive)
-;;;  (let ((s (scratch:find-close-brace))
-;;;        (e (scratch:find-open-brace)))
-;;;    (kill-region s e)))
-;;;
-;;;(defun scratch:find-close-brace ()
-;;;  ;; Complex string may cause exception.
-;;;  (let ((open-regex  "[[\(\'\"]")
-;;;        (close-regex "[]\)\'\"]")
-;;;        (all-target-regex "[][\(\)\'\"]")
-;;;        (escape-slash "[^\\]"))
-;;;    (search-forward-regexp (concat escape-slash all-target-regex))
-;;;    (setq e (point))
-;;;    (setq c1 (buffer-substring-no-properties (- e 1) e))
-;;;    (setq index (string-match c1 open-regex))
-;;;    (if index
-;;;        (progn
-;;;          (search-forward-regexp (concat escape-slash (substring close-regex index (1+ index))))
-;;;          (scratch:find-close-brace))
-;;;      (point))))
-;;;
-;;;(defun scratch:find-open-brace ()
-;;;  ;; Complex string may cause exception.
-;;;  (let ((open-regex  "[[\(\'\"]")
-;;;        (close-regex "[]\)\'\"]")
-;;;        (all-target-regex "[][\(\)\'\"]")
-;;;        (escape-slash "[^\\]"))
-;;;    (search-backward-regexp (concat escape-slash all-target-regex))
-;;;    (setq e (point))
-;;;    (setq c1 (buffer-substring-no-properties (1+ e) (+ e 2)))
-;;;    (setq index (string-match c1 close-regex))
-;;;    (if index
-;;;        (progn
-;;;          (search-backward-regexp (concat escape-slash (substring open-regex index (1+ index))))
-;;;          (scratch:find-open-brace))
-;;;      (forward-char)
-;;;      (point))))
+(require 'key-combo)
+(key-combo-mode 1)
+(key-combo-load-default)
+;; Samples for custome are below.
+;;  (key-combo-define-global (kbd "=") '(" = " " == " " === " ))
+;;  (key-combo-define-global (kbd "=>") " => ")

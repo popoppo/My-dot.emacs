@@ -180,9 +180,6 @@
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/site-lisp/yasnippet/snippets")
 
-;; smartchr
-(require 'smartchr)
-
 ;; skk
 (load "skk")
 (require 'skk-autoloads)
@@ -219,7 +216,10 @@
 
 ;; point-undo
 (require 'point-undo)
-;(define-key global-map [f5] 'point-undo)
-;(define-key global-map [f6] 'point-redo)
+;(define-key global-map [f7] 'point-undo)
+;(define-key global-map [S-f7] 'point-redo)
 (key-chord-define-global "z[" 'point-undo)
 (key-chord-define-global "z]" 'point-redo)
+
+;; srep
+(require 'srep)

@@ -233,6 +233,7 @@
 ;;(anything-find-file)
 
 (require 'anything-gtags)
+(setq anything-gtags-hijack-gtags-select-mode nil)
 
 ;(key-chord-define-global ";f" 'anything-find-files)
 (key-chord-define-global ";f" 'my:anything-find-file)

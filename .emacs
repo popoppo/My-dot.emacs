@@ -19,6 +19,10 @@
              (expand-file-name "~/.emacs.d/site-lisp/elib") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/skk") t)
+(add-to-list 'load-path
+             "~/.emacs.d/site-lisp/mark-multiple.el") ; dir
+(add-to-list 'load-path
+             "~/.emacs.d/site-lisp/expand-region.el") ; dir
 
 (setq exec-path (append exec-path '(expand-file-name "~/bin")))
 

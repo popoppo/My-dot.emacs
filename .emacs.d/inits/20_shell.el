@@ -91,6 +91,7 @@
 
 (defun anything-eshell ()
   (interactive)
+  (eshell-kill-input)
   (anything
    (list
     anything-c-eshell-command-history
@@ -120,9 +121,9 @@
 (add-hook 'eshell-mode-hook
           (lambda ()
             (key-chord-define eshell-mode-map "UU" '(lambda () (interactive)
-                                             (let ((e (point)))
-                                               (eshell-bol)
-                                               (kill-region (point) e))))
+                                                      (let ((e (point)))
+                                                        (eshell-bol)
+                                                        (kill-region (point) e))))
 ;            (auto-complete-mode t)
             (my-ac-eshell-mode)
             (define-key eshell-mode-map (kbd "C-o") 'anything-eshell)))
@@ -201,6 +202,11 @@ Completion is available."))
              (bookmark-jump bookmark))
          (error "%s is not a bookmark" bookmark))))))
 
+;; aliases
+(add-to-list 'eshell-command-aliases-list (list "la" "ls -a $1"))
+(add-to-list 'eshell-command-aliases-list (list "ll" "ls -l $1"))
+(add-to-list 'eshell-command-aliases-list (list "fw" "find-file $1"))
+(add-to-list 'eshell-command-aliases-list (list "fw" "find-file-other-window $1"))
 
 ;; shell
 (when (require 'shell-history nil t)

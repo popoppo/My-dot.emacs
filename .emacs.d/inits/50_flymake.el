@@ -4,6 +4,8 @@
 (setq flymake-start-syntax-check-on-newline nil)
 (setq flymake-no-changes-timeout 10)
 
+(require 'flymake-cursor)
+
 ;; Inhibit GUI warning
 ;(setq flymake-gui-warnings-enabled nil)
 

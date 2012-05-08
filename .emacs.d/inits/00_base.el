@@ -35,7 +35,7 @@
 (ffap-bindings)
 ;(hide-ifdef-mode)
 (iswitchb-mode)
-(menu-bar-mode nil)
+(menu-bar-mode -1)
 (set-scroll-bar-mode nil)
 (show-paren-mode t)
 (tool-bar-mode -1)

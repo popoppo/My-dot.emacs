@@ -130,7 +130,7 @@
 ;                             (search-forward-regexp (char-to-string arg))
 ;                             (backward-char))))
 (global-set-key "\M-r" 'my:move-to-window-line)
-(global-set-key "\M-`" (lambda () (interactive) (eshell t)))
+(global-set-key "\M-`" '(lambda () (interactive) (eshell t)))
 
 
 (require 'key-chord)
@@ -265,6 +265,17 @@
 
 (require 'key-combo)
 (key-combo-mode 1)
+(setq key-combo-global-default
+  '(("="  . (" = " " == " " === " ));;" === " for js
+    ("=>" . " => ")
+    ;; ("<" . key-combo-execute-orignal)
+    ;; use beginning-of-buffer for keydescription
+    ;; (lambda () (goto-char (point-min)))
+    ("C-M-x" . (key-combo-execute-orignal
+                (lambda ()
+                  (let ((current-prefix-arg '(4)))
+                    (call-interactively 'eval-defun)))))
+    ))
 (key-combo-load-default)
 ;; Samples for custome are below.
 ;;  (key-combo-define-global (kbd "=") '(" = " " == " " === " ))

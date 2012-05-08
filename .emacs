@@ -23,8 +23,15 @@
              (expand-file-name "~/.emacs.d/site-lisp/skk") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/magit") t)
+(add-to-list 'load-path
+             "~/.emacs.d/site-lisp/mark-multiple.el") ; dir
+(add-to-list 'load-path
+             "~/.emacs.d/site-lisp/expand-region.el") ; dir
 
 (setq exec-path (append exec-path '(expand-file-name "~/bin")))
+
+;; org
+(setq org-directory "~/Dropbox/org/")
 
 ;; INSTALL
 (require 'init-loader)
@@ -54,6 +61,7 @@
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
+ '(py-shell-switch-buffers-on-execute nil)
  '(tab-width 4)
  '(default-tab-width 4))
 (custom-set-faces

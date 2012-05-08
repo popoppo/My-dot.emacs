@@ -24,18 +24,21 @@
   (interactive)
   (print *gtags-current-buffer-alist*))
 
+;; C/C++
 (add-hook 'c-mode-hook
     '(lambda ()
-       (gtags-mode 1)
-       (gtags-make-complete-list)))
+       (gtags-mode 1)))
+       ;(gtags-make-complete-list)))
 
 (add-hook 'c++-mode-hook
     '(lambda ()
        (gtags-mode 1)))
 
-(add-hook 'java-mode-hook
-    '(lambda ()
-       (gtags-mode 1)))
+;; PHP
+(add-to-list 'auto-mode-alist '("\\.module$" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.install$" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.engine$" . php-mode))
 
 (add-hook 'php-mode-hook
     '(lambda ()
@@ -67,24 +70,25 @@
   "Source for PySmell")
 
 (add-hook 'python-mode-hook
-          (lambda ()
-            ;(pysmell-mode 1)
-            (set (make-local-variable 'ac-sources)
-                 (append ac-sources '(ac-source-pysmell)))
-            (require 'pymacs)
-            (unless (fboundp 'py-imenu-make-imenu)
-              (pymacs-load "py_imenu" "py-imenu-"))
-            (setq imenu-create-index-function
-                  (lambda ()
-                    (let (menu)
-                      (message "creating imenu index...")
-                      (condition-case nil
-                          (setq menu (py-imenu-make-imenu))
-                        (error nil
-                               (setq menu (py-imenu-create-index-function))))
-                      (message "creating imenu index...done")
-                      menu))))
-          t)
+          '(lambda ()
+             ;; (pysmell-mode 1)
+             (set (make-local-variable 'ac-sources)
+                  (append ac-sources '(ac-source-pysmell)))
+             (require 'pymacs)
+             ;; Hacks for imenu
+             (unless (fboundp 'py-imenu-make-imenu)
+               (pymacs-load "py_imenu" "py-imenu-"))
+             (setq imenu-create-index-function
+                   (lambda ()
+                     (let (menu)
+                       (message "creating imenu index...")
+                       (condition-case nil
+                           (setq menu (py-imenu-make-imenu))
+                         (error nil
+                                (setq menu (py-imenu-create-index-function))))
+                       (message "creating imenu index...done")
+                       menu))))
+          t) ; last 't' means that this func is put on the tail of hooks.
 
 (defadvice py-execute-region (around my-py-execute-region)
   "back to the original buffer when py-execute-region finished."
@@ -102,6 +106,11 @@
 (setq ipython-command "/usr/bin/ipython")
 (require 'ipython)
 
+
+;; Java
+(add-hook 'java-mode-hook
+    '(lambda ()
+       (gtags-mode 1)))
 
 ;; jdee
 (add-to-list 'load-path
@@ -172,7 +181,6 @@
 
 
 ;;; Autoloads for magit
-;(autoload 'magit-status "magit" nil t)
 (require 'magit)
 
 

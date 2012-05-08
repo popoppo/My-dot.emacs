@@ -263,6 +263,17 @@
 
 (require 'key-combo)
 (key-combo-mode 1)
+(setq key-combo-global-default
+  '(("="  . (" = " " == " " === " ));;" === " for js
+    ("=>" . " => ")
+    ;; ("<" . key-combo-execute-orignal)
+    ;; use beginning-of-buffer for keydescription
+    ;; (lambda () (goto-char (point-min)))
+    ("C-M-x" . (key-combo-execute-orignal
+                (lambda ()
+                  (let ((current-prefix-arg '(4)))
+                    (call-interactively 'eval-defun)))))
+    ))
 (key-combo-load-default)
 ;; Samples for custome are below.
 ;;  (key-combo-define-global (kbd "=") '(" = " " == " " === " ))

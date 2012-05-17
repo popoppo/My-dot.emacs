@@ -234,6 +234,12 @@ Completion is available."))
   (run-hooks 'ansi-term-after-hook))
 (ad-activate 'ansi-term)
 
+(defadvice anything-c-kill-ring-action (around my-anything-kill-ring-term-advice activate)
+  "In term-mode, use `term-send-raw-string' instead of `insert-for-yank'"
+  (if (eq major-mode 'term-mode)
+      (letf (((symbol-function 'insert-for-yank) (symbol-function 'term-send-raw-string)))
+        ad-do-it)
+    ad-do-it))
 
 (add-hook 'term-mode-hook '(lambda ()
                              (define-key term-raw-map "\C-y" 'term-paste)

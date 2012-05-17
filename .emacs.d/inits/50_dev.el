@@ -35,6 +35,8 @@
        (gtags-mode 1)))
 
 ;; PHP
+(load-library "php-mode")
+(require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.module$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.install$" . php-mode))

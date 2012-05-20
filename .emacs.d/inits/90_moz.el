@@ -26,6 +26,7 @@
   (interactive)
   (comint-send-string (inferior-moz-process) "BrowserCloseTabOrWindow();"))
 ;(global-set-key (kbd "C-M-c") 'moz-close-tab-or-window)
+(key-chord-define-global (kbd "\)\)") 'moz-close-tab-or-window)
 
 (defun moz-undo-close-tab ()
   (interactive)
@@ -78,3 +79,18 @@
   (interactive "sSearch Word: ")
   (moz-open-uri-in-new-tab "http://eow.alc.co.jp/search?q=" word))
 (global-set-key (kbd "<f12>") 'moz-alc-search)
+
+(defun moz-hok ()
+  (interactive)
+  (moz-send-message "KeySnail.modules.ext.exec(\"hok-start-foreground-mode\", null);"))
+(key-chord-define-global (kbd "zh") 'moz-hok)
+
+(defun moz-send-chars ()
+  (interactive)
+  (let ((chars (string-to-list (read-from-minibuffer "chars:")))
+        (cnt 0))
+    (while chars
+       (moz-send-message (format "var event = document.createEvent(\"KeyboardEvent\");event.initKeyEvent(\"keypress\", true, false, null, false, false, false, false, %d, %d);document.dispatchEvent(event);" (car chars) (car chars)))
+       (setq chars (cdr chars))
+       (sleep-for 0.1))))
+(key-chord-define-global (kbd "zm") 'moz-send-chars)

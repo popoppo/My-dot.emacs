@@ -278,3 +278,22 @@
 ;;;; Samples for custome are below.
 ;;;;  (key-combo-define-global (kbd "=") '(" = " " == " " === " ))
 ;;;;  (key-combo-define-global (kbd "=>") " => ")
+
+;; Full screen
+(defvar my-fullscreen-default 'fullboth)
+(defun my-fullscreen (arg)
+  (interactive "P")
+  (let* ((state (frame-parameter (selected-frame) 'fullscreen))
+         (my-fullscreen-default
+          (intern (completing-read (format "method (now:%s): " state)
+                                     '("fullboth" "maximized" "nil")
+                                     nil
+                                     t))))
+    (cond
+     ((or arg (null state))
+      (setq state my-fullscreen-default))
+     (t
+      (setq state nil)))
+    (set-frame-parameter (selected-frame) 'fullscreen state))
+  (redisplay))
+(global-set-key (kbd "C-`") 'my-fullscreen)

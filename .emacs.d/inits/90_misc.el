@@ -93,3 +93,6 @@ Creates a buffer if necessary."
                                    (interactive)
                                    (popwin:find-file (dired-get-file-for-visit))))
 (add-to-list 'popwin:special-display-config '("\*Man \*" :regexp t :height 30))
+
+;; For markdown
+(setq markdown-command "markdown2")

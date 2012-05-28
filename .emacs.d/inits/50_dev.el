@@ -195,3 +195,14 @@
 ;; imenu
 (setq imenu-auto-rescan t)
 (setq imenu-after-jump-hook (lambda () (recenter 10)))
+
+;; quickrun
+(require 'quickrun)
+(push '("*quickrun*") popwin:special-display-config)
+;(global-set-key (kbd "<f5>") 'quickrun)
+
+; To show last line.
+(defadvice quickrun/apply-outputter
+  (after quickrun/fix-scroll-buffer activate)
+  (recenter))
+

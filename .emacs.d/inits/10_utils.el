@@ -14,9 +14,9 @@
 
 
 ;;dmacro.el
-(defconst *dmacro-key* "\C-t" "\C-t")
-(global-set-key *dmacro-key* 'dmacro-exec)
-(autoload 'dmacro-exec "dmacro" nil t)
+;; (defconst *dmacro-key* "\M-q" "Repeat key")
+;; (global-set-key *dmacro-key* 'dmacro-exec)
+;; (autoload 'dmacro-exec "dmacro" nil t)
 
 
 ;;auto-insert
@@ -193,17 +193,6 @@
 ;; +x
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
-
-
-;; other window
-(defun other-window-or-split ()
-  (interactive)
-  (when (one-window-p)
-    (split-window-horizontally))
-  (other-window 1))
-
-(global-set-key (kbd "C-=") 'other-window-or-split)
-
 
 ;; ace-jump-mode
 (require 'ace-jump-mode)

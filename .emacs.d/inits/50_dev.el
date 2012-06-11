@@ -73,9 +73,9 @@
 
 (add-hook 'python-mode-hook
           '(lambda ()
-             ;; (pysmell-mode 1)
-             (set (make-local-variable 'ac-sources)
-                  (append ac-sources '(ac-source-pysmell)))
+             ;; ;; (pysmell-mode 1)
+             ;; (set (make-local-variable 'ac-sources)
+             ;;      (append ac-sources '(ac-source-pysmell)))
              (require 'pymacs)
              ;; Hacks for imenu
              (unless (fboundp 'py-imenu-make-imenu)
@@ -91,6 +91,10 @@
                        (message "creating imenu index...done")
                        menu))))
           t) ; last 't' means that this func is put on the tail of hooks.
+;; (add-hook 'python-mode-hook
+;;   (lambda ()
+;;     (setq imenu-create-index-function 'python-imenu-create-index)))
+
 
 (defadvice py-execute-region (around my-py-execute-region)
   "back to the original buffer when py-execute-region finished."
@@ -108,6 +112,20 @@
 (setq ipython-command "/usr/bin/ipython")
 (require 'ipython)
 
+;; anything-ipython
+(require 'anything-ipython)
+(add-hook 'python-mode-hook #'(lambda ()
+                                (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
+(add-hook 'ipython-shell-hook #'(lambda ()
+                                  (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
+
+;; anything-show-completion
+(when (require 'anything-show-completion nil t)
+  (use-anything-show-completion 'anything-ipython-complete
+                                '(length initial-pattern)))
+
+;; This should be evaluted after anything-ipython? or anything-show-completion?
+(setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.complete('%s')[1])) #PYTHON-MODE SILENT\n")
 
 ;; Java
 (add-hook 'java-mode-hook

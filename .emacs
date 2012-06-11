@@ -27,6 +27,10 @@
              (expand-file-name "~/.emacs.d/site-lisp/color-theme") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/magit") t)
+(add-to-list 'load-path
+             (expand-file-name "/usr/share/emacs/site-lisp") t)
+(add-to-list 'load-path
+             (expand-file-name "/usr/share/emacs/site-lisp/w3m") t)
 
 (setq exec-path (append exec-path '(expand-file-name "~/bin")))
 

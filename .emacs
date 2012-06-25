@@ -75,4 +75,4 @@
   ;; If there is more than one, they won't work right.
  '(eshell-prompt ((t (:foreground "White" :weight bold)))))
 
-(add-hook 'after-init-hook  (lambda() (eshell)))
+(add-hook 'after-init-hook  (lambda() (ansi-term "/bin/bash")))

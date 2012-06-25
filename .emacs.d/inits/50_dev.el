@@ -27,11 +27,31 @@
 ;; C/C++
 (add-hook 'c-mode-hook
     '(lambda ()
+       (make-variable-buffer-local 'skeleton-pair)
+       (make-variable-buffer-local 'skeleton-pair-on-word)
+       (make-variable-buffer-local 'skeleton-pair-alist)
+       (setq skeleton-pair-on-word t)
+       (setq skeleton-pair t)
+       (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "\'") 'skeleton-pair-insert-maybe)
        (gtags-mode 1)))
        ;(gtags-make-complete-list)))
 
 (add-hook 'c++-mode-hook
     '(lambda ()
+       (make-variable-buffer-local 'skeleton-pair)
+       (make-variable-buffer-local 'skeleton-pair-on-word)
+       (make-variable-buffer-local 'skeleton-pair-alist)
+       (setq skeleton-pair-on-word t)
+       (setq skeleton-pair t)
+       (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "\'") 'skeleton-pair-insert-maybe)
        (gtags-mode 1)))
 
 ;; PHP

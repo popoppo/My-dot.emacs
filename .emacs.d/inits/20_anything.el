@@ -36,6 +36,15 @@
 
 (define-anything-type-attribute 'my:file
   `((action
+     ("cd on ansi-term" . (lambda (slct)
+                            (kill-new slct)
+                            (let ((w (get-buffer-window "*ansi-term*")))
+                              (when (not w)
+                                (switch-to-buffer "*ansi-term*")
+                                (setq w (get-buffer-window "*ansi-term*")))
+                              (select-window w)
+                              (set-buffer "*ansi-term*")
+                              (term-paste))))
      ("cd on eshell" . (lambda (slct)
                          (setq anything-ff-default-directory
                                (if (file-directory-p slct)

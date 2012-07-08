@@ -278,3 +278,8 @@
 ;;;; Samples for custome are below.
 ;;;;  (key-combo-define-global (kbd "=") '(" = " " == " " === " ))
 ;;;;  (key-combo-define-global (kbd "=>") " => ")
+
+;; wdired
+(eval-after-load "dired"
+  '(lambda ()
+     (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)))

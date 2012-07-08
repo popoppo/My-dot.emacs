@@ -214,7 +214,7 @@ Completion is available."))
 
 ;; Term
 (require 'term)
-(add-to-list 'ac-modes 'term)
+(add-to-list 'ac-modes 'term-mode)
 
 (global-set-key "\C-ct" '(lambda ()(interactive)(ansi-term "/bin/bash")))
 
@@ -369,6 +369,30 @@ Completion is available."))
 (defvar ansi-term-last-dir-ring-file-name
   (expand-file-name "lastdir" "~/.myterm"))
 
+
+(defvar *my:ansi-command-stack* nil
+  "Command line stack")
+(make-variable-buffer-local '*my:ansi-command-stack*)
+
+(defun my:ansi-term-push-commnad ()
+  (interactive)
+  (term-bol nil)
+  (let ((cmd (buffer-substring-no-properties (point) (point-at-eol))))
+    (unless (equal cmd "")
+      (push cmd *my:ansi-command-stack*)
+      (message (car *my:ansi-command-stack*))
+      (term-send-raw-string "")
+      (term-send-raw-string "")
+      (term-send-raw-string "\e1")
+      (term-send-raw-string ""))))
+
+(defun my:ansi-term-pop-commnad ()
+  (interactive)
+  (unless (null *my:ansi-command-stack*)
+    (let ((cmd (pop *my:ansi-command-stack*)))
+      (term-send-raw-string cmd))))
+
+
 (add-hook 'term-mode-hook '(lambda ()
                              (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")
                              (define-key term-raw-map "\C-y" 'term-paste)
@@ -391,6 +415,8 @@ Completion is available."))
                              ;;
                              (if ansi-term-last-dir-ring-file-name
                                  (ansi-term-read-last-dir-ring))
+                             (define-key term-raw-map "\M-q" 'my:ansi-term-push-commnad)
+                             (define-key term-raw-map "\M-e" 'my:ansi-term-pop-commnad)
                              ;;
                              ))
 

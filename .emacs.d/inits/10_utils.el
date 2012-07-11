@@ -14,9 +14,9 @@
 
 
 ;;dmacro.el
-(defconst *dmacro-key* "\C-t" "\C-t")
-(global-set-key *dmacro-key* 'dmacro-exec)
-(autoload 'dmacro-exec "dmacro" nil t)
+;; (defconst *dmacro-key* "\M-q" "Repeat key")
+;; (global-set-key *dmacro-key* 'dmacro-exec)
+;; (autoload 'dmacro-exec "dmacro" nil t)
 
 
 ;;auto-insert
@@ -194,17 +194,6 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-
-;; other window
-(defun other-window-or-split ()
-  (interactive)
-  (when (one-window-p)
-    (split-window-horizontally))
-  (other-window 1))
-
-(global-set-key (kbd "C-=") 'other-window-or-split)
-
-
 ;; ace-jump-mode
 (require 'ace-jump-mode)
 (key-chord-define-global "z." 'ace-jump-mode)
@@ -267,4 +256,21 @@
                                (insert (format format first))
                                (yank)
                                (setq first (+ first incr)))))
->>>>>>> rhel6
+
+;; Full screen
+(defvar my-fullscreen-default 'fullboth)
+(defun my-fullscreen (arg)
+  (interactive "P")
+  (let* ((state (frame-parameter (selected-frame) 'fullscreen))
+         (my-fullscreen-default
+          (intern (completing-read (format "method (now:%s): " state)
+                                     '("fullboth" "maximized" "nil")
+                                     nil
+                                     t))))
+    (cond
+     ((or arg (null state))
+      (setq state my-fullscreen-default))
+     (t
+      (setq state nil)))
+    (set-frame-parameter (selected-frame) 'fullscreen state))
+  (redisplay))

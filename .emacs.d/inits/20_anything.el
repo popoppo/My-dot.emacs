@@ -36,6 +36,15 @@
 
 (define-anything-type-attribute 'my:file
   `((action
+     ("cd on ansi-term" . (lambda (slct)
+                            (kill-new slct)
+                            (let ((w (get-buffer-window "*ansi-term*")))
+                              (when (not w)
+                                (switch-to-buffer "*ansi-term*")
+                                (setq w (get-buffer-window "*ansi-term*")))
+                              (select-window w)
+                              (set-buffer "*ansi-term*")
+                              (term-paste))))
      ("cd on eshell" . (lambda (slct)
                          (setq anything-ff-default-directory
                                (if (file-directory-p slct)
@@ -57,16 +66,25 @@
             (replace-regexp-in-string "\\(.+\\)/$" "\\1" (expand-file-name elm)))
           lst))
 
-(defun my:anything-ff-to-eshell ()
+;; (defun my:anything-ff-to-eshell ()
+;;   (interactive)
+;;   (let ((dir-src1 (anything-find-files-history :comp-read nil))
+;;         (dir-src2 (progn
+;;                     (set-buffer "*eshell*")
+;;                     (ring-elements eshell-last-dir-ring))))
+;;     (anything-other-buffer
+;;      `((name . "Directory history")
+;;        (candidates . ,(delete-dups (my:expand-and-remove-tail-slash
+;;                                     (append dir-src1 dir-src2))))
+;;        (type . my:file))
+;;      "*anything for dir history*")))
+(defun my:anything-ff-to-shell ()
   (interactive)
-  (let ((dir-src1 (anything-find-files-history :comp-read nil))
-        (dir-src2 (progn
-                    (set-buffer "*eshell*")
-                    (ring-elements eshell-last-dir-ring))))
+  (let ((dir-src1 (ring-elements ansi-term-last-dir-ring)))
     (anything-other-buffer
      `((name . "Directory history")
        (candidates . ,(delete-dups (my:expand-and-remove-tail-slash
-                                    (append dir-src1 dir-src2))))
+                                    dir-src1)))
        (type . my:file))
      "*anything for dir history*")))
 
@@ -237,7 +255,7 @@
 
 ;(key-chord-define-global ";f" 'anything-find-files)
 (key-chord-define-global ";f" 'my:anything-find-file)
-(key-chord-define-global ";d" 'my:anything-ff-to-eshell)
+(key-chord-define-global ";d" 'my:anything-ff-to-shell)
 (key-chord-define-global ";b" 'anything-bookmarks)
 (key-chord-define-global ";t" 'anything-gtags-select)
 (key-chord-define-global ";r" 'anything-resume)

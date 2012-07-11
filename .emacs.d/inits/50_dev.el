@@ -27,11 +27,32 @@
 ;; C/C++
 (add-hook 'c-mode-hook
     '(lambda ()
-       (gtags-mode 1)))
        ;(gtags-make-complete-list)))
+       (make-variable-buffer-local 'skeleton-pair)
+       (make-variable-buffer-local 'skeleton-pair-on-word)
+       (make-variable-buffer-local 'skeleton-pair-alist)
+       (setq skeleton-pair-on-word t)
+       (setq skeleton-pair t)
+       (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "\'") 'skeleton-pair-insert-maybe)
+       (gtags-mode 1)
+       (gtags-make-complete-list)))
 
 (add-hook 'c++-mode-hook
     '(lambda ()
+       (make-variable-buffer-local 'skeleton-pair)
+       (make-variable-buffer-local 'skeleton-pair-on-word)
+       (make-variable-buffer-local 'skeleton-pair-alist)
+       (setq skeleton-pair-on-word t)
+       (setq skeleton-pair t)
+       (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
+       (local-set-key (kbd "\'") 'skeleton-pair-insert-maybe)
        (gtags-mode 1)))
 
 ;; PHP
@@ -105,6 +126,18 @@
 ;; ipython
 (setq ipython-command "/usr/bin/ipython")
 (require 'ipython)
+
+(require 'anything-ipython)
+(when (require 'anything-show-completion nil t)
+  (use-anything-show-completion 'anything-ipython-complete
+                                '(length initial-pattern)))
+(setq ipython-completion-command-string "print ';'.join(__IP.Completer.all_completions('%s')) #PYTHON-MODE SILENT\n")
+
+(add-hook 'python-mode-hook #'(lambda ()
+                                (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
+(add-hook 'ipython-shell-hook #'(lambda ()
+                                  (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
+
 
 
 ;; Java
@@ -203,3 +236,13 @@
 ;; imenu
 (setq imenu-auto-rescan t)
 (setq imenu-after-jump-hook (lambda () (recenter 10)))
+
+;; quickrun
+(require 'quickrun)
+(push '("*quickrun*") popwin:special-display-config)
+;(global-set-key (kbd "<f5>") 'quickrun)
+
+; To show last line.
+(defadvice quickrun/apply-outputter
+  (after quickrun/fix-scroll-buffer activate)
+  (recenter))

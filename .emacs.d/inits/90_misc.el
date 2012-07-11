@@ -89,8 +89,22 @@ Creates a buffer if necessary."
 ;; popwin
 (require 'popwin)
 (setq display-buffer-function 'popwin:display-buffer)
+
 (define-key dired-mode-map "o" '(lambda ()
                                   (interactive)
                                   (popwin:find-file (dired-get-file-for-visit))))
 (add-to-list 'popwin:special-display-config '("\*Man \*" :regexp t :height 30))
 (add-to-list 'popwin:special-display-config '("\*IPython Completions\*"))
+
+;; For markdown
+(setq markdown-command "markdown2")
+
+;; Move to other window when a window is split.
+(defadvice split-window-vertically (after my-move-after-split-window)
+  (other-window 1))
+
+(defadvice split-window-horizontally (after my-move-after-split-window)
+  (other-window 1))
+
+(ad-activate 'split-window-vertically 'my-move-after-split-window)
+(ad-activate 'split-window-horizontally 'my-move-after-split-window)

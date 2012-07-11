@@ -220,19 +220,160 @@ Completion is available."))
 
 ;; Term
 (require 'term)
+(add-to-list 'ac-modes 'term-mode)
+
 (global-set-key "\C-ct" '(lambda ()(interactive)(ansi-term "/bin/bash")))
 
 (defvar ansi-term-after-hook nil)
 (add-hook 'ansi-term-after-hook
-          (function
-           (lambda ()
+          '(lambda ()
              (define-key term-raw-map "\C-ct"
-               '(lambda ()(interactive)(ansi-term "/bin/bash"))))))
+               '(lambda ()(interactive)(ansi-term "/bin/bash")))))
 
 (defadvice ansi-term (after ansi-term-after-advice (arg))
   "run hook as after advice"
   (run-hooks 'ansi-term-after-hook))
 (ad-activate 'ansi-term)
+
+; hook for parsing command and arguments.
+(defadvice term-send-raw (around my:term-send-raw)
+  (sit-for 0.01) ; For time-lag
+  (let ((keys (this-command-keys))
+        cmd)
+    (when (string= keys "")
+      (term-bol nil)
+      (let* ((cmd-line (buffer-substring (point) (point-at-eol)))
+             (items (split-string cmd-line)))
+        (setq cmd (car items))
+        (cond ((string= cmd "exit")
+               (ansi-term-write-last-dir-ring)))
+        ))
+    ad-do-it
+    (cond ((string= cmd "cd")
+           (sit-for 0.01)
+           (ansi-term-add-to-dir-ring default-directory));TODO "cd abc;echo var"
+          )))
+;(ad-remove-advice 'term-send-raw 'around 'my:term-send-raw)
+;(ad-deactivate 'term-send-raw)
+(ad-activate 'term-send-raw 'my:term-send-raw)
+
+(defun ansi-term-add-to-dir-ring (path)
+  "Add PATH to the last-dir-ring, if applicable."
+  (unless (and (not (ring-empty-p ansi-term-last-dir-ring))
+               (equal path (ring-ref ansi-term-last-dir-ring 0)))
+    (let ((index 0)
+          (len (ring-length ansi-term-last-dir-ring)))
+      (while (< index len)
+        (if (equal (ring-ref ansi-term-last-dir-ring index) path)
+            (ring-remove ansi-term-last-dir-ring index)
+          (setq index (1+ index))))))
+  (ring-insert ansi-term-last-dir-ring path))
+
+(defun ansi-term-write-last-dir-ring ()
+  "Write the buffer's `ansi-term-last-dir-ring' to a history file."
+  (let ((file ansi-term-last-dir-ring-file-name))
+    (cond
+     ((or (null file)
+          (equal file "")
+          (null ansi-term-last-dir-ring)
+          (ring-empty-p ansi-term-last-dir-ring))
+      nil)
+     ((not (file-writable-p file))
+      (message "Cannot write last-dir-ring file %s" file))
+     (t
+      (let* ((ring ansi-term-last-dir-ring)
+             (index (ring-length ring)))
+        (with-temp-buffer
+          (while (> index 0)
+            (setq index (1- index))
+            (insert (ring-ref ring index) ?\n))
+          ;; (insert (ansi-term/pwd) ?\n)
+          ;; (ansi-term-with-private-file-modes
+           (write-region (point-min) (point-max) file nil
+                         'no-message)))))))
+;)
+(add-hook 'kill-emacs-hook 'ansi-term-write-last-dir-ring)
+;(remove-hook 'kill-emacs-hook 'ansi-term-write-last-dir)
+
+(defadvice dabbrev-expand (after my:term-ac)
+  (when (string= "Term" mode-name)
+    (let ((is-changed nil))
+      (when (term-in-char-mode)
+        (term-line-mode)
+        (setq is-changed t))
+      (let (b e s)
+        (term-bol nil)
+        (setq b (point))
+        (setq e (point-at-eol))
+        (setq s (buffer-substring-no-properties b e))
+        (if is-changed
+            (term-char-mode))
+        (term-send-raw-string "")
+        (term-send-raw-string "")
+        (term-send-raw-string "\e1") ; 1 has no meanings, but re-draw only current line.
+        (term-send-raw-string "")
+        (term-send-raw-string s)
+        ))))
+;(ad-remove-advice 'dabbrev-expand 'after 'my:term-ac)
+;(ad-deactivate 'dabbrev-expand)
+(ad-activate 'dabbrev-expand 'my:term-ac)
+
+;; (defadvice ac-expand (around my:term-ac)
+;;   (let ((is-changed nil))
+;;     (when (and
+;;            (string= "Term" mode-name)
+;;            (term-in-char-mode))
+;;       (term-line-mode)
+;;       (setq is-changed t))
+;;     ad-do-it
+;;     (let (b e s)
+;;       (term-bol nil)
+;;       (setq b (point))
+;;       (setq e (point-at-eol))
+;;       (setq s (buffer-substring-no-properties b e))
+;;       (if is-changed
+;;           (term-char-mode))
+;;       (term-send-raw-string "")
+;;       (term-send-raw-string "")
+;;       (term-send-raw-string "")
+;;       (term-send-raw-string s)
+;;       )))
+;; (ad-activate 'ac-expand 'my:term-ac)
+
+(defadvice ac-complete (around my:term-ac)
+  (let ((is-changed nil))
+    (when (and
+           (string= "Term" mode-name)
+           (term-in-char-mode))
+      (term-line-mode)
+      (setq is-changed t))
+    ad-do-it
+    (let (b e s)
+      (term-bol nil)
+      (setq b (point))
+      (setq e (point-at-eol))
+      (setq s (buffer-substring-no-properties b e))
+      (if is-changed
+          (term-char-mode))
+      (term-send-raw-string "")
+      (term-send-raw-string "")
+      (term-send-raw-string "\e1")
+      (term-send-raw-string "")
+      (term-send-raw-string s)
+      )))
+(ad-activate 'ac-complete 'my:term-ac)
+;(ad-remove-advice 'ac-complete 'around 'my:term-ac)
+;(ad-deactivate 'ac-expand)
+
+
+(defvar ansi-term-last-dir-ring)
+(setq ansi-term-last-dir-ring (make-ring 32))
+;(unless ansi-term-last-dir-ring
+;  (setq ansi-term-last-dir-ring (make-ring 32)))
+
+(defvar ansi-term-last-dir-ring-file-name
+  (expand-file-name "lastdir" "~/.myterm"))
+
 
 (defadvice anything-c-kill-ring-action (around my-anything-kill-ring-term-advice activate)
   "In term-mode, use `term-send-raw-string' instead of `insert-for-yank'"
@@ -242,6 +383,7 @@ Completion is available."))
     ad-do-it))
 
 (add-hook 'term-mode-hook '(lambda ()
+                             (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")
                              (define-key term-raw-map "\C-y" 'term-paste)
 ;                             (define-key term-raw-map "\C-q" 'move-beginning-of-line)
 ;                             (define-key term-raw-map "\C-r" 'term-send-raw)
@@ -258,8 +400,41 @@ Completion is available."))
                                (lambda (&optional arg) (interactive "P")
                                  (funcall 'kill-line arg) (term-send-raw)))
                              (define-key term-raw-map "\C-z"
-                               (lookup-key (current-global-map) "\C-z"))))
+                               (lookup-key (current-global-map) "\C-z"))
+                             ;;
+                             (if ansi-term-last-dir-ring-file-name
+                                 (ansi-term-read-last-dir-ring))
+                             ;;
+                             ))
 
+(defun ansi-term-read-last-dir-ring ()
+  "Set the buffer's `ansi-term-last-dir-ring' from a history file."
+  (let ((file ansi-term-last-dir-ring-file-name))
+    (cond
+     ((or (null file)
+      (equal file "")
+      (not (file-readable-p file)))
+      nil)
+     (t
+      (let* ((count 0)
+         (size 32)
+         (ring (make-ring size)))
+    (with-temp-buffer
+      (insert-file-contents file)
+      ;; Save restriction in case file is already visited...
+      ;; Watch for those date stamps in history files!
+      (goto-char (point-max))
+      (while (and (< count size)
+              (re-search-backward "^\\([^\n].*\\)$" nil t))
+        (ring-insert-at-beginning ring (match-string 1))
+        (setq count (1+ count)))
+      ;; never allow the top element to equal the current
+      ;; directory
+      ;; (while (and (not (ring-empty-p ring))
+      ;;             (equal (ring-ref ring 0) (eshell/pwd)))
+      ;;   (ring-remove ring 0))
+      )
+    (setq ansi-term-last-dir-ring ring))))))
 
 ;; ansi-colorでエスケープシーケンスをfontifyする設定
 ;; http://d.hatena.ne.jp/rubikitch/20081102/1225601754

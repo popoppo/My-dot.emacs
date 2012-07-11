@@ -97,3 +97,13 @@ Creates a buffer if necessary."
 
 ;; For markdown
 (setq markdown-command "markdown2")
+
+;; Move to other window when a window is split.
+(defadvice split-window-vertically (after my-move-after-split-window)
+  (other-window 1))
+
+(defadvice split-window-horizontally (after my-move-after-split-window)
+  (other-window 1))
+
+(ad-activate 'split-window-vertically 'my-move-after-split-window)
+(ad-activate 'split-window-horizontally 'my-move-after-split-window)

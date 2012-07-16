@@ -102,9 +102,11 @@
 
 (require 'thing-opt)
 (define-thing-commands)
+(define-key 'my-own-map "d" 'mark-defun*)
 (define-key 'my-own-map "w" 'mark-word*)
 (define-key 'my-own-map "l" 'mark-line)
 (define-key 'my-own-map "s" 'mark-symbol)
+(define-key 'my-own-map "u" 'mark-up-list)
 
 
 ;; own util
@@ -215,7 +217,7 @@
 
 ;; mark-more-like-thin
 (require 'mark-more-like-this)
-(key-chord-define-global "za" 'mark-all-like-this)
+(key-chord-define-global "zz" 'mark-all-like-this)
 (key-chord-define-global "zp" 'mark-previous-like-this)
 (key-chord-define-global "zn" 'mark-next-like-this)
 ;(global-set-key (kbd "C-<") 'mark-previous-like-this)
@@ -227,6 +229,12 @@
 (key-chord-define-global "WW" 'er/contract-region)
 ;(global-set-key (kbd "C-@") 'er/expand-region)
 ;(global-set-key (kbd "C-M-@") 'er/contract-region) ;; narrow region
+
+;; multiple-cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/add-multiple-cursors-to-region-lines)
+(global-set-key (kbd "C-S-c C-e") 'mc/edit-ends-of-lines)
+(global-set-key (kbd "C-S-c C-a") 'mc/edit-beginnings-of-lines)
 
 ;; transient-mark-mode need to be true.
 ;(transient-mark-mode t)

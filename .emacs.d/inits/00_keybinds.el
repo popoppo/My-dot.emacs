@@ -131,6 +131,8 @@
 ;                             (backward-char))))
 (global-set-key "\M-r" 'my:move-to-window-line)
 (global-set-key "\M-`" (lambda () (interactive) (eshell t)))
+(global-set-key "\C-\M-n" (lambda () (interactive) (scroll-up 1)))
+(global-set-key "\C-\M-p" (lambda () (interactive) (scroll-down 1)))
 
 
 (require 'key-chord)
@@ -212,7 +214,7 @@
                                  (let ((e (point)))
                                    (beginning-of-line)
                                    (kill-region (point) e))))
-(key-chord-define-global "yy" '(lambda () (interactive)
+(key-chord-define-global "YY" '(lambda () (interactive)
                                  (save-excursion
                                    (beginning-of-line)
                                    (let ((b (point))

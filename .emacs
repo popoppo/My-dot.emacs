@@ -23,6 +23,8 @@
              "~/.emacs.d/site-lisp/mark-multiple.el") ; dir
 (add-to-list 'load-path
              "~/.emacs.d/site-lisp/expand-region.el") ; dir
+(add-to-list 'load-path
+             "~/.emacs.d/site-lisp/multiple-cursors.el") ; dir
 
 (setq exec-path (append exec-path '(expand-file-name "~/bin")))
 

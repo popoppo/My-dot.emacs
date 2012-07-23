@@ -46,13 +46,13 @@
                       ))))
     ))
 
-(defun gtd ()
+(defun my:gtd ()
     (interactive)
     (find-file (concat org-directory "gtd.org")))
 
 (add-hook 'org-agenda-mode-hook 'hl-line-mode)
 
-(global-set-key (kbd "C-c o g") 'gtd)
+(global-set-key (kbd "C-c o g") 'my:gtd)
 (global-set-key (kbd "C-c o o") 'org-capture)
 (global-set-key (kbd "C-c o a") 'org-agenda)
 (global-set-key (kbd "C-c o l") 'org-store-link)
@@ -62,7 +62,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- `(org-agenda-files ,(list (concat org-directory "gtd.org") (concat org-directory "notes.org")))
+ `(org-agenda-files (quote ,(list (concat org-directory "gtd.org") (concat org-directory "notes.org"))))
  '(org-agenda-include-diary nil)
  '(org-agenda-ndays 7)
  '(org-agenda-repeating-timestamp-show-all t)

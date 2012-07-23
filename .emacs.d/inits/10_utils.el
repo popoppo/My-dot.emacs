@@ -203,7 +203,7 @@
 (key-chord-define-global "z/" 'jaunte)
 (key-chord-define-global "\`\`" 'jaunte)
 (setq jaunte-hint-unit 'whitespace)
-(setq jaunte-keys (mapcar #'identity "asdfgqwertzxcvb12345"))
+;(setq jaunte-keys (mapcar #'identity "asdfgqwertzxcvb12345"))
 
 ;; point-undo
 (require 'point-undo)

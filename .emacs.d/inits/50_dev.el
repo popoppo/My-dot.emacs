@@ -147,6 +147,30 @@
 ;; This should be evaluted after anything-ipython? or anything-show-completion?
 (setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.complete('%s')[1])) #PYTHON-MODE SILENT\n")
 
+;; For flymake
+(when (load "flymake" t)
+  (defun flymake-python-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "pyflakes" (list local-file)))) ; substitute epylint for this
+  (push '(".+\\.py$" flymake-python-init) flymake-allowed-file-name-masks))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            ; Activate flymake unless buffer is a tmp buffer for the interpreter
+            (unless (eq buffer-file-name nil) (flymake-mode t)) ; this should fix your problem
+            ;; Bind a few keys for navigating errors
+;            (local-set-key (kbd "C-c w") 'show-fly-err-at-point)
+;            (local-set-key (kbd "M-n") 'flymake-goto-next-error)
+;            (local-set-key (kbd "M-p") 'flymake-goto-prev-error)))
+;            (key-chord-define python-mode-map "`d" 'show-fly-err-at-point)
+;            (key-chord-define  "`n" 'flymake-goto-next-error)
+;            (key-chord-define  "`p" 'flymake-goto-prev-error)
+            ))
+
 ;; Java
 (add-hook 'java-mode-hook
     '(lambda ()

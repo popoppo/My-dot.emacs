@@ -340,27 +340,25 @@ Completion is available."))
 ;;       )))
 ;; (ad-activate 'ac-expand 'my:term-ac)
 
-(defadvice ac-complete (around my:term-ac)
-  (let ((is-changed nil))
-    (when (and
-           (string= "Term" mode-name)
-           (term-in-char-mode))
-      (term-line-mode)
-      (setq is-changed t))
-    ad-do-it
-    (let (b e s)
-      (term-bol nil)
-      (setq b (point))
-      (setq e (point-at-eol))
-      (setq s (buffer-substring-no-properties b e))
-      (if is-changed
-          (term-char-mode))
-      (term-send-raw-string "")
-      (term-send-raw-string "")
-      (term-send-raw-string "\e1")
-      (term-send-raw-string "")
-      (term-send-raw-string s)
-      )))
+(defadvice ac-complete (after my:term-ac)
+  (when (string= "Term" mode-name)
+    (let ((is-changed nil))
+      (when (term-in-char-mode)
+        (term-line-mode)
+        (setq is-changed t))
+      (let (b e s)
+        (term-bol nil)
+        (setq b (point))
+        (setq e (point-at-eol))
+        (setq s (buffer-substring-no-properties b e))
+        (if is-changed
+            (term-char-mode))
+        (term-send-raw-string "")
+        (term-send-raw-string "")
+        (term-send-raw-string "\e1")
+        (term-send-raw-string "")
+        (term-send-raw-string s)
+        ))))
 (ad-activate 'ac-complete 'my:term-ac)
 ;(ad-remove-advice 'ac-complete 'around 'my:term-ac)
 ;(ad-deactivate 'ac-expand)
@@ -401,7 +399,12 @@ Completion is available."))
                                  (funcall 'kill-line arg) (term-send-raw)))
                              (define-key term-raw-map "\C-z"
                                (lookup-key (current-global-map) "\C-z"))
-                             ;;
+                              (define-key term-raw-map "\M-q" 'my:ansi-term-push-commnad)
+                              (define-key term-raw-map "\M-e" 'my:ansi-term-pop-commnad)
+                             (loop for i from 0 to 9
+                                   do
+                                   (define-key term-raw-map (format "\C-c%d" i) 'win-switch-to-window))
+
                              (if ansi-term-last-dir-ring-file-name
                                  (ansi-term-read-last-dir-ring))
                              ;;

@@ -380,6 +380,29 @@ Completion is available."))
         ad-do-it)
     ad-do-it))
 
+
+(defvar *my:ansi-command-stack* nil
+  "Command line stack")
+(make-variable-buffer-local '*my:ansi-command-stack*)
+
+(defun my:ansi-term-push-commnad ()
+  (interactive)
+  (term-bol nil)
+  (let ((cmd (buffer-substring-no-properties (point) (point-at-eol))))
+    (unless (equal cmd "")
+      (push cmd *my:ansi-command-stack*)
+      (message (car *my:ansi-command-stack*))
+      (term-send-raw-string "")
+      (term-send-raw-string "")
+      (term-send-raw-string "\e1")
+      (term-send-raw-string ""))))
+
+(defun my:ansi-term-pop-commnad ()
+  (interactive)
+  (unless (null *my:ansi-command-stack*)
+    (let ((cmd (pop *my:ansi-command-stack*)))
+      (term-send-raw-string cmd))))
+
 (add-hook 'term-mode-hook '(lambda ()
                              (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")
                              (define-key term-raw-map "\C-y" 'term-paste)

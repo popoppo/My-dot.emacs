@@ -20,6 +20,8 @@
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/skk") t)
 (add-to-list 'load-path
+             (expand-file-name "~/.emacs.d/site-lisp/python-mode") t)
+(add-to-list 'load-path
              "~/.emacs.d/site-lisp/mark-multiple.el") ; dir
 (add-to-list 'load-path
              "~/.emacs.d/site-lisp/expand-region.el") ; dir
@@ -55,6 +57,7 @@
  '(ac-ignores nil)
  '(ac-use-fuzzy t)
  '(bookmark-save-flag 1)
+ '(default-tab-width 4 t)
  '(jde-ant-enable-find t)
  '(jde-ant-home "/usr/local/dev/ant")
  '(jde-ant-program "/usr/local/dev/ant/bin/ant" t)
@@ -65,9 +68,20 @@
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
+ '(pdb-path (quote /usr/lib/python2\.6/pdb\.py))
+ '(py-complete-function (quote ipython-complete))
+ '(py-encoding-string " # -*- coding: utf-8 -*-")
+ '(py-force-py-shell-name-p t)
+ '(py-imenu-create-index-p t)
+ '(py-indent-no-completion-p t)
+ '(py-install-directory "/home/takahashi/.emacs.d/site-lisp/python-mode")
+ '(py-python-command-args nil)
+ '(py-shell-name "/usr/bin/ipython")
  '(py-shell-switch-buffers-on-execute nil)
- '(tab-width 4)
- '(default-tab-width 4))
+ '(py-start-run-py-shell nil)
+ '(python-python-command "ipython")
+ '(python-shell-interpreter "ipython")
+ '(tab-width 4))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.

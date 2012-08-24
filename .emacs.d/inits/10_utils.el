@@ -209,15 +209,15 @@
 (require 'point-undo)
 ;(define-key global-map [f7] 'point-undo)
 ;(define-key global-map [S-f7] 'point-redo)
-(key-chord-define-global "z[" 'point-undo)
-(key-chord-define-global "z]" 'point-redo)
+(key-chord-define-global "zh" 'point-undo)
+(key-chord-define-global "zl" 'point-redo)
 
 ;; srep
 (require 'srep)
 
 ;; mark-more-like-thin
 (require 'mark-more-like-this)
-(key-chord-define-global "za" 'mark-all-like-this)
+(key-chord-define-global "zz" 'mark-all-like-this)
 (key-chord-define-global "zp" 'mark-previous-like-this)
 (key-chord-define-global "zn" 'mark-next-like-this)
 ;(global-set-key (kbd "C-<") 'mark-previous-like-this)

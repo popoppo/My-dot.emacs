@@ -1,5 +1,5 @@
 ;; Earlang
-(setq erlang-root-dir "/usr/lib/erlang")
+(setq erlang-root-dir "/usr/lib64/erlang")
 ;(setq erlang-root-dir "/home/takahashi/lib/erlang")
 ;(setq load-path (cons "/home/takahashi/lib/erlang/lib/tools-2.6.5.1/emacs" load-path))
 ;(setq exec-path (cons "/home/takahashi/lib/erlang/bin" exec-path))

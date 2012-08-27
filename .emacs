@@ -20,6 +20,8 @@
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/skk") t)
 (add-to-list 'load-path
+             (expand-file-name "~/.emacs.d/site-lisp/python-mode") t)
+(add-to-list 'load-path
              "~/.emacs.d/site-lisp/mark-multiple.el") ; dir
 (add-to-list 'load-path
              "~/.emacs.d/site-lisp/expand-region.el") ; dir
@@ -46,6 +48,8 @@
  '(ac-ignores nil)
  '(ac-use-fuzzy t)
  '(bookmark-save-flag 1)
+ '(default-tab-width 4 t)
+ '(ipython-complete-use-separate-shell-p nil)
  '(jde-ant-enable-find t)
  '(jde-ant-home "/usr/local/dev/ant")
  '(jde-ant-program "/usr/local/dev/ant/bin/ant" t)
@@ -54,10 +58,33 @@
  '(jde-gen-final-arguments nil)
  '(jde-gen-final-methods nil)
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
+ '(org-agenda-files (quote ("~/Dropbox/org/gtd.org" "~/Dropbox/org/notes.org")))
+ '(org-agenda-include-diary nil)
+ '(org-agenda-ndays 7)
+ '(org-agenda-repeating-timestamp-show-all t)
+ '(org-agenda-restore-windows-after-quit t)
+ '(org-agenda-show-all-dates t)
+ '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-sorting-strategy (quote ((agenda time-up priority-down tag-up) (todo tag-up))))
+ '(org-agenda-start-on-weekday nil)
+ '(org-agenda-window-setup (quote other-window))
+ '(org-deadline-warning-days 7)
+ '(org-fast-tag-selection-single-key nil)
+ '(org-insert-mode-line-in-empty-file t)
+ '(org-log-done (quote (done)))
+ '(org-refile-targets (quote (("gtd.org" :maxlevel . 1) ("archive.org" :maxlevel . 1))))
+ '(org-reverse-note-order nil)
+ '(org-tags-match-list-sublevels t)
+ '(org-time-stamp-rounding-minutes 5)
+ '(org-timeline-show-empty-dates t)
+ '(org-use-fast-todo-selection t)
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
- '(tab-width 4)
- '(default-tab-width 4))
+ '(py-complete-function nil)
+ '(py-imenu-create-index-p t)
+ '(py-indent-no-completion-p nil)
+ '(tab-width 4))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.

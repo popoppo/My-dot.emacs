@@ -70,80 +70,6 @@
     '(lambda ()
        (local-unset-key (kbd "C-."))))
 
-;; Python
-;; python-mode
-(require 'python-mode)
-(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-(setq interpreter-mode-alist (cons '("python" . python-mode)
-                                   interpreter-mode-alist))
-(autoload 'python-mode "python-mode" "Python editing mode." t)
-
-;; Pymacs
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-(eval-after-load "pymacs"
-  '(add-to-list 'pymacs-load-path "~/.emacs.d/pymacs-elisp"))
-
-;; pysmell
-(defvar ac-source-pysmell
-  '((candidates
-     . (lambda ()
-         (require 'pysmell)
-         (pysmell-get-all-completions))))
-  "Source for PySmell")
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            ;(pysmell-mode 1)
-            (set (make-local-variable 'ac-sources)
-                 (append ac-sources '(ac-source-pysmell)))
-            (require 'pymacs)
-            (unless (fboundp 'py-imenu-make-imenu)
-              (pymacs-load "py_imenu" "py-imenu-"))
-            (setq imenu-create-index-function
-                  (lambda ()
-                    (let (menu)
-                      (message "creating imenu index...")
-                      (condition-case nil
-                          (setq menu (py-imenu-make-imenu))
-                        (error nil
-                               (setq menu (py-imenu-create-index-function))))
-                      (message "creating imenu index...done")
-                      menu))))
-          t)
-
-(defadvice py-execute-region (around my-py-execute-region)
-  "back to the original buffer when py-execute-region finished."
-  (require 'pysmell)
-  (if (get-buffer "*Python Output*")
-      (kill-buffer "*Python Output*"))
-  (let* ((coding-system-for-write buffer-file-coding-system))
-    ad-do-it)
-  (shrink-window-if-larger-than-buffer)
-  (other-window -1))
-(ad-enable-advice 'py-execute-region 'around 'my-py-execute-region)
-(ad-activate 'py-execute-region)
-
-;; ipython
-(setq ipython-command "/usr/bin/ipython")
-(require 'ipython)
-
-(require 'anything-ipython)
-(when (require 'anything-show-completion nil t)
-  (use-anything-show-completion 'anything-ipython-complete
-                                '(length initial-pattern)))
-(setq ipython-completion-command-string "print ';'.join(__IP.Completer.all_completions('%s')) #PYTHON-MODE SILENT\n")
-
-(add-hook 'python-mode-hook #'(lambda ()
-                                (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
-(add-hook 'ipython-shell-hook #'(lambda ()
-                                  (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
-
-
-
 ;; jdee
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic"))
@@ -198,6 +124,86 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  )
+
+
+;; Python
+;; python-mode
+(require 'python-mode)
+(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+(setq interpreter-mode-alist (cons '("python" . python-mode)
+                                   interpreter-mode-alist))
+(autoload 'python-mode "python-mode" "Python editing mode." t)
+
+(remove-hook 'python-mode-hook 'wisent-python-default-setup)
+
+;; ac-python
+;(require 'ac-python)
+;(add-to-list 'ac-modes 'python-2-mode)
+
+;; Pymacs
+(require 'pymacs)
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+;; (eval-after-load "pymacs"
+;;   '(add-to-list 'pymacs-load-path "~/.emacs.d/pymacs-elisp"))
+
+;; pysmell
+(defvar ac-source-pysmell
+  '((candidates
+     . (lambda ()
+         (require 'pysmell)
+         (pysmell-get-all-completions))))
+  "Source for PySmell")
+
+;; (add-hook 'python-mode-hook
+;;           (lambda ()
+;;             ;(pysmell-mode 1)
+;;             (set (make-local-variable 'ac-sources)
+;;                  (append ac-sources '(ac-source-pysmell)))
+;;             (require 'pymacs)
+;;             (unless (fboundp 'py-imenu-make-imenu)
+;;               (pymacs-load "py_imenu" "py-imenu-"))
+;;             (setq imenu-create-index-function
+;;                   (lambda ()
+;;                     (let (menu)
+;;                       (message "creating imenu index...")
+;;                       (condition-case nil
+;;                           (setq menu (py-imenu-make-imenu))
+;;                         (error nil
+;;                                (setq menu (py-imenu-create-index-function))))
+;;                       (message "creating imenu index...done")
+;;                       menu))))
+;;           t)
+
+(defadvice py-execute-region (around my-py-execute-region)
+  "back to the original buffer when py-execute-region finished."
+  (require 'pysmell)
+  (if (get-buffer "*Python Output*")
+      (kill-buffer "*Python Output*"))
+  (let* ((coding-system-for-write buffer-file-coding-system))
+    ad-do-it)
+  (shrink-window-if-larger-than-buffer)
+  (other-window -1))
+(ad-enable-advice 'py-execute-region 'around 'my-py-execute-region)
+(ad-activate 'py-execute-region)
+
+;; ipython
+;; (setq ipython-command "/usr/bin/ipython")
+;; (require 'ipython)
+
+;; (require 'anything-ipython)
+;; (when (require 'anything-show-completion nil t)
+;;   (use-anything-show-completion 'anything-ipython-complete
+;;                                 '(length initial-pattern)))
+;; (setq ipython-completion-command-string "print ';'.join(__IP.Completer.all_completions('%s')) #PYTHON-MODE SILENT\n")
+
+;; (add-hook 'python-mode-hook #'(lambda ()
+;;                                 (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
+;; (add-hook 'ipython-shell-hook #'(lambda ()
+;;                                   (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
 
 
 ;; mcomplete

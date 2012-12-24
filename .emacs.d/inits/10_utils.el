@@ -282,3 +282,14 @@
       (setq state nil)))
     (set-frame-parameter (selected-frame) 'fullscreen state))
   (redisplay))
+
+;; Generate new buffer and switch to it
+(defun create-buffer (buf)
+  (interactive "Bbuff:")
+  (switch-to-buffer (get-buffer-create buf)))
+
+;; Get value of default-directory in current buffer
+(defun get-default-directory ()
+  (interactive)
+  (message default-directory)
+  (kill-new default-directory))

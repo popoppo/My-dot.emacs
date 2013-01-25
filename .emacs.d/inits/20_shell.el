@@ -427,7 +427,10 @@ Completion is available."))
                              (loop for i from 0 to 9
                                    do
                                    (define-key term-raw-map (format "\C-c%d" i) 'win-switch-to-window))
-
+                             ;; (define-key term-raw-map "\C-x0" 'delete-window)
+                             ;; (define-key term-raw-map "\C-x1" 'delete-other-window)
+                             ;; (define-key term-raw-map "\C-x2" 'split-window-vertically)
+                             ;; (define-key term-raw-map "\C-x3" 'split-window-horizontally)
                              (if ansi-term-last-dir-ring-file-name
                                  (ansi-term-read-last-dir-ring))
                              ;;

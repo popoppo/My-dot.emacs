@@ -111,11 +111,11 @@
 ;; (global-set-key (kbd "M-\]") 'forward-whitespace)
 ;(global-set-key (kbd "M-\[") '(lambda () (interactive) (command-execute (kbd "M-{"))))
 ;(global-set-key (kbd "M-\]") '(lambda () (interactive) (command-execute (kbd "M-}"))))
-(global-set-key (kbd "M-\[") '(lambda () (interactive)
-                                (backward-char)
-                                (forward-whitespace -1)
-                                (forward-char)))
-(global-set-key (kbd "M-\]") 'forward-whitespace)
+;; (global-set-key (kbd "M-\[") '(lambda () (interactive)
+;;                                 (backward-char)
+;;                                 (forward-whitespace -1)
+;;                                 (forward-char)))
+;; (global-set-key (kbd "M-\]") 'forward-whitespace)
 (global-set-key "\M-h" 'backward-kill-word)
 ;(global-set-key "\M-h" '(lambda (arg)
 ;                          (interactive "cChar:")
@@ -166,6 +166,13 @@
 (key-chord-define-global "AA" 'beginning-of-buffer)
 (key-chord-define-global "EE" 'end-of-buffer)
 (key-chord-define-global "II" 'anything-imenu)
+(key-chord-define-global "JJ" '(lambda ()
+                                 (interactive)
+                                 (save-excursion
+                                   (end-of-line)
+                                   (delete-char 1)
+                                   (insert-string " "))))
+(key-chord-define-global "MM" 'kill-whitespace)
 (key-chord-define-global "GL" 'goto-line)
 (key-chord-define-global "HS" 'hs-minor-mode)
 (key-chord-define-global "HX" 'hs-toggle-hiding)
@@ -183,9 +190,12 @@
 ;; (key-chord-define-global "qk" '(lambda () (interactive)
 ;;                                            (search-forward-regexp "[/ ]")))
 (key-chord-define-global "qj" '(lambda () (interactive)
-                                 (backward-list)))
+                                 (backward-char)
+                                 (search-backward-regexp "[=(),.]")))
 (key-chord-define-global "qk" '(lambda () (interactive)
-                                 (forward-list)))
+                                 (forward-char)
+                                 (search-forward-regexp "[=(),.]")
+                                 (backward-char)))
 (key-chord-define-global "MD" 'mark-defun)
 (key-chord-define-global "qn" '(lambda () (interactive)
                           (next-line 1)
@@ -247,11 +257,13 @@
                                      (let ((e (point)))
                                        (clipboard-kill-ring-save b e))))))
 ;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
-(key-chord-define-global "`n" 'next-error)
-(key-chord-define-global "`p" 'previous-error)
+;; (key-chord-define-global "`n" 'next-error)
+;; (key-chord-define-global "`p" 'previous-error)
+(key-chord-define-global "`n" 'flymake-goto-next-error)
+(key-chord-define-global "`p" 'flymake-goto-prev-error)
 
 ;; Sticky Shift
-(defvar sticky-key "'")
+(defvar sticky-key "\\")
 (defvar sticky-list
   '(("a" . "A")("b" . "B")("c" . "C")("d" . "D")("e" . "E")("f" . "F")("g" . "G")
     ("h" . "H")("i" . "I")("j" . "J")("k" . "K")("l" . "L")("m" . "M")("n" . "N")
@@ -281,24 +293,40 @@
 (eval-after-load "skk-isearch"
   '(define-key skk-isearch-mode-map sticky-key sticky-map))
 
-;(require 'smartchr)
+;; (require 'smartchr)
+;; (global-set-key (kbd "/") (smartchr '("/" "_" "?")))
+;; (global-set-key (kbd ".") (smartchr '("." ">")))
+;; (global-set-key (kbd ",") (smartchr '("," "<")))
 ;(global-set-key (kbd "=") (smartchr '(" = " "=" " == " "==")))
 ;(global-set-key (kbd "-") (smartchr '("-" "_")))
 
-;;(require 'key-combo)
-;;(key-combo-mode 1)
-;;(setq key-combo-global-default
-;;  '(("="  . (" = " " == " " === " ));;" === " for js
-;;    ("=>" . " => ")
-;;    ;; ("<" . key-combo-execute-orignal)
-;;    ;; use beginning-of-buffer for keydescription
-;;    ;; (lambda () (goto-char (point-min)))
-;;    ("C-M-x" . (key-combo-execute-orignal
-;;                (lambda ()
-;;                  (let ((current-prefix-arg '(4)))
-;;                    (call-interactively 'eval-defun)))))
-;;    ))
-;;(key-combo-load-default)
-;;;; Samples for custome are below.
-;;;;  (key-combo-define-global (kbd "=") '(" = " " == " " === " ))
-;;;;  (key-combo-define-global (kbd "=>") " => ")
+;; key-combo
+(require 'key-combo)
+(setq key-combo-global-default '())
+(setq key-combo-org-default '())
+(setq key-combo-common-default 
+      (delq (assoc "," key-combo-common-default) key-combo-common-default))
+(setq key-combo-common-default 
+      (delq (assoc "=" key-combo-common-default) key-combo-common-default))
+(setq key-combo-common-default
+      (delq (assoc "-" key-combo-common-default) key-combo-common-default))
+(setq key-combo-common-default
+      (delq (assoc "/" key-combo-common-default) key-combo-common-default))
+(setq key-combo-common-default
+      (delq (assoc "," key-combo-common-default) key-combo-common-default))
+(setq key-combo-common-default
+      (delq (assoc "." key-combo-common-default) key-combo-common-default))
+(add-to-list 'key-combo-common-default '("," .  (", " ",")))
+(add-to-list 'key-combo-common-default '("=" .  ("=" " = " " == " " === ")))
+(add-to-list 'key-combo-common-default '("-" . ("-" " - ")))
+(add-to-list 'key-combo-common-default '("/" . ("/" "_" "?")))
+(add-to-list 'key-combo-common-default '("," . ("," ", " "<")))
+(add-to-list 'key-combo-common-default '("." . ("." ">")))
+
+(add-to-list 'key-combo-common-mode-hooks 'python-mode-hook)
+(key-combo-load-default)
+;; and some chords, for example
+;;
+;; (key-combo-define-global (kbd "=") '("=" " = " " == " " === " ))
+;; (key-combo-define-global (kbd ":") '(":" " : "))
+

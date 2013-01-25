@@ -102,10 +102,11 @@
 
 (require 'thing-opt)
 (define-thing-commands)
+(define-key 'my-own-map "d" 'mark-defun)
 (define-key 'my-own-map "w" 'mark-word*)
 (define-key 'my-own-map "l" 'mark-line)
 (define-key 'my-own-map "s" 'mark-symbol)
-
+(define-key 'my-own-map "e" 'mark-sexp)
 
 ;; own util
 (defun create-seq ()
@@ -209,8 +210,10 @@
 (require 'point-undo)
 ;(define-key global-map [f7] 'point-undo)
 ;(define-key global-map [S-f7] 'point-redo)
-(key-chord-define-global "zh" 'point-undo)
-(key-chord-define-global "zl" 'point-redo)
+;; (key-chord-define-global "z[" 'point-undo)
+;; (key-chord-define-global "z]" 'point-redo)
+(global-set-key (kbd "M-\[") 'point-undo)
+(global-set-key (kbd "M-\]") 'point-redo)
 
 ;; srep
 (require 'srep)

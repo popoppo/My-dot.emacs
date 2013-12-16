@@ -14,13 +14,11 @@
 
 
 ;;dmacro.el
-;; (defconst *dmacro-key* "\C-t" "\C-t")
+;; (defconst *dmacro-key* "\M-`" "繰返し指定キー")
 ;; (global-set-key *dmacro-key* 'dmacro-exec)
 ;; (autoload 'dmacro-exec "dmacro" nil t)
 
-
 ;;auto-insert
-;(add-hook 'find-file-hooks 'auto-insert)
 (setq auto-insert-directory "~/.emacs.d/lisp/insert/")
 (auto-insert-mode 1)
 ;(setq auto-insert-query nil)
@@ -60,15 +58,11 @@
                '(my-dired-today-search . my-face-f-2)
             ))))
 
-
-
 ;; Visble bookmark in buffer
 (require 'bm)
 
-
 ;; psvn.el
 (require 'psvn)
-
 
 ;; session.el
 ;kill-ringやミニバッファで過去に開いたファイルなどの履歴を保存する
@@ -212,8 +206,8 @@
 ;(define-key global-map [S-f7] 'point-redo)
 ;; (key-chord-define-global "z[" 'point-undo)
 ;; (key-chord-define-global "z]" 'point-redo)
-(global-set-key (kbd "M-\[") 'point-undo)
-(global-set-key (kbd "M-\]") 'point-redo)
+;(global-set-key (kbd "M-\[") 'point-undo)
+;(global-set-key (kbd "M-\]") 'point-redo)
 
 ;; srep
 (require 'srep)
@@ -292,3 +286,48 @@
   (interactive)
   (message default-directory)
   (kill-new default-directory))
+
+;; smooth-scroll
+(require 'smooth-scroll)
+(smooth-scroll-mode t)
+
+;; lispxmp
+(require 'lispxmp)
+
+;; smartrep
+(require 'smartrep)
+(smartrep-define-key global-map "C-q"
+  '(("{" . 'shrink-window-horizontally)
+    ("}" . 'enlarge-window-horizontally)
+    ("+" . 'balance-windows)
+    ("^" . 'enlarge-window)
+    ("%" . (enlarge-window -1))))
+
+;; goto-chg
+(require 'goto-chg)
+(global-set-key (kbd "M-\[") 'goto-last-change)
+(global-set-key (kbd "M-\]") 'goto-last-change-reverse)
+
+;; look with auto-complete
+(defun my:ac-look ()
+  "`look' command with auto-completelook"
+  (interactive)
+  (unless (executable-find "look")
+    (error "Please install `look' command"))
+  (let ((cmd (format "look %s" ac-prefix)))
+    (with-temp-buffer
+      (call-process-shell-command cmd nil t)
+      (split-string-and-unquote (buffer-string) "\n"))))
+
+(defun ac-look ()
+  (interactive)
+  (let ((ac-menu-height 50)
+        (ac-candidate-limit t))
+  (auto-complete '(ac-source-look))))
+
+(defvar ac-source-look
+  '((candidates . my:ac-look)
+    (requires . 2)))
+
+;;(global-set-key (kbd "C-M-l") 'ac-look)
+(key-chord-define-global "??" 'ac-look)

@@ -1,3 +1,7 @@
+;; Another prefix
+(defvar ctl-q-map (make-keymap))
+(define-key global-map "\C-q" ctl-q-map)
+
 (defun my:move-to-window-line (arg)
   (interactive "P")
   (if (not (null arg))
@@ -223,6 +227,18 @@
                             (if (< p1 p2)
                                 (goto-char p1)
                               (goto-char p2)))))
+(key-chord-define-global "q=" '(lambda () (interactive)
+                                 (search-forward-regexp "= *")))
+(key-chord-define-global "q-" '(lambda () (interactive)
+                                 (search-forward-regexp "_")))
+(key-chord-define-global "q9" '(lambda () (interactive)
+                                 (search-forward-regexp "\(")))
+(key-chord-define-global "q0" '(lambda () (interactive)
+                                 (search-forward-regexp ")")))
+(key-chord-define-global "q," '(lambda () (interactive)
+                                 (search-forward-regexp ",")))
+(key-chord-define-global "q." '(lambda () (interactive)
+                                 (search-forward-regexp ".")))
 ;(key-chord-define-global "SF" 'forward-sexp)
 (key-chord-define-global "NL" '(lambda () (interactive)
                                  (next-line)
@@ -263,7 +279,7 @@
 (key-chord-define-global "`p" 'flymake-goto-prev-error)
 
 ;; Sticky Shift
-(defvar sticky-key "\\")
+(defvar sticky-key "'")
 (defvar sticky-list
   '(("a" . "A")("b" . "B")("c" . "C")("d" . "D")("e" . "E")("f" . "F")("g" . "G")
     ("h" . "H")("i" . "I")("j" . "J")("k" . "K")("l" . "L")("m" . "M")("n" . "N")
@@ -304,8 +320,10 @@
 (require 'key-combo)
 (setq key-combo-global-default '())
 (setq key-combo-org-default '())
+(setq key-combo-lisp-default
+      (delq (assoc "." key-combo-lisp-default) key-combo-lisp-default))
 (setq key-combo-common-default 
-      (delq (assoc "," key-combo-common-default) key-combo-common-default))
+      (delq (assoc "." key-combo-common-default) key-combo-common-default))
 (setq key-combo-common-default 
       (delq (assoc "=" key-combo-common-default) key-combo-common-default))
 (setq key-combo-common-default
@@ -314,17 +332,17 @@
       (delq (assoc "/" key-combo-common-default) key-combo-common-default))
 (setq key-combo-common-default
       (delq (assoc "," key-combo-common-default) key-combo-common-default))
-(setq key-combo-common-default
-      (delq (assoc "." key-combo-common-default) key-combo-common-default))
-(add-to-list 'key-combo-common-default '("," .  (", " ",")))
-(add-to-list 'key-combo-common-default '("=" .  ("=" " = " " == " " === ")))
-(add-to-list 'key-combo-common-default '("-" . ("-" " - ")))
-(add-to-list 'key-combo-common-default '("/" . ("/" "_" "?")))
-(add-to-list 'key-combo-common-default '("," . ("," ", " "<")))
-(add-to-list 'key-combo-common-default '("." . ("." ">")))
+(key-combo-load-default)
+;; (setq key-combo-common-default
+;;       (delq (assoc "." key-combo-common-default) key-combo-common-default))
+(key-combo-define-global (kbd ",") '(", " ","))
+(key-combo-define-global (kbd "=") '("=" " = " " == " " === "))
+(key-combo-define-global (kbd "-") '("-" " - "))
+(key-combo-define-global (kbd "/") '("/" "_" "?"))
+(key-combo-define-global (kbd ",") '("," ", " "<"))
+(key-combo-define-global (kbd ".") '("." ">"))
 
 (add-to-list 'key-combo-common-mode-hooks 'python-mode-hook)
-(key-combo-load-default)
 ;; and some chords, for example
 ;;
 ;; (key-combo-define-global (kbd "=") '("=" " = " " == " " === " ))

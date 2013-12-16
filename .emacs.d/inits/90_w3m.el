@@ -23,4 +23,8 @@
 
 (setq w3m-command-arguments
       (nconc w3m-command-arguments
-             '("-o" "http_proxy=http://proxy.local.hde.co.jp:9080"))
+             '("-o" "http_proxy=http://proxy.local.hde.co.jp:9080")))
+
+; cookie
+(setq w3m-use-cookies t)
+(setq w3m-cookie-accept-bad-cookies t)

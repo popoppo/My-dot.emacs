@@ -77,18 +77,22 @@
        (local-unset-key (kbd "C-."))))
 
 ;; Python
-(setq py-install-directory "~/.emacs.d/site-lisp/python-mode/")
-(add-to-list 'load-path py-install-directory)
+;(setq py-install-directory "~/.emacs.d/site-lisp/python-mode/")
+;(add-to-list 'load-path py-install-directory)
 
 (require 'python-mode)
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 (setq interpreter-mode-alist (cons '("python" . python-mode)
                                    interpreter-mode-alist))
 (autoload 'python-mode "python-mode" "Python editing mode." t)
+;(setq py-load-pymacs-p t)
 
-(require 'ac-mode)
-(require 'ac-python)
-(add-to-list 'ac-modes 'python-2-mode)
+(require 'epc)
+(add-to-list 'load-path
+             (expand-file-name "~/.emacs.d/site-lisp/emacs-jedi"))
+
+(require 'jedi)
+(autoload 'jedi:setup "jedi" nil t)
 
 ;; Pymacs
 (require 'pymacs)
@@ -108,29 +112,33 @@
          (pysmell-get-all-completions))))
   "Source for PySmell")
 
+(add-hook 'python-mode-hook
+          '(lambda ()
+             (jedi:ac-setup)
+             (define-key py-mode-map (kbd "<C-return>") 'jedi:complete)
+             (define-key py-shell-map (kbd "<C-return>") 'jedi:complete)
+            ;; ;; (pysmell-mode 1)
+             ;; (set (make-local-variable 'ac-sources)
+             ;;      (append ac-sources '(ac-source-pysmell)))
+             (require 'pymacs)
+             ;; Hacks for imenu
+             ;; (unless (fboundp 'py-imenu-make-imenu)
+             ;;   (pymacs-load "py_imenu" "py-imenu-"))
+             (setq imenu-create-index-function
+                   (lambda ()
+                     (let (menu)
+                       (message "creating imenu index...")
+                       (condition-case nil
+                           (setq menu (py-imenu-make-imenu))
+                         (error nil
+                                (setq menu (py-imenu-create-index-function))))
+                       (message "creating imenu index...done")
+                       menu))))
+          t) ; last 't' means that this func is put on the tail of hooks.
+
 ;; (add-hook 'python-mode-hook
-;;           '(lambda ()
-;;              ;; ;; (pysmell-mode 1)
-;;              ;; (set (make-local-variable 'ac-sources)
-;;              ;;      (append ac-sources '(ac-source-pysmell)))
-;;              (require 'pymacs)
-;;              ;; Hacks for imenu
-;;              (unless (fboundp 'py-imenu-make-imenu)
-;;                (pymacs-load "py_imenu" "py-imenu-"))
-;;              (setq imenu-create-index-function
-;;                    (lambda ()
-;;                      (let (menu)
-;;                        (message "creating imenu index...")
-;;                        (condition-case nil
-;;                            (setq menu (py-imenu-make-imenu))
-;;                          (error nil
-;;                                 (setq menu (py-imenu-create-index-function))))
-;;                        (message "creating imenu index...done")
-;;                        menu))))
-;;           t) ; last 't' means that this func is put on the tail of hooks.
-;; ;; (add-hook 'python-mode-hook
-;; ;;   (lambda ()
-;; ;;     (setq imenu-create-index-function 'python-imenu-create-index)))
+;;   (lambda ()
+;;     (setq imenu-create-index-function 'python-imenu-create-index)))
 
 
 (defadvice py-execute-region (around my-py-execute-region)
@@ -146,25 +154,25 @@
 (ad-activate 'py-execute-region)
 
 ;; ipython
-;(setq ipython-command "/usr/bin/ipython")
-;(require 'ipython)
+(setq ipython-command "/usr/bin/ipython")
+(require 'ipython)
 
 (setq py-shell-name "/usr/bin/ipython")
 
 ;; anything-ipython
-;; (require 'anything-ipython)
-;; (add-hook 'python-mode-hook #'(lambda ()
-;;                                 (define-key python-mode-map (kbd "C-'") 'anything-ipython-complete)))
-;; (add-hook 'ipython-shell-hook #'(lambda ()
-;;                                   (define-key python-mode-map (kbd "C-'") 'anything-ipython-complete)))
+(require 'anything-ipython)
+(add-hook 'python-mode-hook #'(lambda ()
+                                (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
+(add-hook 'ipython-shell-hook #'(lambda ()
+                                  (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
 
-;; ;; anything-show-completion
-;; (when (require 'anything-show-completion nil t)
-;;   (use-anything-show-completion 'anything-ipython-complete
-;;                                 '(length initial-pattern)))
+;; anything-show-completion
+(when (require 'anything-show-completion nil t)
+  (use-anything-show-completion 'anything-ipython-complete
+                                '(length initial-pattern)))
 
 ;; ;; This should be evaluted after anything-ipython? or anything-show-completion?
-;; (setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.complete('%s')[1])) #PYTHON-MODE SILENT\n")
+(setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.complete('%s')[1])) #PYTHON-MODE SILENT\n")
 
 ;; For flymake
 (when (load "flymake" t)
@@ -290,3 +298,7 @@
 ;; imenu
 (setq imenu-auto-rescan t)
 (setq imenu-after-jump-hook (lambda () (recenter 10)))
+
+;; git-gutter
+(load "git-gutter")
+(global-git-gutter-mode t)

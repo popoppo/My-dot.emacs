@@ -25,16 +25,21 @@
         (imenu-add-to-menubar "imenu")))
 
 ;; A number of the erlang-extended-mode key bindings are useful in the shell too
-(defconst distel-shell-keys
-  '(;("\C-\M-i"   erl-complete)
-    ("\C-t?"      erl-complete)
-    ;("\M-."      erl-find-source-under-point)
-    ("\C-tt"      erl-find-source-under-point)
-    ;("\M-,"      erl-find-source-unwind)
-    ;("\M-*"      erl-find-source-unwind)
-    ("\C-tb"      erl-find-source-unwind)
-    )
-  "Additional keys to bind when in Erlang shell.")
+;(defconst distel-shell-keys
+;  '(;("\C-\M-i"   erl-complete)
+;    ((kbd "C-<RET>") erl-complete)
+;    ;("\M-."      erl-find-source-under-point)
+;    ("\C-tt"      erl-find-source-under-point)
+;    ;("\M-,"      erl-find-source-unwind)
+;    ;("\M-*"      erl-find-source-unwind)
+;    ("\C-tb"      erl-find-source-unwind)
+;    )
+;  "Additional keys to bind when in Erlang shell.")
+
+(define-key erlang-extended-mode-map (kbd "C-<return>") 'erl-complete)
+(define-key erlang-extended-mode-map (kbd "C-t t") 'erl-find-source-under-point)
+(define-key erlang-extended-mode-map (kbd "C-t b") 'erl-find-source-unwind)
+
 
 (add-hook 'erlang-shell-mode-hook
       (lambda ()

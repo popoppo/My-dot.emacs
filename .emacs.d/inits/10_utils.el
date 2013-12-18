@@ -204,8 +204,8 @@
 (require 'point-undo)
 ;(define-key global-map [f7] 'point-undo)
 ;(define-key global-map [S-f7] 'point-redo)
-;; (key-chord-define-global "z[" 'point-undo)
-;; (key-chord-define-global "z]" 'point-redo)
+(key-chord-define-global "z[" 'point-undo)
+(key-chord-define-global "z]" 'point-redo)
 ;(global-set-key (kbd "M-\[") 'point-undo)
 ;(global-set-key (kbd "M-\]") 'point-redo)
 
@@ -331,3 +331,11 @@
 
 ;;(global-set-key (kbd "C-M-l") 'ac-look)
 (key-chord-define-global "??" 'ac-look)
+
+;; visual-regexp
+(require 'visual-regexp)
+;(define-key global-map (kbd "C-c r") 'vr/replace)
+;(define-key global-map (kbd "C-c q") 'vr/query-replace)
+(key-chord-define-global "qw" 'vr/query-replace)
+;; if you use multiple-cursors, this is for you:
+;(define-key global-map (kbd "C-c m") 'vr/mc-mark)

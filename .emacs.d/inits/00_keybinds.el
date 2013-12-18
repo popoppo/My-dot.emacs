@@ -30,6 +30,21 @@
         (t
          (view-mode 1))))
 
+;; mykie
+(require 'mykie)
+(global-set-key "W"
+  '(lambda ()
+     (interactive)
+     (mykie
+      :default    '(lambda () (insert ?W))
+      :region     'kill-region)))
+(global-set-key "Y"
+  '(lambda ()
+     (interactive)
+     (mykie
+      :default    '(lambda () (insert ?Y))
+      :region     'clipboard-kill-ring-save)))
+
 ;;remove backword in mini buffer
 (define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
 
@@ -145,6 +160,10 @@
 (global-set-key (kbd "C-S-n") (lambda () (interactive) (scroll-up 1)))
 (global-set-key (kbd "C-S-p") (lambda () (interactive) (scroll-down 1)))
 
+(defun my:with-mark (func)
+  (interactive)
+  (push-mark nil)
+  (funcall func))
 
 (require 'key-chord)
 (key-chord-mode 1)
@@ -167,14 +186,19 @@
                                  (beginning-of-line)
                                  (kill-line)
                                  (delete-char 1)))
-(key-chord-define-global "AA" 'beginning-of-buffer)
-(key-chord-define-global "EE" 'end-of-buffer)
+(key-chord-define-global "AA" '(lambda ()
+                                 (interactive)
+                                 (my:with-mark 'beginning-of-buffer)))
+(key-chord-define-global "EE" '(lambda ()
+                                 (interactive)
+                                 (my:with-mark 'end-of-buffer)))
 (key-chord-define-global "II" 'anything-imenu)
 (key-chord-define-global "JJ" '(lambda ()
                                  (interactive)
                                  (save-excursion
                                    (end-of-line)
                                    (delete-char 1)
+                                   (just-one-space 0)
                                    (insert-string " "))))
 (key-chord-define-global "MM" 'kill-whitespace)
 (key-chord-define-global "GL" 'goto-line)
@@ -256,7 +280,7 @@
 (key-chord-define-global "SU" 'backward-up-list)
 (key-chord-define-global "qq" 'toggle-view-mode)
 (key-chord-define-global "QQ" 'skk-mode)
-(key-chord-define-global "qw" 'query-replace-regexp)
+;(key-chord-define-global "qw" 'query-replace-regexp)
 (key-chord-define-global "UU" '(lambda () (interactive)
                                  (let ((e (point)))
                                    (beginning-of-line)

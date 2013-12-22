@@ -12,6 +12,20 @@
 ;; enable flymake on all files
 ;(add-hook 'find-file-hook 'flymake-find-file-hook)
 
+(add-hook 'erlang-mode-hook
+          '(lambda ()
+             (flymake-mode t)
+             (define-key erlang-mode-map "\C-ce" 'flymake-display-err-menu-for-current-line)))
+
+;; set up elrang-flymake
+(defun flymake-erlang-init ()
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                     'flymake-create-temp-inplace))
+         (local-file (file-relative-name temp-file
+                                         (file-name-directory buffer-file-name))))
+    (list "~/.emacs.d/site-lisp/compile.erl" (list local-file))))
+(add-to-list 'flymake-allowed-file-name-masks '("\\.erl\\'" flymake-erlang-init))
+
 ;; move command
 ;(global-set-key "\C-cp" 'flymake-goto-prev-error)
 ;(global-set-key "\C-cn" 'flymake-goto-next-error)
@@ -19,12 +33,11 @@
 ;; display error/warning line
 ;(global-set-key "\C-cd" 'flymake-display-err-menu-for-current-line)
 
-
 ;(defun my-java-flymake-init ()
 ;  (list "javac" (list (flymake-init-create-temp-buffer-copy
 ;                       'flymake-create-temp-with-folder-structure))))
 
-;; specify that flymake use ant instead of make 
+;; specify that flymake use ant instead of make
 (setcdr (assoc "\\.java\\'" flymake-allowed-file-name-masks)
         '(flymake-simple-ant-java-init flymake-simple-java-cleanup))
 
@@ -34,7 +47,7 @@
         (list "-buildfile"
               (concat (file-truename base-dir) "/" "build.xml"))))
 
-(defun flymake-display-err-minibuf () 
+(defun flymake-display-err-minibuf ()
   "Displays the error/warning for the current line in the minibuffer"
   (interactive)
   (let* ((line-no            (flymake-current-line-no))

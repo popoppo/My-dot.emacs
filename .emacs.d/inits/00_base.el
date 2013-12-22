@@ -20,7 +20,7 @@
 ;; Default frame config
 (setq default-frame-alist
       (append (list '(width . 100)
-                    '(height . 60)
+                    '(height . 55)
 ;                    '(top . 20)
 ;                    '(left . 1000)
                     '(alpha . 80))
@@ -28,6 +28,9 @@
 ;                    '(font . "-unknown-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1"))
               default-frame-alist))
 
+;; Swap command and alt
+(setq ns-command-modifier 'meta)
+(setq ns-alternate-modifier 'super)
 
 ;; Initial settings
 (column-number-mode t)

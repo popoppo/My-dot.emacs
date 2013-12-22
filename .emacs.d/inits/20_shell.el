@@ -236,7 +236,7 @@ Completion is available."))
 (ad-activate 'ansi-term)
 
 
-(add-hook 'term-mode-hook '(lambda ()
+;(add-hook 'term-mode-hook '(lambda ()
 ; hook for parsing command and arguments.
 (defadvice term-send-raw (around my:term-send-raw)
   (sit-for 0.01) ; For time-lag

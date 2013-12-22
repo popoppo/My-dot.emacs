@@ -4,6 +4,8 @@
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp"))
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/auto-install"))
 (add-to-list 'load-path
+             (expand-file-name "~/.emacs.d/elpa"))
+(add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic/bovine") t)
@@ -13,29 +15,41 @@
              (expand-file-name "~/.emacs.d/site-lisp/cedet/common") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/cedet/eieio") t)
-(add-to-list 'load-path 
+(add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/jde/lisp") t)
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/elib") t)
 (add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/color-theme") t)
-(add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/skk") t)
 (add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/magit") t)
+             (expand-file-name "~/.emacs.d/site-lisp/python-mode") t)
 (add-to-list 'load-path
              "~/.emacs.d/site-lisp/mark-multiple.el") ; dir
 (add-to-list 'load-path
              "~/.emacs.d/site-lisp/expand-region.el") ; dir
+(add-to-list 'load-path
+             (expand-file-name "~/.emacs.d/site-lisp/color-theme") t)
+(add-to-list 'load-path
+             (expand-file-name "~/.emacs.d/site-lisp/magit") t)
+(add-to-list 'load-path
+             (expand-file-name "/usr/share/emacs/site-lisp") t)
+(add-to-list 'load-path
+             (expand-file-name "/usr/share/emacs/site-lisp/w3m") t)
 
 (setq exec-path (append exec-path '(expand-file-name "~/bin")))
+
+;; packages
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
 
 ;; org
 (setq org-directory "~/Dropbox/org/")
 
 ;; INSTALL
 (require 'init-loader)
-(setq init-loader-show-log-after-init nil)
+(setq init-loader-show-log-after-init t)
 (init-loader-load (expand-file-name "~/.emacs.d/inits"))
 
 ;; 00 ... Basic configration.
@@ -51,6 +65,9 @@
  '(ac-ignores nil)
  '(ac-use-fuzzy t)
  '(bookmark-save-flag 1)
+ '(default-tab-width 4 t)
+ '(ipython-complete-function (quote py-complete))
+ '(ipython-complete-use-separate-shell-p nil)
  '(jde-ant-enable-find t)
  '(jde-ant-home "/usr/local/dev/ant")
  '(jde-ant-program "/usr/local/dev/ant/bin/ant" t)
@@ -59,11 +76,30 @@
  '(jde-gen-final-arguments nil)
  '(jde-gen-final-methods nil)
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
+ '(org-agenda-files (quote ("~/Dropbox/org/gtd.org" "~/Dropbox/org/notes.org")))
+ '(org-agenda-include-diary nil)
+ '(org-agenda-ndays 7)
+ '(org-agenda-repeating-timestamp-show-all t)
+ '(org-agenda-restore-windows-after-quit t)
+ '(org-agenda-show-all-dates t)
+ '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-sorting-strategy (quote ((agenda time-up priority-down tag-up) (todo tag-up))))
+ '(org-agenda-start-on-weekday nil)
+ '(org-agenda-window-setup (quote other-window))
+ '(org-deadline-warning-days 7)
+ '(org-fast-tag-selection-single-key nil)
+ '(org-insert-mode-line-in-empty-file t)
+ '(org-log-done (quote (done)))
+ '(org-refile-targets (quote (("gtd.org" :maxlevel . 1) ("archive.org" :maxlevel . 1))))
+ '(org-reverse-note-order nil)
+ '(org-tags-match-list-sublevels t)
+ '(org-time-stamp-rounding-minutes 5)
+ '(org-timeline-show-empty-dates t)
+ '(org-use-fast-todo-selection t)
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
- '(py-shell-switch-buffers-on-execute nil)
- '(tab-width 4)
- '(default-tab-width 4))
+ '(tab-width 4))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
@@ -71,4 +107,4 @@
   ;; If there is more than one, they won't work right.
  '(eshell-prompt ((t (:foreground "White" :weight bold)))))
 
-(add-hook 'after-init-hook '(lambda () (interactive) (ansi-term "/bin/bash")))
+(add-hook 'after-init-hook  (lambda() (ansi-term "/bin/bash")))

@@ -46,13 +46,13 @@
                       ))))
     ))
 
-(defun gtd ()
+(defun my:gtd ()
     (interactive)
     (find-file (concat org-directory "gtd.org")))
 
 (add-hook 'org-agenda-mode-hook 'hl-line-mode)
 
-(global-set-key (kbd "C-c o g") 'gtd)
+(global-set-key (kbd "C-c o g") 'my:gtd)
 (global-set-key (kbd "C-c o o") 'org-capture)
 (global-set-key (kbd "C-c o a") 'org-agenda)
 (global-set-key (kbd "C-c o l") 'org-store-link)

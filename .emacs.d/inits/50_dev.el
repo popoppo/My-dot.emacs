@@ -24,6 +24,14 @@
   (interactive)
   (print *gtags-current-buffer-alist*))
 
+(require 'eldoc)
+(require 'eldoc-extension)
+;(setq eldoc-idle-delay 0.20)
+(setq eldoc-echo-area-use-multiline-p t)
+
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+
 ;; C/C++
 (add-hook 'c-mode-hook
     '(lambda ()
@@ -56,6 +64,7 @@
        (gtags-mode 1)))
 
 ;; PHP
+(require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.module$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.install$" . php-mode))
@@ -124,19 +133,19 @@
 (ad-activate 'py-execute-region)
 
 ;; ipython
-(setq ipython-command "/usr/bin/ipython")
+(setq ipython-command "/usr/local/bin/ipython")
 (require 'ipython)
 
-(require 'anything-ipython)
-(when (require 'anything-show-completion nil t)
-  (use-anything-show-completion 'anything-ipython-complete
-                                '(length initial-pattern)))
-(setq ipython-completion-command-string "print ';'.join(__IP.Completer.all_completions('%s')) #PYTHON-MODE SILENT\n")
-
-(add-hook 'python-mode-hook #'(lambda ()
-                                (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
-(add-hook 'ipython-shell-hook #'(lambda ()
-                                  (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
+;;(require 'anything-ipython)
+;;(when (require 'anything-show-completion nil t)
+;;  (use-anything-show-completion 'anything-ipython-complete
+;;                                '(length initial-pattern)))
+;;(setq ipython-completion-command-string "print ';'.join(__IP.Completer.all_completions('%s')) #PYTHON-MODE SILENT\n")
+;;
+;;(add-hook 'python-mode-hook #'(lambda ()
+;;                                (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
+;;(add-hook 'ipython-shell-hook #'(lambda ()
+;;                                  (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
 
 
 
@@ -237,7 +246,12 @@
 (setq imenu-auto-rescan t)
 (setq imenu-after-jump-hook (lambda () (recenter 10)))
 
+;; git-gutter
+(load "git-gutter")
+(global-git-gutter-mode t)
+
 ;; quickrun
+(require 'popwin)
 (require 'quickrun)
 (push '("*quickrun*") popwin:special-display-config)
 ;(global-set-key (kbd "<f5>") 'quickrun)

@@ -60,15 +60,11 @@
                '(my-dired-today-search . my-face-f-2)
             ))))
 
-
-
 ;; Visble bookmark in buffer
 (require 'bm)
 
-
 ;; psvn.el
 (require 'psvn)
-
 
 ;; session.el
 ;kill-ringやミニバッファで過去に開いたファイルなどの履歴を保存する
@@ -80,7 +76,6 @@
   (add-hook 'after-init-hook 'session-initialize)
   ;; 前回閉じたときの位置にカーソルを復帰
   (setq session-undo-check -1))
-
 
 ;; minibuf-isearch
 ;minibufでisearchを使えるようにする
@@ -102,9 +97,11 @@
 
 (require 'thing-opt)
 (define-thing-commands)
+(define-key 'my-own-map "d" 'mark-defun)
 (define-key 'my-own-map "w" 'mark-word*)
 (define-key 'my-own-map "l" 'mark-line)
 (define-key 'my-own-map "s" 'mark-symbol)
+(define-key 'my-own-map "e" 'mark-sexp)
 
 
 ;; own util
@@ -274,3 +271,77 @@
       (setq state nil)))
     (set-frame-parameter (selected-frame) 'fullscreen state))
   (redisplay))
+(global-set-key (kbd "C-`") 'my-fullscreen)
+
+;; Generate new buffer and switch to it
+(defun create-buffer (buf)
+  (interactive "Bbuff:")
+  (switch-to-buffer (get-buffer-create buf)))
+
+;; Get value of default-directory in current buffer
+(defun get-default-directory ()
+  (interactive)
+  (message default-directory)
+  (kill-new default-directory))
+
+;; smooth-scroll
+(require 'smooth-scroll)
+(smooth-scroll-mode t)
+
+;; lispxmp
+(require 'lispxmp)
+
+;; smartrep
+(require 'smartrep)
+(global-unset-key (kbd "C-q"))
+(smartrep-define-key global-map "C-q"
+  '(("{" . 'shrink-window-horizontally)
+    ("}" . 'enlarge-window-horizontally)
+    ("+" . 'balance-windows)
+    ("^" . 'enlarge-window)
+    ("%" . (enlarge-window -1))))
+
+;; goto-chg
+(require 'goto-chg)
+(global-set-key (kbd "M-\[") 'goto-last-change)
+(global-set-key (kbd "M-\]") 'goto-last-change-reverse)
+
+;; look with auto-complete
+(defun my:ac-look ()
+  "`look' command with auto-completelook"
+  (interactive)
+  (unless (executable-find "look")
+    (error "Please install `look' command"))
+  (let ((cmd (format "look %s" ac-prefix)))
+    (with-temp-buffer
+      (call-process-shell-command cmd nil t)
+      (split-string-and-unquote (buffer-string) "\n"))))
+
+(defun ac-look ()
+  (interactive)
+  (let ((ac-menu-height 50)
+        (ac-candidate-limit t))
+  (auto-complete '(ac-source-look))))
+
+(defvar ac-source-look
+  '((candidates . my:ac-look)
+    (requires . 2)))
+
+;;(global-set-key (kbd "C-M-l") 'ac-look)
+(key-chord-define-global "??" 'ac-look)
+
+;; visual-regexp
+(require 'cl-lib)
+(require 'visual-regexp)
+;(define-key global-map (kbd "C-c r") 'vr/replace)
+;(define-key global-map (kbd "C-c q") 'vr/query-replace)
+(key-chord-define-global "qw" 'vr/query-replace)
+;; if you use multiple-cursors, this is for you:
+;(define-key global-map (kbd "C-c m") 'vr/mc-mark)
+
+;; foreign-regexp
+(require 'foreign-regexp)
+
+(custom-set-variables
+ '(foreign-regexp/regexp-type 'perl) ;; Choose by your preference.
+ '(reb-re-syntax 'foreign-regexp)) ;; Tell re-builder to use foreign regexp.

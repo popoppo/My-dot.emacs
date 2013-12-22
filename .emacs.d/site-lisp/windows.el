@@ -1109,9 +1109,12 @@ If calling from program, optional second argument WINDOW can specify
 the window number."
   (interactive "p")
   (let*((window (or window
-                    (if (and (> ?\M-0 0) (<= ?\M-0 last-command-char))
-                        (- last-command-char ?\M-0)
-                      (- last-command-char win:base-key))))
+;                    (if (and (> ?\M-0 0) (<= ?\M-0 last-command-char))
+;                        (- last-command-char ?\M-0)
+;                      (- last-command-char win:base-key))))
+                    (if (and (> ?\M-0 0) (<= ?\M-0 last-command-event))
+                        (- last-command-event ?\M-0)
+                      (- last-command-event win:base-key))))
 	(wc (aref win:configs window)))
     (cond
      ((and win:inhibit-switch-in-minibuffer
@@ -2133,7 +2136,7 @@ If interactive argument KILL is non-nil, kill menu buffer and no select."
 (defun win-switch-menu-select-directly ()
   "Select the window directly from the keyboard in window selection menu."
   (interactive)
-  (let ((num (- last-command-char win:base-key)))
+  (let ((num (- last-command-event win:base-key)))
     (and
      (eq (get-buffer win:switch-menu-buffer) (current-buffer))
      (< num win:max-configs)
@@ -2153,7 +2156,7 @@ If interactive argument KILL is non-nil, kill menu buffer and no select."
    (progn (beginning-of-line) (looking-at "[ A-Z]+(.)"))
    (let (buffer-read-only)		;bound to nil
      (delete-char 1)
-     (insert (if unmark " " (char-to-string (upcase last-command-char))))
+     (insert (if unmark " " (char-to-string (upcase last-command-event))))
      (forward-line 1)
      (and (eobp) (forward-line -1)))))
 

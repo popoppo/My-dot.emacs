@@ -108,3 +108,13 @@ Creates a buffer if necessary."
 
 (ad-activate 'split-window-vertically 'my-move-after-split-window)
 (ad-activate 'split-window-horizontally 'my-move-after-split-window)
+
+;; direx
+(require 'direx)
+(require 'popwin)
+;(setq direx:leaf-icon "  "
+;      direx:open-icon "- "
+;      direx:closed-icon "+ ")
+(push '(direx:direx-mode :position left :width 30 :dedicated t)
+      popwin:special-display-config)
+(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)

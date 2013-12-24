@@ -85,3 +85,6 @@
 ;; ac-mode
 ;(autoload 'ac-mode "ac-mode" "Minor mode for advanced completion." t nil)
 
+;; dired -> dired-x
+(add-hook 'dired-load-hook
+          (function (lambda () (load "dired-x"))))

@@ -1,9 +1,11 @@
 ;; anything
-(add-to-list 'load-path "~/.emacs.d/auto-install")
+;;;(add-to-list 'load-path "~/.emacs.d/auto-install")
 (require 'anything-startup)
 
 (require 'anything)
 (require 'anything-config)
+(require 'anything-complete)
+(anything-read-string-mode 1)
 
 ;(anything-iswitchb-setup)
 ;(anything-iswitchb-cancel-anything)

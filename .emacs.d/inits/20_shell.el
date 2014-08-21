@@ -1,3 +1,6 @@
+(require 'anything-config)
+(require 'anything-show-completion)
+
 ;; eshell
 (setq password-cache t)
 (setq password-cache-expiry 600) ;; sec
@@ -215,8 +218,8 @@ Completion is available."))
               (lambda ()
                 (define-key shell-mode-map (kbd "C-r") 'anything-complete-shell-history)))
 
-    (use-anything-show-completion 'anything-complete-shell-history
-                                  '(length anything-c-source-complete-shell-history))))
+     (use-anything-show-completion 'anything-complete-shell-history
+                                   '(length anything-c-source-complete-shell-history))))
 
 ;; Term
 (require 'term)

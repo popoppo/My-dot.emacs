@@ -1,10 +1,11 @@
 ;; color-theme
 ;; Use /usr/share/emacs/site-lisp or /usr/share/emacs/site-lisp/goodies if exists.
-(require 'color-theme)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (color-theme-resolve)))
+;(require 'color-theme)
+;(eval-after-load "color-theme"
+;  '(progn
+;     (color-theme-initialize)
+;     (color-theme-resolve)))
+(load-theme 'misterioso t)
 
 ;; windows
 (require 'windows)
@@ -30,11 +31,6 @@
 ;;Redo
 (require 'redo)
 (global-set-key "\M-/" 'redo)
-
-
-;;move buffer by C-. C-,
-;(load-file "/home/takahashi/.emacs.d/site-lisp/move-buffer.el")
-
 
 ;; for dired
 (defun dired-find-alternate-file ()
@@ -75,20 +71,6 @@
   ;; 前回閉じたときの位置にカーソルを復帰
   (setq session-undo-check -1))
 
-
-;; minibuf-isearch
-;minibufでisearchを使えるようにする
-(require 'minibuf-isearch nil t)
-
-
-;; icicles
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic"))
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/icicles"))
-(load "icicles")
-
-
 ;; thing-opt
 ;thingを選択できるようにする
 (define-prefix-command 'my-own-map)
@@ -118,8 +100,6 @@
       (if (and (interactive-p) transient-mark-mode (not mark-active))
           (backward-kill-word 1)
         ad-do-it))
-
-(define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
 
 ;; grep settings
 (setq grep-host-defaults-alist nil)
@@ -151,20 +131,6 @@
 ;; undo-tree
 (require 'undo-tree)
 (global-undo-tree-mode)
-
-;; ac-mode
-;(autoload 'ac-mode "ac-mode" "Minor mode for advanced completion." t nil)
-
-;; auto-complete
-(add-to-list 'load-path "~/.emacs.d/site-lisp/auto-complete")
-(require 'auto-complete)
-(global-auto-complete-mode t)
-
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/site-lisp/dict")
-(require 'auto-complete-config)
-(ac-config-default)
-
-(setq ac-use-menu-map t)
 
 ;; color-moccur
 (require 'color-moccur)
@@ -213,19 +179,17 @@
 (require 'srep)
 
 ;; mark-more-like-thin
-(require 'mark-more-like-this)
 (key-chord-define-global "zz" 'mark-all-like-this)
 (key-chord-define-global "zp" 'mark-previous-like-this)
 (key-chord-define-global "zn" 'mark-next-like-this)
-;(global-set-key (kbd "C-<") 'mark-previous-like-this)
-;(global-set-key (kbd "C->") 'mark-next-like-this)
+;;;(global-set-key (kbd "C-<") 'mark-previous-like-this)
+;;;(global-set-key (kbd "C->") 'mark-next-like-this)
 
 ;; expand region
-(require 'expand-region)
 (key-chord-define-global "ww" 'er/expand-region)
 (key-chord-define-global "WW" 'er/contract-region)
-;(global-set-key (kbd "C-@") 'er/expand-region)
-;(global-set-key (kbd "C-M-@") 'er/contract-region) ;; narrow region
+;;;(global-set-key (kbd "C-@") 'er/expand-region)
+;;;(global-set-key (kbd "C-M-@") 'er/contract-region) ;; narrow region
 
 ;; transient-mark-mode need to be true.
 ;(transient-mark-mode t)
@@ -296,7 +260,7 @@
 
 ;; smartrep
 (require 'smartrep)
-(smartrep-define-key global-map "C-q"
+(smartrep-define-key global-map "C-t"
   '(("{" . 'shrink-window-horizontally)
     ("}" . 'enlarge-window-horizontally)
     ("+" . 'balance-windows)
@@ -308,35 +272,14 @@
 (global-set-key (kbd "M-\[") 'goto-last-change)
 (global-set-key (kbd "M-\]") 'goto-last-change-reverse)
 
-;; look with auto-complete
-(defun my:ac-look ()
-  "`look' command with auto-completelook"
-  (interactive)
-  (unless (executable-find "look")
-    (error "Please install `look' command"))
-  (let ((cmd (format "look %s" ac-prefix)))
-    (with-temp-buffer
-      (call-process-shell-command cmd nil t)
-      (split-string-and-unquote (buffer-string) "\n"))))
-
-(defun ac-look ()
-  (interactive)
-  (let ((ac-menu-height 50)
-        (ac-candidate-limit t))
-  (auto-complete '(ac-source-look))))
-
-(defvar ac-source-look
-  '((candidates . my:ac-look)
-    (requires . 2)))
-
-;;(global-set-key (kbd "C-M-l") 'ac-look)
-(key-chord-define-global "??" 'ac-look)
-
 ;; visual-regexp
-(require 'cl-lib)
-(require 'visual-regexp)
+;(require 'cl-lib)
+;(require 'visual-regexp)
 ;(define-key global-map (kbd "C-c r") 'vr/replace)
 ;(define-key global-map (kbd "C-c q") 'vr/query-replace)
-(key-chord-define-global "qw" 'vr/query-replace)
+;(key-chord-define-global "qw" 'vr/query-replace)
 ;; if you use multiple-cursors, this is for you:
 ;(define-key global-map (kbd "C-c m") 'vr/mc-mark)
+
+;; auto-install
+(require 'auto-install)

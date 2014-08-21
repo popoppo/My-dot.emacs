@@ -1,6 +1,6 @@
 ;; Another prefix
-(defvar ctl-q-map (make-keymap))
-(define-key global-map "\C-q" ctl-q-map)
+;;;(defvar ctl-q-map (make-keymap))
+;;;(define-key global-map "\C-q" ctl-q-map)
 
 (defun my:move-to-window-line (arg)
   (interactive "P")
@@ -50,7 +50,7 @@
 
 ;(global-unset-key "\C-x\C-b")
 (global-unset-key "\C-x\C-c")
-(global-set-key "\C-x\C-f" 'anything-find-file)
+;(global-set-key "\C-x\C-f" 'anything-find-file)
 ;(global-set-key "\C-x\C-f" 'anything-find-files)
 (global-set-key "\M-p" '(lambda () (interactive) (next-line -4)))
 (global-set-key "\M-n" '(lambda () (interactive) (next-line 4)))
@@ -192,7 +192,8 @@
 (key-chord-define-global "EE" '(lambda ()
                                  (interactive)
                                  (my:with-mark 'end-of-buffer)))
-(key-chord-define-global "II" 'anything-imenu)
+;(key-chord-define-global "II" 'anything-imenu)
+(key-chord-define-global "II" 'imenu)
 (key-chord-define-global "JJ" '(lambda ()
                                  (interactive)
                                  (save-excursion
@@ -367,8 +368,3 @@
 (key-combo-define-global (kbd ".") '("." ">"))
 
 (add-to-list 'key-combo-common-mode-hooks 'python-mode-hook)
-;; and some chords, for example
-;;
-;; (key-combo-define-global (kbd "=") '("=" " = " " == " " === " ))
-;; (key-combo-define-global (kbd ":") '(":" " : "))
-

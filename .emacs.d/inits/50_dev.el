@@ -76,103 +76,24 @@
     '(lambda ()
        (local-unset-key (kbd "C-."))))
 
+
 ;; Python
-;(setq py-install-directory "~/.emacs.d/site-lisp/python-mode/")
-;(add-to-list 'load-path py-install-directory)
+(require 'python)
+(setq
+  python-shell-interpreter "ipython"
+  python-shell-interpreter-args "--pylab"
+  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+  python-shell-completion-setup-code
+    "from IPython.core.completerlib import module_completion"
+  python-shell-completion-module-string-code
+    "';'.join(module_completion('''%s'''))\n"
+  python-shell-completion-string-code
+    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
-(require 'python-mode)
-(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-(setq interpreter-mode-alist (cons '("python" . python-mode)
-                                   interpreter-mode-alist))
-(autoload 'python-mode "python-mode" "Python editing mode." t)
-;(setq py-load-pymacs-p t)
-
-(require 'epc)
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/emacs-jedi"))
-
-(require 'jedi)
-(autoload 'jedi:setup "jedi" nil t)
-
-;; Pymacs
-(require 'pymacs)
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-;(eval-after-load "pymacs"
-;  '(add-to-list 'pymacs-load-path "~/app/emacs/pymacs-elisp"))
-
-;; pysmell
-(defvar ac-source-pysmell
-  '((candidates
-     . (lambda ()
-         (require 'pysmell)
-         (pysmell-get-all-completions))))
-  "Source for PySmell")
-
-(add-hook 'python-mode-hook
-          '(lambda ()
-             (jedi:ac-setup)
-             (define-key py-mode-map (kbd "<C-return>") 'jedi:complete)
-             (define-key py-shell-map (kbd "<C-return>") 'jedi:complete)
-            ;; ;; (pysmell-mode 1)
-             ;; (set (make-local-variable 'ac-sources)
-             ;;      (append ac-sources '(ac-source-pysmell)))
-             (require 'pymacs)
-             ;; Hacks for imenu
-             ;; (unless (fboundp 'py-imenu-make-imenu)
-             ;;   (pymacs-load "py_imenu" "py-imenu-"))
-             (setq imenu-create-index-function
-                   (lambda ()
-                     (let (menu)
-                       (message "creating imenu index...")
-                       (condition-case nil
-                           (setq menu (py-imenu-make-imenu))
-                         (error nil
-                                (setq menu (py-imenu-create-index-function))))
-                       (message "creating imenu index...done")
-                       menu))))
-          t) ; last 't' means that this func is put on the tail of hooks.
-
-;; (add-hook 'python-mode-hook
-;;   (lambda ()
-;;     (setq imenu-create-index-function 'python-imenu-create-index)))
-
-
-(defadvice py-execute-region (around my-py-execute-region)
-  "back to the original buffer when py-execute-region finished."
-  (require 'pysmell)
-  (if (get-buffer "*Python Output*")
-      (kill-buffer "*Python Output*"))
-  (let* ((coding-system-for-write buffer-file-coding-system))
-    ad-do-it)
-  (shrink-window-if-larger-than-buffer)
-  (other-window -1))
-(ad-enable-advice 'py-execute-region 'around 'my-py-execute-region)
-(ad-activate 'py-execute-region)
-
-;; ipython
-(setq ipython-command "/usr/bin/ipython")
-(require 'ipython)
-
-(setq py-shell-name "/usr/bin/ipython")
-
-;; anything-ipython
-(require 'anything-ipython)
-(add-hook 'python-mode-hook #'(lambda ()
-                                (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
-(add-hook 'ipython-shell-hook #'(lambda ()
-                                  (define-key py-mode-map (kbd "C-'") 'anything-ipython-complete)))
-
-;; anything-show-completion
-(when (require 'anything-show-completion nil t)
-  (use-anything-show-completion 'anything-ipython-complete
-                                '(length initial-pattern)))
-
-;; ;; This should be evaluted after anything-ipython? or anything-show-completion?
-(setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.complete('%s')[1])) #PYTHON-MODE SILENT\n")
+;(require 'jedi)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 ;; For flymake
 (when (load "flymake" t)
@@ -182,21 +103,17 @@
            (local-file (file-relative-name
                         temp-file
                         (file-name-directory buffer-file-name))))
-      (list "pyflakes" (list local-file)))) ; substitute epylint for this
+      (list "pychecker.sh" (list local-file)))) ; substitute epylint for this
   (push '(".+\\.py$" flymake-python-init) flymake-allowed-file-name-masks))
 
+;; Hooks
 (add-hook 'python-mode-hook
-          (lambda ()
-            ; Activate flymake unless buffer is a tmp buffer for the interpreter
-            (unless (eq buffer-file-name nil) (flymake-mode t)) ; this should fix your problem
-            ;; Bind a few keys for navigating errors
-;            (local-set-key (kbd "C-c w") 'show-fly-err-at-point)
-;            (local-set-key (kbd "M-n") 'flymake-goto-next-error)
-;            (local-set-key (kbd "M-p") 'flymake-goto-prev-error)))
-;            (key-chord-define python-mode-map "`d" 'show-fly-err-at-point)
-;            (key-chord-define  "`n" 'flymake-goto-next-error)
-;            (key-chord-define  "`p" 'flymake-goto-prev-error)
-            ))
+           '(lambda ()
+              (jedi:setup)
+              (jedi:ac-setup)
+              (define-key python-mode-map (kbd "<C-return>") 'jedi:complete)
+              (unless (eq buffer-file-name nil) (flymake-mode t))))
+
 
 ;; Java
 (add-hook 'java-mode-hook
@@ -219,11 +136,7 @@
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/elib"))
 
-
-(remove-hook 'python-mode-hook 'wisent-python-default-setup)
-
-
-; cedit
+; cedet
 (load "cedet")
 
 (autoload 'jde-mode "jde" "Java Development Environment for Emacs." t)
@@ -264,8 +177,8 @@
 
 
 ;; mcomplete
-(require 'mcomplete)
-(turn-on-mcomplete-mode)
+;;;(require 'mcomplete)
+;;;(turn-on-mcomplete-mode)
 
 
 ;; rst-mode

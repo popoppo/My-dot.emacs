@@ -33,3 +33,23 @@
   (anything '(anything-c-source-info-gauche-refj)
             (thing-at-point 'symbol) nil nil nil "*anything info*"))
 (define-key global-map (kbd "C-M-;") 'anything-info-ja-at-point)
+
+;; For completion
+(add-to-list 'ac-modes 'scheme-mode)
+(add-to-list 'ac-modes 'gauche-mode)
+
+;(autoload 'scheme-smart-complete "scheme-complete" nil t)
+;(eval-after-load 'scheme
+;  '(define-key scheme-mode-map (kbd "C-,") 'scheme-smart-complete))
+
+;; scheme-mode-hook
+(defvar ac-source-scheme
+  '((candidates
+     . (lambda ()
+         (require 'scheme-complete)
+         (all-completions ac-target (car (scheme-current-env))))))
+  "Source for scheme keywords.")
+(add-hook 'scheme-mode-hook
+          '(lambda ()
+             (make-local-variable 'ac-sources)
+             (setq ac-sources (append ac-sources '(ac-source-scheme)))))

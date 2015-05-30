@@ -1,4 +1,10 @@
 ;; .emacs
+(defun set-exec-path-from-shell-PATH ()
+  (interactive)
+  (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+(set-exec-path-from-shell-PATH)
 
 ;; load-path
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp"))
@@ -57,15 +63,18 @@
 ;; 50 ... Development tools.
 ;; 90 ... Misc tools and funcs.
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(ac-auto-start nil)
  '(ac-ignores nil)
  '(ac-use-fuzzy t)
  '(bookmark-save-flag 1)
+ '(cider-lein-command "~/local/clojure/lein")
  '(default-tab-width 4 t)
+ '(foreign-regexp/regexp-type (quote perl))
+ '(gud-gdb-command-name "gdb --annotate=1")
  '(ipython-complete-function (quote py-complete))
  '(ipython-complete-use-separate-shell-p nil)
  '(jde-ant-enable-find t)
@@ -76,6 +85,7 @@
  '(jde-gen-final-arguments nil)
  '(jde-gen-final-methods nil)
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
+ '(large-file-warning-threshold nil)
  '(org-agenda-files (quote ("~/Dropbox/org/gtd.org" "~/Dropbox/org/notes.org")))
  '(org-agenda-include-diary nil)
  '(org-agenda-ndays 7)
@@ -99,12 +109,20 @@
  '(org-use-fast-todo-selection t)
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
+ '(reb-re-syntax (quote foreign-regexp))
+ '(shell-pop-default-directory "")
+ '(shell-pop-full-span t)
+ '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+ '(shell-pop-term-shell "/bin/bash")
+ '(shell-pop-universal-key "C-c p")
+ '(shell-pop-window-height 30)
+ '(shell-pop-window-position "bottom")
  '(tab-width 4))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(eshell-prompt ((t (:foreground "White" :weight bold)))))
 
 (add-hook 'after-init-hook  (lambda() (ansi-term "/bin/bash")))

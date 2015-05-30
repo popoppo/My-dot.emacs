@@ -462,17 +462,7 @@ Completion is available."))
   "Set `ansi-color-for-comint-mode' to t." t)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-(define-key global-map "\C-cp" '(lambda () (interactive)
-                                  (when (require 'shell-pop nil t)
-                                    (cond
-                                     ((or (equal (buffer-name) shell-pop-internal-mode-buffer)
-                                            (equal (buffer-name) "*eshell*"))
-                                        (shell-pop))
-                                     (t
-                                      (shell-pop-set-internal-mode "ansi-term")
-                                      (shell-pop-set-internal-mode-shell "/bin/bash")
-                                      (setq shell-pop-window-height 30)
-                                      (shell-pop))))))
+(require 'shell-pop nil t)
 
 ;; Toggle term-char-mode/term-line-mode
 (key-chord-define-global ",," '(lambda () (interactive)

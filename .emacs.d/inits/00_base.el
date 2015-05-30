@@ -23,10 +23,17 @@
                     '(height . 55)
 ;                    '(top . 20)
 ;                    '(left . 1000)
-                    '(alpha . 80))
+                    '(alpha . 80)
 ;                    '(alpha . (20 30 50 30))
+                    '(font . "-apple-Monaco-medium-normal-normal-*-12-*-*-*-m-0-iso10646-1"))
 ;                    '(font . "-unknown-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1"))
               default-frame-alist))
+
+;; Japanese font
+(set-fontset-font
+ nil 'japanese-jisx0208
+;; (font-spec :family "Hiragino Mincho Pro")) ;; font
+  (font-spec :family "Hiragino Kaku Gothic ProN")) ;; font
 
 ;; Swap command and alt
 (setq ns-command-modifier 'meta)

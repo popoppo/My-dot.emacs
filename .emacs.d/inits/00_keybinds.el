@@ -26,6 +26,21 @@
         (t
          (view-mode 1))))
 
+;; mykie
+(require 'mykie)
+(global-set-key "W"
+  '(lambda ()
+     (interactive)
+     (mykie
+      :default    '(lambda () (insert ?W))
+      :region     'kill-region)))
+(global-set-key "Y"
+  '(lambda ()
+     (interactive)
+     (mykie
+      :default    '(lambda () (insert ?Y))
+      :region     'clipboard-kill-ring-save)))
+
 ;;remove backword in mini buffer
 (define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
 
@@ -131,7 +146,12 @@
 ;                             (backward-char))))
 (global-set-key "\M-r" 'my:move-to-window-line)
 (global-set-key "\M-`" '(lambda () (interactive) (eshell t)))
+(global-set-key (kbd "C-\\") 'mark-word)
 
+(defun my:with-mark (func)
+  (interactive)
+  (push-mark nil)
+  (funcall func))
 
 (require 'key-chord)
 (key-chord-mode 1)
@@ -154,8 +174,12 @@
                                  (beginning-of-line)
                                  (kill-line)
                                  (delete-char 1)))
-(key-chord-define-global "AA" 'beginning-of-buffer)
-(key-chord-define-global "EE" 'end-of-buffer)
+(key-chord-define-global "AA" '(lambda ()
+                                 (interactive)
+                                 (my:with-mark 'beginning-of-buffer)))
+(key-chord-define-global "EE" '(lambda ()
+                                 (interactive)
+                                 (my:with-mark 'end-of-buffer)))
 (key-chord-define-global "II" 'anything-imenu)
 (key-chord-define-global "JJ" '(lambda ()
                                  (interactive)
@@ -208,6 +232,28 @@
                             (if (< p1 p2)
                                 (goto-char p1)
                               (goto-char p2)))))
+(key-chord-define-global "q=" '(lambda () (interactive)
+                                 (search-forward-regexp "= *")))
+(key-chord-define-global "q-" '(lambda () (interactive)
+                                 (search-forward-regexp "_")))
+(key-chord-define-global "q9" '(lambda () (interactive)
+                                 (search-forward-regexp "\(")))
+(key-chord-define-global "q0" '(lambda () (interactive)
+                                 (search-forward-regexp ")")))
+(key-chord-define-global "q," '(lambda () (interactive)
+                                 (search-forward-regexp ",")))
+(key-chord-define-global "q." '(lambda () (interactive)
+                                 (search-forward-regexp ".")))
+;(key-chord-define-global "SF" 'forward-sexp)
+(key-chord-define-global "NL" '(lambda () (interactive)
+                                 (next-line)
+                                 (beginning-of-line)
+                                 (open-line 1)))
+(key-chord-define-global "NP"  '(lambda () (interactive)
+                                  (next-line)
+                                  (beginning-of-line)
+                                  (open-line 1)
+                                  (yank)))
 ;(key-chord-define-global "SF" 'forward-sexp)
 (key-chord-define-global "SN" 'forward-list)
 (key-chord-define-global "SD" 'down-list)
@@ -220,7 +266,8 @@
                                  (let ((e (point)))
                                    (beginning-of-line)
                                    (kill-region (point) e))))
-(key-chord-define-global "yy" '(lambda () (interactive)
+(key-chord-define-global "YD" 'get-default-directory)
+(key-chord-define-global "YY" '(lambda () (interactive)
                                  (save-excursion
                                    (beginning-of-line)
                                    (let ((b (point))
@@ -231,8 +278,8 @@
                                      (let ((e (point)))
                                        (clipboard-kill-ring-save b e))))))
 ;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
-(key-chord-define-global "`n" 'next-error)
-(key-chord-define-global "`p" 'previous-error)
+(key-chord-define-global "`n" 'flymake-goto-next-error)
+(key-chord-define-global "`p" 'flymake-goto-prev-error)
 
 ;; Sticky Shift
 (defvar sticky-key "'")

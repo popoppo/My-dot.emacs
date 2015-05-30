@@ -210,9 +210,9 @@
  )
 
 
-;; mcomplete
-(require 'mcomplete)
-(turn-on-mcomplete-mode)
+;;;; mcomplete
+;;(require 'mcomplete)
+;;(turn-on-mcomplete-mode)
 
 
 ;; rst-mode
@@ -239,7 +239,7 @@
 (global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
 (global-set-key (kbd "{") 'skeleton-pair-insert-maybe)
 (global-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "\'") 'skeleton-pair-insert-maybe)
+;(global-set-key (kbd "\'") 'skeleton-pair-insert-maybe)
 
 
 ;; imenu

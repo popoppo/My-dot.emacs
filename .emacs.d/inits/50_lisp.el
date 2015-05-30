@@ -36,3 +36,56 @@
 
 (autoload 'scheme-mode "cmuscheme" "Major mode for Scheme" t)
 (autoload 'run-scheme "cmuscheme" "Run an inferior Scheme process" t)
+
+
+;; Clojure
+(add-hook 'clojure-mode-hook 'cider-mode)
+
+;; mini bufferに関数の引数を表示させる
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+;; 'C-x b' した時に *nrepl-connection* と *nrepl-server* のbufferを一覧に表示しない
+;(setq nrepl-hide-special-buffers t)
+
+;; REPLのbuffer名を 'project名:nREPLのport番号' と表示する
+;; project名は project.clj で defproject した名前
+(setq nrepl-buffer-name-show-port t)
+
+;;     ac-cider
+(autoload 'ac-cider "ac-cider" nil t)
+(add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+(add-hook 'cider-mode-hook 'ac-cider-setup)
+(add-hook 'cider-repl-mode-hook 'ac-cider-setup)
+(eval-after-load "auto-complete"
+  '(progn
+     (add-to-list 'ac-modes 'cider-mode)
+     (add-to-list 'ac-modes 'cider-repl-mode)))
+
+;(defun set-auto-complete-as-completion-at-point-function ()
+;  (setq completion-at-point-functions '(auto-complete)))
+;(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;
+;(add-hook 'cider-repl-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;(add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
+
+
+;;     kibit
+;; Teach compile the syntax of the kibit output
+(require 'compile)
+(add-to-list 'compilation-error-regexp-alist-alist
+         '(kibit "At \\([^:]+\\):\\([[:digit:]]+\\):" 1 2 nil 0))
+(add-to-list 'compilation-error-regexp-alist 'kibit)
+
+;; A convenient command to run "lein kibit" in the project to which
+;; the current emacs buffer belongs to.
+(defun kibit ()
+  "Run kibit on the current project.
+Display the results in a hyperlinked *compilation* buffer."
+  (interactive)
+  (compile "lein kibit"))
+
+(defun kibit-current-file ()
+  "Run kibit on the current file.
+Display the results in a hyperlinked *compilation* buffer."
+  (interactive)
+  (compile (concat "lein kibit " buffer-file-name)))

@@ -178,14 +178,18 @@
 (yas/load-directory "~/.emacs.d/site-lisp/yasnippet/snippets")
 
 ;; skk
-(load "skk")
-(require 'skk-autoloads)
-(setq skk-large-jisyo
-      (expand-file-name "~/.emacs.d/site-lisp/skk/SKK-JISYO.L"))
-(setq Info-default-directory-list
-      (cons "~/.emacs.d/site-lisp/skk/info" Info-default-directory-list))
-(setq skk-tut-file
-      (expand-file-name "~/.emacs.d/site-lisp/skk/SKK.tut"))
+(defun skk-mode-hook--unset-key ()
+  (define-key skk-j-mode-map ";" nil))
+(add-hook 'skk-mode-hook 'skk-mode-hook--unset-key)
+
+;(load "skk")
+;(require 'skk-autoloads)
+;(setq skk-large-jisyo
+;      (expand-file-name "~/.emacs.d/site-lisp/skk/SKK-JISYO.L"))
+;(setq Info-default-directory-list
+;      (cons "~/.emacs.d/site-lisp/skk/info" Info-default-directory-list))
+;(setq skk-tut-file
+;      (expand-file-name "~/.emacs.d/site-lisp/skk/SKK.tut"))
 
 ;; +x
 (add-hook 'after-save-hook
@@ -292,14 +296,14 @@
 (require 'lispxmp)
 
 ;; smartrep
-(require 'smartrep)
-(global-unset-key (kbd "C-q"))
-(smartrep-define-key global-map "C-q"
-  '(("{" . 'shrink-window-horizontally)
-    ("}" . 'enlarge-window-horizontally)
-    ("+" . 'balance-windows)
-    ("^" . 'enlarge-window)
-    ("%" . (enlarge-window -1))))
+;(require 'smartrep)
+;(global-unset-key (kbd "C-q"))
+;(smartrep-define-key global-map "C-q"
+;  '(("{" . 'shrink-window-horizontally)
+;    ("}" . 'enlarge-window-horizontally)
+;    ("+" . 'balance-windows)
+;    ("^" . 'enlarge-window)
+;    ("%" . (enlarge-window -1))))
 
 ;; goto-chg
 (require 'goto-chg)

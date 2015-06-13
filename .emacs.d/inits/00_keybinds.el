@@ -28,25 +28,33 @@
 
 ;; mykie
 (require 'mykie)
-(global-set-key "W"
-  '(lambda ()
-     (interactive)
-     (mykie
-      :default    '(lambda () (insert ?W))
-      :region     'kill-region)))
-(global-set-key "Y"
-  '(lambda ()
-     (interactive)
-     (mykie
-      :default    '(lambda () (insert ?Y))
-      :region     'clipboard-kill-ring-save)))
+(setq mykie:use-major-mode-key-override t)
+(mykie:initialize)
+(mykie:set-keys nil
+  "O"
+  :default    self-insert-command
+  :region     helm-occur
+  :region-handle-flag copy
+
+  "S"
+  :default    self-insert-command
+  :region     isearch-forward
+  :region-handle-flag copy
+
+  "W"
+  :default    self-insert-command
+  :region     kill-region
+
+  "Y"
+  :default    self-insert-command
+  :region     clipboard-kill-ring-save
+  )
 
 ;;remove backword in mini buffer
 (define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
 
 ;(global-unset-key "\C-x\C-b")
 (global-unset-key "\C-x\C-c")
-(global-set-key "\C-x\C-f" 'anything-find-file)
 ;(global-set-key "\C-x\C-f" 'anything-find-files)
 (global-set-key "\M-p" '(lambda () (interactive) (next-line -4)))
 (global-set-key "\M-n" '(lambda () (interactive) (next-line 4)))
@@ -153,6 +161,7 @@
   (push-mark nil)
   (funcall func))
 
+
 (require 'key-chord)
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay 0.3)
@@ -162,8 +171,6 @@
 ;;(key-chord-define-global "fl" '(lambda () (interactive)
 ;;                                 (let ((l (read-from-minibuffer "")))
 ;;                                   (forward-line (string-to-number l)))))
-(key-chord-define-global "qy" 'anything-show-kill-ring)
-(key-chord-define-global "qm" 'anything-mark-ring)
 (key-chord-define-global "qh" '(lambda () (interactive)
                                  (backward-char)
                                  (forward-whitespace -1)
@@ -180,7 +187,6 @@
 (key-chord-define-global "EE" '(lambda ()
                                  (interactive)
                                  (my:with-mark 'end-of-buffer)))
-(key-chord-define-global "II" 'anything-imenu)
 (key-chord-define-global "JJ" '(lambda ()
                                  (interactive)
                                  (save-excursion

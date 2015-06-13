@@ -89,3 +89,12 @@ Display the results in a hyperlinked *compilation* buffer."
 Display the results in a hyperlinked *compilation* buffer."
   (interactive)
   (compile (concat "lein kibit " buffer-file-name)))
+
+
+;;     clj-refactor
+(require 'clj-refactor)
+(add-hook 'clojure-mode-hook (lambda ()
+                               (clj-refactor-mode 1)
+                               (cljr-add-keybindings-with-prefix "C-c C-c")
+                               (lambda () (yas/minor-mode 1))
+                               ))

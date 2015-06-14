@@ -26,21 +26,13 @@
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/elib") t)
 (add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/skk") t)
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/python-mode") t)
-(add-to-list 'load-path
              "~/.emacs.d/site-lisp/mark-multiple.el") ; dir
 (add-to-list 'load-path
              "~/.emacs.d/site-lisp/expand-region.el") ; dir
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/color-theme") t)
 (add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/magit") t)
-(add-to-list 'load-path
              (expand-file-name "/usr/share/emacs/site-lisp") t)
-(add-to-list 'load-path
-             (expand-file-name "/usr/share/emacs/site-lisp/w3m") t)
 
 (setq exec-path (append exec-path '(expand-file-name "~/bin")))
 
@@ -49,6 +41,62 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
+
+(package-refresh-contents)
+
+(defvar my:packages
+  '(
+    auto-complete
+    apel
+    async
+    archives
+    clojure-mode
+    dash
+    helm
+    popup
+    popwin
+    s
+
+    ac-cider
+    ace-jump-helm-line
+    avy
+    ccc
+    cdb
+    cider
+    clj-refactor
+    ddskk
+    direx
+    edn
+    eldoc-extension
+    epl
+    flim
+    foreign-regexp
+    git-commit-mode
+    git-gutter
+    git-rebase-mode
+    goto-chg
+    lispxmp
+    magit
+    mew
+    multiple-cursors
+    mykie
+    paredit
+    peg
+    pkg-info
+    queue
+    shell-pop
+    slamhound
+    smartrep
+    smooth-scroll
+    visual-regexp
+    w3m
+    yasnippet
+    ))
+
+(dolist (package my:packages)
+  (unless (package-installed-p package)
+    (package-install package)))
+
 
 ;; org
 (setq org-directory "~/Dropbox/org/")

@@ -1,5 +1,4 @@
 ;; encoding
-;(set-default-coding-systems 'euc-jp)
 (set-default-coding-systems 'utf-8)
 
 
@@ -44,7 +43,7 @@
 ;(display-time)
 (ffap-bindings)
 ;(hide-ifdef-mode)
-(iswitchb-mode)
+;; (iswitchb-mode) TO BE DELETED
 (menu-bar-mode -1)
 (set-scroll-bar-mode nil)
 (show-paren-mode t)
@@ -85,13 +84,38 @@
     backup-directory-alist))
 
 
-(require 'cl)
+;; recentf
+(setq recentf-max-saved-items 1000)
+;; (setq recentf-auto-cleanup 'never)
+;; (setq recentf-exclude
+;;       '("~/\\.emacs\\.d/recentf"
+;;         "/.?TAGS"
+;;         "/\\.emacs\\.d/\\.cask/"))
+(setq recentf-auto-save-timer
+      (run-with-idle-timer 30 t 'recentf-save-list))
 
-(require 'imenu)
 
 ;; ac-mode
 ;(autoload 'ac-mode "ac-mode" "Minor mode for advanced completion." t nil)
 
+
+;; dired
+(setq bookmark-save-flag 1)
+(setq dired-listing-switches "-alhF")
+
 ;; dired -> dired-x
 (add-hook 'dired-load-hook
           (function (lambda () (load "dired-x"))))
+
+
+(use-package dired-subtree
+  :config
+  (bind-keys :map dired-mode-map
+             ("i" . dired-subtree-insert)
+             (";" . dired-subtree-remove)))
+
+
+;; Others
+(require 'cl)
+
+(require 'imenu)

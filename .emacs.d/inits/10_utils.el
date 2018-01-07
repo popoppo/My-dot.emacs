@@ -30,12 +30,8 @@
               auto-insert-alist))
 
 ;;Redo
-(require 'redo)
-(global-set-key "\M-/" 'redo)
-
-
-;;move buffer by C-. C-,
-;(load-file "/home/takahashi/.emacs.d/site-lisp/move-buffer.el")
+;;(require 'redo)
+;;(global-set-key "\M-/" 'redo)
 
 
 ;; for dired
@@ -57,8 +53,7 @@
              (font-lock-add-keywords
               major-mode
               (list
-               '(my-dired-today-search . my-face-f-2)
-            ))))
+               '(my-dired-today-search . my-face-f-2)))))
 
 ;; Visble bookmark in buffer
 (require 'bm)
@@ -91,35 +86,23 @@
 
 
 ;; thing-opt
-;thingを選択できるようにする
-(define-prefix-command 'my-own-map)
-(global-set-key (kbd "C-t") 'my-own-map)
-
-(require 'thing-opt)
-(define-thing-commands)
-(define-key 'my-own-map "d" 'mark-defun)
-(define-key 'my-own-map "w" 'mark-word*)
-(define-key 'my-own-map "l" 'mark-line)
-(define-key 'my-own-map "s" 'mark-symbol)
-(define-key 'my-own-map "e" 'mark-sexp)
-
-
-;; own util
-(defun create-seq ()
- (interactive)
- (let ((index (string-to-number (read-from-minibuffer "Init:" )))
-       (ub (string-to-number (read-from-minibuffer "Upper bound:" )))
-       (separator (read-from-minibuffer "Seprator:")))
-   (if (string-equal separator "") (setq separator "\n"))
-   (while (<= index ub)
-     (insert (format "%d%s" index separator))
-     (setq index (1+ index)))))
+;;thingを選択できるようにする
+;; (define-prefix-command 'my-own-map)
+;; (global-set-key (kbd "C-t") 'my-own-map)
+;; 
+;; (require 'thing-opt)
+;; (define-thing-commands)
+;; (define-key 'my-own-map "d" 'mark-defun)
+;; (define-key 'my-own-map "w" 'mark-word*)
+;; (define-key 'my-own-map "l" 'mark-line)
+;; (define-key 'my-own-map "s" 'mark-symbol)
+;; (define-key 'my-own-map "e" 'mark-sexp)
 
 
 (defadvice kill-region (around kill-word-or-kill-region activate)
-      (if (and (interactive-p) transient-mark-mode (not mark-active))
-          (backward-kill-word 1)
-        ad-do-it))
+  (if (and (interactive-p) transient-mark-mode (not mark-active))
+      (backward-kill-word 1)
+    ad-do-it))
 
 (define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
 
@@ -158,7 +141,7 @@
 ;(autoload 'ac-mode "ac-mode" "Minor mode for advanced completion." t nil)
 
 ;; auto-complete
-(add-to-list 'load-path "~/.emacs.d/site-lisp/auto-complete")
+;; (add-to-list 'load-path "~/.emacs.d/site-lisp/auto-complete")
 (require 'auto-complete)
 (global-auto-complete-mode t)
 
@@ -172,7 +155,7 @@
 (require 'color-moccur)
 
 ;; yasnippet
-(add-to-list 'load-path "~/.emacs.d/site-lisp/yasnippet")
+;;(add-to-list 'load-path "~/.emacs.d/site-lisp/yasnippet")
 (require 'yasnippet)
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/site-lisp/yasnippet/snippets")
@@ -192,8 +175,8 @@
 ;      (expand-file-name "~/.emacs.d/site-lisp/skk/SKK.tut"))
 
 ;; +x
-(add-hook 'after-save-hook
-          'executable-make-buffer-file-executable-if-script-p)
+;;(add-hook 'after-save-hook
+;;          'executable-make-buffer-file-executable-if-script-p)
 
 ;; ace-jump-mode
 (require 'ace-jump-mode)
@@ -204,23 +187,23 @@
 (key-chord-define-global "z/" 'jaunte)
 (setq jaunte-hint-unit 'whitespace)
 
-;; point-undo
-(require 'point-undo)
-;(define-key global-map [f7] 'point-undo)
-;(define-key global-map [S-f7] 'point-redo)
-(key-chord-define-global "z[" 'point-undo)
-(key-chord-define-global "z]" 'point-redo)
+;; ;; point-undo
+;; (require 'point-undo)
+;; ;(define-key global-map [f7] 'point-undo)
+;; ;(define-key global-map [S-f7] 'point-redo)
+;; (key-chord-define-global "z[" 'point-undo)
+;; (key-chord-define-global "z]" 'point-redo)
 
 ;; srep
 (require 'srep)
 
 ;; mark-more-like-thin
-(require 'mark-more-like-this)
-(key-chord-define-global "za" 'mark-all-like-this)
-(key-chord-define-global "zp" 'mark-previous-like-this)
-(key-chord-define-global "zn" 'mark-next-like-this)
-;(global-set-key (kbd "C-<") 'mark-previous-like-this)
-;(global-set-key (kbd "C->") 'mark-next-like-this)
+(require 'multiple-cursors)
+(key-chord-define-global "za" 'mc/mark-all-like-this)
+(key-chord-define-global "zp" 'mc/mark-previous-like-this)
+(key-chord-define-global "zn" 'mc/mark-next-like-this)
+(key-chord-define-global "zj" 'mc/skip-to-next-like-this)
+(key-chord-define-global "zk" 'mc/skip-to-previous-like-this)
 
 ;; expand region
 (require 'expand-region)
@@ -331,8 +314,20 @@
   '((candidates . my:ac-look)
     (requires . 2)))
 
-;;(global-set-key (kbd "C-M-l") 'ac-look)
-(key-chord-define-global "??" 'ac-look)
+(defun company-look (command &optional arg &rest ignored)
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'company-look))
+    (prefix (when (looking-back "\\w+" nil t)
+               (match-string 0)))
+    (candidates (let ((cmd (format "look %s" arg)))
+                   (with-temp-buffer
+                     (call-process-shell-command cmd nil t)
+                     (split-string-and-unquote (buffer-string) "\n"))))
+    (meta (format "Looking %s" arg))))
+
+(global-set-key (kbd "C-M-l") 'company-look)
+;;(key-chord-define-global "??" 'company-look)
 
 ;; visual-regexp
 (require 'cl-lib)

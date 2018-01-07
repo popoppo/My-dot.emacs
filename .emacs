@@ -39,7 +39,10 @@
 ;; packages
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+(add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
 (package-initialize)
 
 (package-refresh-contents)
@@ -49,7 +52,6 @@
     auto-complete
     apel
     async
-    archives
     clojure-mode
     dash
     helm
@@ -71,9 +73,8 @@
     epl
     flim
     foreign-regexp
-    git-commit-mode
+    git-commit
     git-gutter
-    git-rebase-mode
     goto-chg
     lispxmp
     magit
@@ -119,8 +120,8 @@
  '(ac-ignores nil)
  '(ac-use-fuzzy t)
  '(bookmark-save-flag 1)
- '(cider-lein-command "~/local/clojure/lein")
  '(default-tab-width 4 t)
+ '(dumb-jump-debug nil)
  '(foreign-regexp/regexp-type (quote perl))
  '(gud-gdb-command-name "gdb --annotate=1")
  '(ipython-complete-function (quote py-complete))
@@ -142,14 +143,20 @@
  '(org-agenda-show-all-dates t)
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-scheduled-if-done t)
- '(org-agenda-sorting-strategy (quote ((agenda time-up priority-down tag-up) (todo tag-up))))
+ '(org-agenda-sorting-strategy
+   (quote
+    ((agenda time-up priority-down tag-up)
+     (todo tag-up))))
  '(org-agenda-start-on-weekday nil)
  '(org-agenda-window-setup (quote other-window))
  '(org-deadline-warning-days 7)
  '(org-fast-tag-selection-single-key nil)
  '(org-insert-mode-line-in-empty-file t)
  '(org-log-done (quote (done)))
- '(org-refile-targets (quote (("gtd.org" :maxlevel . 1) ("archive.org" :maxlevel . 1))))
+ '(org-refile-targets
+   (quote
+    (("gtd.org" :maxlevel . 1)
+     ("archive.org" :maxlevel . 1))))
  '(org-reverse-note-order nil)
  '(org-tags-match-list-sublevels t)
  '(org-time-stamp-rounding-minutes 5)
@@ -158,13 +165,18 @@
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
  '(reb-re-syntax (quote foreign-regexp))
+ '(recentf-max-saved-items 100)
  '(shell-pop-default-directory "")
  '(shell-pop-full-span t)
- '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+ '(shell-pop-shell-type
+   (quote
+    ("ansi-term" "*ansi-term*"
+     (lambda nil
+       (ansi-term shell-pop-term-shell)))))
  '(shell-pop-term-shell "/bin/bash")
  '(shell-pop-universal-key "C-c p")
- '(shell-pop-window-height 30)
  '(shell-pop-window-position "bottom")
+ '(shell-pop-window-size 30)
  '(tab-width 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

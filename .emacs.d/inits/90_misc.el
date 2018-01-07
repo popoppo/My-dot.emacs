@@ -51,11 +51,9 @@
       (cons '("\\.text" . markdown-mode) auto-mode-alist))
 
 ;; w3m
-;(require 'w3m-load)
+;; (require 'w3m-load)
 
 ;; For dired
-(setq dired-listing-switches "-alh")
-
 (defun dired-my-advertised-find-file ()
   (interactive)
   (let ((kill-target (current-buffer))

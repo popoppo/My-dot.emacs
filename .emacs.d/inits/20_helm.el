@@ -23,7 +23,7 @@
 ;(global-set-key (kbd "C-x C-r") 'helm-recentf)
 (global-set-key (kbd "C-.") 'helm-mini)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(key-chord-define-global ";b" 'helm-buffer-list)
+(key-chord-define-global ";b" 'helm-buffers-list)
 (key-chord-define-global ";f" 'helm-find-files)
 (key-chord-define-global ";r" 'helm-recentf)
 (key-chord-define-global "II" 'helm-imenu)

@@ -246,9 +246,11 @@
 (setq imenu-auto-rescan t)
 (setq imenu-after-jump-hook (lambda () (recenter 10)))
 
+
 ;; git-gutter
 (load "git-gutter")
 (global-git-gutter-mode t)
+
 
 ;; quickrun
 (require 'popwin)
@@ -260,3 +262,11 @@
 (defadvice quickrun/apply-outputter
   (after quickrun/fix-scroll-buffer activate)
   (recenter))
+
+
+;; dumb-jump
+(dumb-jump-mode)
+
+
+;; symbol-overlay
+(require 'symbol-overlay)

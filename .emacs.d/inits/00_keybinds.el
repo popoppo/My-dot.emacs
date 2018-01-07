@@ -31,6 +31,11 @@
 (setq mykie:use-major-mode-key-override t)
 (mykie:initialize)
 (mykie:set-keys nil
+  "H"
+  :default    self-insert-commanHd
+  :region     symbol-overlay-put
+  :region-handle-flag copy
+
   "O"
   :default    self-insert-command
   :region     helm-occur
@@ -47,10 +52,13 @@
 
   "Y"
   :default    self-insert-command
-  :region     clipboard-kill-ring-save
-  )
+  :region     clipboard-kill-ring-save)
 
-;;remove backword in mini buffer
+
+;; ¥ -> \
+(define-key global-map [165] [92])
+
+;; remove backword in mini buffer
 (define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
 
 ;(global-unset-key "\C-x\C-b")
@@ -127,11 +135,11 @@
 (global-set-key "\C-cm" 'compile)
 ;          ("\C-c\C-t" (lambda () (interactive)
 ;                       (insert (format-time-string "%H:%M:%S"))))
-(global-set-key (kbd "M-\[") '(lambda () (interactive)
-                                 (backward-char)
-                                 (forward-whitespace -1)
-                                 (forward-char)))
-(global-set-key (kbd "M-\]") 'forward-whitespace)
+;(global-set-key (kbd "M-\[") '(lambda () (interactive)
+;                                 (backward-char)
+;                                 (forward-whitespace -1)
+;                                 (forward-char))
+;(global-set-key (kbd "M-\]") 'forward-whitespace)
 (global-set-key "\M-h" 'backward-kill-word)
 ;(global-set-key "\M-h" '(lambda (arg)
 ;                          (interactive "cChar:")
@@ -155,6 +163,7 @@
 (global-set-key "\M-r" 'my:move-to-window-line)
 (global-set-key "\M-`" '(lambda () (interactive) (eshell t)))
 (global-set-key (kbd "C-\\") 'mark-word)
+
 
 (defun my:with-mark (func)
   (interactive)
@@ -187,13 +196,11 @@
 (key-chord-define-global "EE" '(lambda ()
                                  (interactive)
                                  (my:with-mark 'end-of-buffer)))
+(key-chord-define-global "JB" 'dumb-jump-back)
+(key-chord-define-global "JG" 'dumb-jump-go)
 (key-chord-define-global "JJ" '(lambda ()
                                  (interactive)
-                                 (save-excursion
-                                   (end-of-line)
-                                   (delete-char 1)
-                                   (just-one-space 0)
-                                   (insert-string " "))))
+                                 (delete-indentation 1)))
 (key-chord-define-global "MM" 'kill-whitespace)
 (key-chord-define-global "GL" 'goto-line)
 (key-chord-define-global "HS" 'hs-minor-mode)
@@ -208,9 +215,9 @@
 (key-chord-define-global "qj" '(lambda () (interactive)
                                            (backward-char)
                                            (search-backward-regexp "[/ ]")
-                                           (forward-char)))
+                                           (forward-char))) ;; TODO duplicated with qh
 (key-chord-define-global "qk" '(lambda () (interactive)
-                                           (search-forward-regexp "[/ ]")))
+                                           (search-forward-regexp "[/ ]"))) ;; TODO dup ql
 (key-chord-define-global "MD" 'mark-defun)
 (key-chord-define-global "qn" '(lambda () (interactive)
                           (next-line 1)
@@ -286,6 +293,8 @@
 ;(key-chord-define-global "zz" '(lambda () (interactive) (repeat nil)))
 (key-chord-define-global "`n" 'flymake-goto-next-error)
 (key-chord-define-global "`p" 'flymake-goto-prev-error)
+(key-chord-define-global "GN" 'git-gutter:next-hunk)
+(key-chord-define-global "GP" 'git-gutter:previous-hunk)
 
 ;; Sticky Shift
 (defvar sticky-key "'")

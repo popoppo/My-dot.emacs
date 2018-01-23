@@ -63,16 +63,19 @@
        (local-set-key (kbd "\'") 'skeleton-pair-insert-maybe)
        (gtags-mode 1)))
 
-;; PHP
-(require 'php-mode)
-(add-to-list 'auto-mode-alist '("\\.module$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.install$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.engine$" . php-mode))
 
-(add-hook 'php-mode-hook
-    '(lambda ()
-       (local-unset-key (kbd "C-."))))
+;; PHP
+(use-package php-mode
+  :mode
+  (("\\.module$"  . php-mode)
+   ("\\.inc$"     . php-mode)
+   ("\\.install$" . php-mode)
+   ("\\.engine$"  . php-mode))
+  :init
+  (add-hook 'php-mode-hook
+            '(lambda ()
+               (local-unset-key (kbd "C-.")))))
+
 
 ;; Python
 ;; python-mode
@@ -210,11 +213,6 @@
  )
 
 
-;;;; mcomplete
-;;(require 'mcomplete)
-;;(turn-on-mcomplete-mode)
-
-
 ;; rst-mode
 (autoload 'rst-mode "rst-mode" "mode for editing reStructuredText documents" t)
 (setq auto-mode-alist
@@ -223,7 +221,7 @@
 
 
 ;;; Autoloads for magit
-(require 'magit)
+(use-package magit)
 
 
 ;; Complete parentheses
@@ -247,9 +245,10 @@
 (setq imenu-after-jump-hook (lambda () (recenter 10)))
 
 
-;; git-gutter
-(load "git-gutter")
-(global-git-gutter-mode t)
+
+(use-package git-gutter
+  :init
+  (global-git-gutter-mode t))
 
 
 ;; quickrun
@@ -265,7 +264,12 @@
 
 
 ;; dumb-jump
-(dumb-jump-mode)
+(use-package dumb-jump
+  :custom
+  (dumb-jump-debug nil)
+  :config
+  (key-chord-define-global "JB" 'dumb-jump-back)
+  (key-chord-define-global "JG" 'dumb-jump-go))
 
 
 ;; symbol-overlay

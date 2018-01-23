@@ -1,22 +1,17 @@
 ;; color-theme
 ;; Use /usr/share/emacs/site-lisp or /usr/share/emacs/site-lisp/goodies if exists.
-(require 'color-theme)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (color-theme-resolve)))
+(use-package color-theme
+  :config
+  (color-theme-initialize)
+  (color-theme-resolve))
+
 
 ;; windows
-(require 'windows)
-(setq win:use-frame nil)
-(win:startup-with-window)
-(define-key ctl-x-map "C" 'see-you-again)
-
-
-;;dmacro.el
-;; (defconst *dmacro-key* "\M-q" "Repeat key")
-;; (global-set-key *dmacro-key* 'dmacro-exec)
-;; (autoload 'dmacro-exec "dmacro" nil t)
+(use-package windows
+  :config
+  (setq win:use-frame nil)
+  (win:startup-with-window)
+  (define-key ctl-x-map "C" 'see-you-again))
 
 
 ;;auto-insert
@@ -29,12 +24,11 @@
       (append '(("\\.h" . "template-header-cpp.txt"))
               auto-insert-alist))
 
-;;Redo
-;;(require 'redo)
-;;(global-set-key "\M-/" 'redo)
-
 
 ;; for dired
+(setq dired-dwim-target t)
+(setq dired-recursive-copies 'always)
+
 (defun dired-find-alternate-file ()
   "In dired, visit this file or directory instead of the dired buffer."
   (interactive)
@@ -55,11 +49,14 @@
               (list
                '(my-dired-today-search . my-face-f-2)))))
 
-;; Visble bookmark in buffer
-(require 'bm)
+
+(use-package bm
+  ;; Visble bookmark in buffer
+  :disabled)
 
 ;; psvn.el
 (require 'psvn)
+
 
 ;; session.el
 ;kill-ringやミニバッファで過去に開いたファイルなどの履歴を保存する
@@ -72,17 +69,13 @@
   ;; 前回閉じたときの位置にカーソルを復帰
   (setq session-undo-check -1))
 
-;; minibuf-isearch
-;minibufでisearchを使えるようにする
-(require 'minibuf-isearch nil t)
 
-
-;; icicles
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic"))
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/icicles"))
-(load "icicles")
+; ;; icicles
+; (add-to-list 'load-path
+;              (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic"))
+; (add-to-list 'load-path
+;              (expand-file-name "~/.emacs.d/site-lisp/icicles"))
+; (load "icicles")
 
 
 ;; thing-opt
@@ -133,9 +126,11 @@
 (ad-enable-advice 'font-lock-mode 'before 'my-font-lock-mode)
 (ad-activate 'font-lock-mode)
 
-;; undo-tree
-(require 'undo-tree)
-(global-undo-tree-mode)
+
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode))
+
 
 ;; ac-mode
 ;(autoload 'ac-mode "ac-mode" "Minor mode for advanced completion." t nil)
@@ -151,14 +146,15 @@
 
 (setq ac-use-menu-map t)
 
-;; color-moccur
-(require 'color-moccur)
 
-;; yasnippet
-;;(add-to-list 'load-path "~/.emacs.d/site-lisp/yasnippet")
-(require 'yasnippet)
-(yas/initialize)
-(yas/load-directory "~/.emacs.d/site-lisp/yasnippet/snippets")
+(use-package color-moccur)
+
+
+(use-package yasnippet
+  :config
+  (yas/initialize)
+  (yas/load-directory "~/.emacs.d/snippets"))
+
 
 ;; skk
 (defun skk-mode-hook--unset-key ()
@@ -178,24 +174,25 @@
 ;;(add-hook 'after-save-hook
 ;;          'executable-make-buffer-file-executable-if-script-p)
 
+
 ;; ace-jump-mode
-(require 'ace-jump-mode)
-(key-chord-define-global "z." 'ace-jump-mode)
+(use-package ace-jump-mode
+  :init
+  (key-chord-define-global "z." 'ace-jump-mode))
+
 
 ;; jaunte
-(require 'jaunte)
-(key-chord-define-global "z/" 'jaunte)
-(setq jaunte-hint-unit 'whitespace)
+(use-package jaunte
+  :init
+  (key-chord-define-global "z/" 'jaunte)
+  :config
+  (setq jaunte-hint-unit 'whitespace))
 
-;; ;; point-undo
-;; (require 'point-undo)
-;; ;(define-key global-map [f7] 'point-undo)
-;; ;(define-key global-map [S-f7] 'point-redo)
-;; (key-chord-define-global "z[" 'point-undo)
-;; (key-chord-define-global "z]" 'point-redo)
 
 ;; srep
+;; https://github.com/kmorimoto/srep
 (require 'srep)
+
 
 ;; mark-more-like-thin
 (require 'multiple-cursors)
@@ -271,27 +268,21 @@
   (message default-directory)
   (kill-new default-directory))
 
-;; smooth-scroll
-(require 'smooth-scroll)
-(smooth-scroll-mode t)
 
-;; lispxmp
-(require 'lispxmp)
+(use-package smooth-scroll
+  :config
+  (smooth-scroll-mode t))
 
-;; smartrep
-;(require 'smartrep)
-;(global-unset-key (kbd "C-q"))
-;(smartrep-define-key global-map "C-q"
-;  '(("{" . 'shrink-window-horizontally)
-;    ("}" . 'enlarge-window-horizontally)
-;    ("+" . 'balance-windows)
-;    ("^" . 'enlarge-window)
-;    ("%" . (enlarge-window -1))))
+
+(use-package lispxmp)
+
 
 ;; goto-chg
-(require 'goto-chg)
-(global-set-key (kbd "M-\[") 'goto-last-change)
-(global-set-key (kbd "M-\]") 'goto-last-change-reverse)
+(use-package goto-chg
+  :bind
+  (("M-\[" . 'goto-last-change)
+   ("M-\]" . 'goto-last-change-reverse)))
+
 
 ;; look with auto-complete
 (defun my:ac-look ()
@@ -329,18 +320,19 @@
 (global-set-key (kbd "C-M-l") 'company-look)
 ;;(key-chord-define-global "??" 'company-look)
 
+
 ;; visual-regexp
-(require 'cl-lib)
-(require 'visual-regexp)
-;(define-key global-map (kbd "C-c r") 'vr/replace)
-;(define-key global-map (kbd "C-c q") 'vr/query-replace)
-(key-chord-define-global "qw" 'vr/query-replace)
+(use-package visual-regexp
+  :config
+  (key-chord-define-global "qw" 'vr/query-replace))
+
 ;; if you use multiple-cursors, this is for you:
 ;(define-key global-map (kbd "C-c m") 'vr/mc-mark)
 
-;; foreign-regexp
-(require 'foreign-regexp)
 
-(custom-set-variables
- '(foreign-regexp/regexp-type 'perl) ;; Choose by your preference.
- '(reb-re-syntax 'foreign-regexp)) ;; Tell re-builder to use foreign regexp.
+(use-package foreign-regexp
+  :config
+  (custom-set-variables
+   '(foreign-regexp/regexp-type 'perl)
+   '(reb-re-syntax 'foreign-regexp)))
+

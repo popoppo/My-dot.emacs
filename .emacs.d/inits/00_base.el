@@ -86,7 +86,7 @@
 
 ;; recentf
 (setq recentf-max-saved-items 1000)
-;; (setq recentf-auto-cleanup 'never)
+(setq recentf-auto-cleanup 'never)
 ;; (setq recentf-exclude
 ;;       '("~/\\.emacs\\.d/recentf"
 ;;         "/.?TAGS"
@@ -113,6 +113,14 @@
   (bind-keys :map dired-mode-map
              ("i" . dired-subtree-insert)
              (";" . dired-subtree-remove)))
+
+
+;; desktop (Enable them as needed)
+;;(setq history-length 250)
+;;(add-to-list 'desktop-globals-to-save 'file-name-history)
+;;(setq desktop-globals-to-save '(extended-command-history))
+;;(setq desktop-files-not-to-save "")
+;;(desktop-save-mode 1)
 
 
 ;; Others

@@ -9,8 +9,7 @@
 ;; load-path
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp"))
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/auto-install"))
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/elpa"))
+
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic") t)
 (add-to-list 'load-path
@@ -26,20 +25,14 @@
 (add-to-list 'load-path
              (expand-file-name "~/.emacs.d/site-lisp/elib") t)
 (add-to-list 'load-path
-             "~/.emacs.d/site-lisp/mark-multiple.el") ; dir
-(add-to-list 'load-path
-             "~/.emacs.d/site-lisp/expand-region.el") ; dir
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/color-theme") t)
-(add-to-list 'load-path
              (expand-file-name "/usr/share/emacs/site-lisp") t)
 
 (setq exec-path (append exec-path '(expand-file-name "~/bin")))
 
 ;; packages
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
@@ -49,55 +42,91 @@
 
 (defvar my:packages
   '(
-    auto-complete
-    apel
-    async
-    clojure-mode
-    dash
-    helm
-    popup
-    popwin
-    s
-
     ac-cider
     ace-jump-helm-line
+    apel
+    async
+    auto-complete
     avy
+    bind-key
     ccc
     cdb
     cider
     clj-refactor
+    clojure-mode
+    company
+    company-quickhelp
+    dash
     ddskk
+    diminish
+    dired-hacks-utils
+    dired-subtree
     direx
+    dumb-jump
     edn
+    el-get
+    el-mock
     eldoc-extension
     epl
+    f
     flim
+    flycheck
+    flycheck-clojure
     foreign-regexp
+    ghub
     git-commit
     git-gutter
     goto-chg
+    helm
+    helm-core
+    highlight-symbol
+    hydra
+    inflections
+    key-chord
+    let-alist
     lispxmp
     magit
+    magit-popup
     mew
     multiple-cursors
     mykie
+    noflet
     paredit
     peg
     pkg-info
+    popup
+    popwin
+    pos-tip
     queue
+    s
+    seq
     shell-pop
     slamhound
-    smartrep
     smooth-scroll
+    spinner
+    symbol-overlay
+    use-package
     visual-regexp
     w3m
+    with-editor
     yasnippet
     ))
 
-(dolist (package my:packages)
-  (unless (package-installed-p package)
-    (package-install package)))
+(when nil
+  (dolist (package my:packages)
+    (unless (package-installed-p package)
+      (package-install package))))
 
+
+;; el-get for modules in github
+(use-package el-get
+  :init
+  (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+  :config
+  (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+  (el-get 'sync))
+
+;; (el-get-bundle )
 
 ;; org
 (setq org-directory "~/Dropbox/org/")
@@ -121,7 +150,6 @@
  '(ac-use-fuzzy t)
  '(bookmark-save-flag 1)
  '(default-tab-width 4 t)
- '(dumb-jump-debug nil)
  '(foreign-regexp/regexp-type (quote perl))
  '(gud-gdb-command-name "gdb --annotate=1")
  '(ipython-complete-function (quote py-complete))
@@ -164,20 +192,8 @@
  '(org-use-fast-todo-selection t)
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
- '(reb-re-syntax (quote foreign-regexp))
- '(recentf-max-saved-items 100)
- '(shell-pop-default-directory "")
- '(shell-pop-full-span t)
- '(shell-pop-shell-type
-   (quote
-    ("ansi-term" "*ansi-term*"
-     (lambda nil
-       (ansi-term shell-pop-term-shell)))))
- '(shell-pop-term-shell "/bin/bash")
- '(shell-pop-universal-key "C-c p")
- '(shell-pop-window-position "bottom")
- '(shell-pop-window-size 30)
  '(tab-width 4))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

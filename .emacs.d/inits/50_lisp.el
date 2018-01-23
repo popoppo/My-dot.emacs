@@ -114,14 +114,15 @@ Display the results in a hyperlinked *compilation* buffer."
 (setq nrepl-use-ssh-fallback-for-remote-hosts t)
 
 ;; paredit
-; (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-; (add-hook 'lisp-interacton-mode-hook 'enable-paredit-mode)
-; (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'lisp-interacton-mode-hook 'enable-paredit-mode)
+(add-hook 'clojure-mode-hook 'enable-paredit-mode)
 
 
 ;; parinfer
 (use-package parinfer
-  :ensure t
+  :disabled
+;;  :ensure t
 ;;  :bind (("C-," . parinfer-toggle-mode))
   :init (progn
           (setq parinfer-extensions

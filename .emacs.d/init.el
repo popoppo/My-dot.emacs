@@ -38,8 +38,6 @@
 (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
 (package-initialize)
 
-(package-refresh-contents)
-
 (defvar my:packages
   '(
     ac-cider
@@ -54,6 +52,7 @@
     cider
     clj-refactor
     clojure-mode
+    color-moccur
     company
     company-quickhelp
     dash
@@ -68,6 +67,7 @@
     el-mock
     eldoc-extension
     epl
+    expand-region
     f
     flim
     flycheck
@@ -113,6 +113,7 @@
     ))
 
 (when nil
+  (package-refresh-contents)
   (dolist (package my:packages)
     (unless (package-installed-p package)
       (package-install package))))
@@ -120,6 +121,7 @@
 
 ;; el-get for modules in github
 (use-package el-get
+  :disabled
   :init
   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
   :config
@@ -146,10 +148,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-auto-start nil)
- '(ac-ignores nil)
+ '(ac-stop-words nil)
  '(ac-use-fuzzy t)
- '(bookmark-save-flag 1)
+ '(bookmark-save-flag 1 t)
  '(default-tab-width 4 t)
+ '(dumb-jump-debug nil)
  '(foreign-regexp/regexp-type (quote perl))
  '(gud-gdb-command-name "gdb --annotate=1")
  '(ipython-complete-function (quote py-complete))
@@ -190,8 +193,23 @@
  '(org-time-stamp-rounding-minutes 5)
  '(org-timeline-show-empty-dates t)
  '(org-use-fast-todo-selection t)
+ '(package-selected-packages
+   (quote
+    (expand-region color-theme color-moccur underwater-theme afternoon-theme w3m visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew magit lispxmp key-chord highlight-symbol goto-chg git-gutter foreign-regexp flycheck-clojure flycheck flim eldoc-extension el-mock el-get dumb-jump direx dired-subtree dired-hacks-utils diminish ddskk dash company-quickhelp company clj-refactor cdb ccc apel ace-jump-helm-line ac-cider use-package smooth-scroll)))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
+ '(reb-re-syntax (quote foreign-regexp))
+ '(shell-pop-default-directory "~")
+ '(shell-pop-full-span t)
+ '(shell-pop-shell-type
+   (quote
+    ("ansi-term" "*ansi-term*"
+     (lambda nil
+       (ansi-term shell-pop-term-shell)))))
+ '(shell-pop-term-shell "/bin/bash")
+ '(shell-pop-universal-key "C-c p")
+ '(shell-pop-window-position "bottom")
+ '(shell-pop-window-size 30)
  '(tab-width 4))
 
 (custom-set-faces

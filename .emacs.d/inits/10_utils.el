@@ -1,10 +1,6 @@
 ;; color-theme
 ;; Use /usr/share/emacs/site-lisp or /usr/share/emacs/site-lisp/goodies if exists.
-(use-package color-theme
-  :config
-  (color-theme-initialize)
-  (color-theme-resolve))
-
+(load-theme 'afternoon t)
 
 ;; windows
 (use-package windows
@@ -91,11 +87,6 @@
 ;; (define-key 'my-own-map "s" 'mark-symbol)
 ;; (define-key 'my-own-map "e" 'mark-sexp)
 
-
-(defadvice kill-region (around kill-word-or-kill-region activate)
-  (if (and (interactive-p) transient-mark-mode (not mark-active))
-      (backward-kill-word 1)
-    ad-do-it))
 
 (define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
 
@@ -331,8 +322,8 @@
 
 
 (use-package foreign-regexp
-  :config
-  (custom-set-variables
-   '(foreign-regexp/regexp-type 'perl)
-   '(reb-re-syntax 'foreign-regexp)))
+  :disabled
+  :custom
+  (foreign-regexp/regexp-type 'perl)
+  (reb-re-syntax 'foreign-regexp))
 

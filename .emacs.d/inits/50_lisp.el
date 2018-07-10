@@ -51,7 +51,7 @@
 ;; project名は project.clj で defproject した名前
 (setq nrepl-buffer-name-show-port t)
 
-;;     ac-cider
+;; ac-cider
 (autoload 'ac-cider "ac-cider" nil t)
 (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
 (add-hook 'cider-mode-hook 'ac-cider-setup)
@@ -69,7 +69,7 @@
 ;(add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 
-;;     kibit
+;; kibit
 ;; Teach compile the syntax of the kibit output
 (require 'compile)
 (add-to-list 'compilation-error-regexp-alist-alist
@@ -113,11 +113,14 @@ Display the results in a hyperlinked *compilation* buffer."
 ;; for cider-connect
 (setq nrepl-use-ssh-fallback-for-remote-hosts t)
 
+;; For repl
+(set! *print-length* 10)
+(set! *print-level* 10)
+
 ;; paredit
 (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
 (add-hook 'lisp-interacton-mode-hook 'enable-paredit-mode)
 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-
 
 ;; parinfer
 (use-package parinfer

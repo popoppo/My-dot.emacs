@@ -32,7 +32,7 @@
 (mykie:initialize)
 (mykie:set-keys nil
   "H"
-  :default    self-insert-commanHd
+  :default    self-insert-command
   :region     symbol-overlay-put
   :region-handle-flag copy
 

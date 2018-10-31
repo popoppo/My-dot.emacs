@@ -156,7 +156,7 @@
 ;; shell-pop
 (use-package shell-pop
   :custom
-  (shell-pop-default-directory "~")
+  ;;(shell-pop-default-directory "~")
   (shell-pop-full-span t)
   (shell-pop-shell-type
    (quote ("ansi-term" "*ansi-term*"

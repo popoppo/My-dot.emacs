@@ -2,6 +2,10 @@
 (set-default-coding-systems 'utf-8)
 
 
+;; ¥ -> \
+(define-key global-map [165] [92])
+
+
 ;; turn on font-lock mode
 (when (fboundp 'global-font-lock-mode)
   (global-font-lock-mode t))
@@ -43,7 +47,6 @@
 ;(display-time)
 (ffap-bindings)
 ;(hide-ifdef-mode)
-;; (iswitchb-mode) TO BE DELETED
 (menu-bar-mode -1)
 (set-scroll-bar-mode nil)
 (show-paren-mode t)
@@ -75,7 +78,7 @@
 ;(setq-default truncate-lines t)
 ;(setq-default truncate-partial-width-windows t)
 
-(add-hook 'shell-mode-hook 'pcomplete-shell-setup)
+(add-hook 'shell-mode-hook 'pcomplete-shell-setup) ;; TODO: move to 20_shell.el
 
 ;; Backup file dir
 (setq make-backup-files t)
@@ -97,22 +100,6 @@
 
 ;; ac-mode
 ;(autoload 'ac-mode "ac-mode" "Minor mode for advanced completion." t nil)
-
-
-;; dired
-(setq bookmark-save-flag 1)
-(setq dired-listing-switches "-alhF")
-
-;; dired -> dired-x
-(add-hook 'dired-load-hook
-          (function (lambda () (load "dired-x"))))
-
-
-(use-package dired-subtree
-  :config
-  (bind-keys :map dired-mode-map
-             ("i" . dired-subtree-insert)
-             (";" . dired-subtree-remove)))
 
 
 ;; desktop (Enable them as needed)

@@ -12,6 +12,5 @@
 (define-key company-search-map (kbd "C-p") 'company-select-previous)
 (define-key company-active-map (kbd "C-s") 'company-filter-candidates)
 (define-key company-active-map (kbd "C-i") 'company-complete-selection)
-;; (define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete)
 
 (company-quickhelp-mode t)

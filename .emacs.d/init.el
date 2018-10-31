@@ -9,31 +9,13 @@
 ;; load-path
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp"))
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/auto-install"))
-
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic") t)
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic/bovine") t)
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic/wisent") t)
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/cedet/common") t)
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/cedet/eieio") t)
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/jde/lisp") t)
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/elib") t)
-(add-to-list 'load-path
-             (expand-file-name "/usr/share/emacs/site-lisp") t)
-
-(setq exec-path (append exec-path '(expand-file-name "~/bin")))
+;;(setq exec-path (append exec-path '(expand-file-name "~/bin")))
 
 ;; packages
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
 (package-initialize)
@@ -112,7 +94,7 @@
     yasnippet
     ))
 
-(when nil
+(when nil  ;; Enable manually if needed
   (package-refresh-contents)
   (dolist (package my:packages)
     (unless (package-installed-p package)
@@ -130,7 +112,7 @@
 
 ;; (el-get-bundle )
 
-;; org
+;; org  TODO: move to 90_org.el
 (setq org-directory "~/Dropbox/org/")
 
 ;; INSTALL
@@ -150,7 +132,7 @@
  '(ac-auto-start nil)
  '(ac-stop-words nil)
  '(ac-use-fuzzy t)
- '(bookmark-save-flag 1 t)
+ '(bookmark-save-flag 1)
  '(default-tab-width 4 t)
  '(dumb-jump-debug nil)
  '(foreign-regexp/regexp-type (quote perl))
@@ -195,21 +177,10 @@
  '(org-use-fast-todo-selection t)
  '(package-selected-packages
    (quote
-    (expand-region color-theme color-moccur underwater-theme afternoon-theme w3m visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew magit lispxmp key-chord highlight-symbol goto-chg git-gutter foreign-regexp flycheck-clojure flycheck flim eldoc-extension el-mock el-get dumb-jump direx dired-subtree dired-hacks-utils diminish ddskk dash company-quickhelp company clj-refactor cdb ccc apel ace-jump-helm-line ac-cider use-package smooth-scroll)))
+    (flymake-python-pyflakes python-mode quickrun ace-jump-mode flymake-cursor jaunte moz undo-tree expand-region color-theme color-moccur underwater-theme afternoon-theme w3m visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew magit lispxmp key-chord highlight-symbol goto-chg git-gutter foreign-regexp flycheck-clojure flycheck flim eldoc-extension el-mock el-get dumb-jump direx dired-subtree dired-hacks-utils diminish ddskk dash company-quickhelp company clj-refactor cdb ccc apel ace-jump-helm-line ac-cider use-package smooth-scroll)))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
  '(reb-re-syntax (quote foreign-regexp))
- '(shell-pop-default-directory "~")
- '(shell-pop-full-span t)
- '(shell-pop-shell-type
-   (quote
-    ("ansi-term" "*ansi-term*"
-     (lambda nil
-       (ansi-term shell-pop-term-shell)))))
- '(shell-pop-term-shell "/bin/bash")
- '(shell-pop-universal-key "C-c p")
- '(shell-pop-window-position "bottom")
- '(shell-pop-window-size 30)
  '(tab-width 4))
 
 (custom-set-faces

@@ -2,6 +2,7 @@
 ;; Use /usr/share/emacs/site-lisp or /usr/share/emacs/site-lisp/goodies if exists.
 (load-theme 'afternoon t)
 
+
 ;; windows
 (use-package windows
   :config
@@ -11,17 +12,25 @@
 
 
 ;;auto-insert
-;(add-hook 'find-file-hooks 'auto-insert)
-(setq auto-insert-directory "~/.emacs.d/lisp/insert/")
 (auto-insert-mode 1)
 ;(setq auto-insert-query nil)
 
-(setq auto-insert-alist
-      (append '(("\\.h" . "template-header-cpp.txt"))
-              auto-insert-alist))
+
+;; dired
+(setq bookmark-save-flag 1)
+(setq dired-listing-switches "-alhF")
+
+;; dired -> dired-x
+(add-hook 'dired-load-hook
+          (function (lambda () (load "dired-x"))))
 
 
-;; for dired
+(use-package dired-subtree
+  :config
+  (bind-keys :map dired-mode-map
+             ("i" . dired-subtree-insert)
+             (";" . dired-subtree-remove)))
+
 (setq dired-dwim-target t)
 (setq dired-recursive-copies 'always)
 
@@ -50,9 +59,6 @@
   ;; Visble bookmark in buffer
   :disabled)
 
-;; psvn.el
-(require 'psvn)
-
 
 ;; session.el
 ;kill-ringやミニバッファで過去に開いたファイルなどの履歴を保存する
@@ -64,14 +70,6 @@
   (add-hook 'after-init-hook 'session-initialize)
   ;; 前回閉じたときの位置にカーソルを復帰
   (setq session-undo-check -1))
-
-
-; ;; icicles
-; (add-to-list 'load-path
-;              (expand-file-name "~/.emacs.d/site-lisp/cedet/semantic"))
-; (add-to-list 'load-path
-;              (expand-file-name "~/.emacs.d/site-lisp/icicles"))
-; (load "icicles")
 
 
 ;; thing-opt
@@ -87,8 +85,6 @@
 ;; (define-key 'my-own-map "s" 'mark-symbol)
 ;; (define-key 'my-own-map "e" 'mark-sexp)
 
-
-(define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
 
 ;; grep settings
 (setq grep-host-defaults-alist nil)
@@ -127,9 +123,8 @@
 ;(autoload 'ac-mode "ac-mode" "Minor mode for advanced completion." t nil)
 
 ;; auto-complete
-;; (add-to-list 'load-path "~/.emacs.d/site-lisp/auto-complete")
 (require 'auto-complete)
-(global-auto-complete-mode t)
+;;(global-auto-complete-mode t)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/site-lisp/dict")
 (require 'auto-complete-config)
@@ -152,19 +147,6 @@
   (define-key skk-j-mode-map ";" nil))
 (add-hook 'skk-mode-hook 'skk-mode-hook--unset-key)
 
-;(load "skk")
-;(require 'skk-autoloads)
-;(setq skk-large-jisyo
-;      (expand-file-name "~/.emacs.d/site-lisp/skk/SKK-JISYO.L"))
-;(setq Info-default-directory-list
-;      (cons "~/.emacs.d/site-lisp/skk/info" Info-default-directory-list))
-;(setq skk-tut-file
-;      (expand-file-name "~/.emacs.d/site-lisp/skk/SKK.tut"))
-
-;; +x
-;;(add-hook 'after-save-hook
-;;          'executable-make-buffer-file-executable-if-script-p)
-
 
 ;; ace-jump-mode
 (use-package ace-jump-mode
@@ -180,11 +162,6 @@
   (setq jaunte-hint-unit 'whitespace))
 
 
-;; srep
-;; https://github.com/kmorimoto/srep
-(require 'srep)
-
-
 ;; mark-more-like-thin
 (require 'multiple-cursors)
 (key-chord-define-global "za" 'mc/mark-all-like-this)
@@ -193,20 +170,21 @@
 (key-chord-define-global "zj" 'mc/skip-to-next-like-this)
 (key-chord-define-global "zk" 'mc/skip-to-previous-like-this)
 
+
 ;; expand region
 (require 'expand-region)
 (key-chord-define-global "ww" 'er/expand-region)
 (key-chord-define-global "WW" 'er/contract-region)
-;(global-set-key (kbd "C-@") 'er/expand-region)
-;(global-set-key (kbd "C-M-@") 'er/contract-region) ;; narrow region
+
 
 ;; transient-mark-mode need to be true.
 ;(transient-mark-mode t)
 
+
 ;; cua-mode
 (key-chord-define-global "RR" 'cua-mode) ; R := Rectangle
 (setq cua-enable-cua-keys nil)
-; @todo key-combo conflicts with cua-mode??
+
 
 ; from http://d.hatena.ne.jp/kitokitoki/20110305/p2
 (defadvice cua-sequence-rectangle (around my-cua-sequence-rectangle activate)
@@ -229,6 +207,7 @@
                                (yank)
                                (setq first (+ first incr)))))
 
+
 ;; Full screen
 (defvar my-fullscreen-default 'fullboth)
 (defun my-fullscreen (arg)
@@ -248,10 +227,12 @@
   (redisplay))
 (global-set-key (kbd "C-`") 'my-fullscreen)
 
+
 ;; Generate new buffer and switch to it
 (defun create-buffer (buf)
   (interactive "Bbuff:")
   (switch-to-buffer (get-buffer-create buf)))
+
 
 ;; Get value of default-directory in current buffer
 (defun get-default-directory ()
@@ -270,6 +251,7 @@
 
 ;; goto-chg
 (use-package goto-chg
+  :disabled
   :bind
   (("M-\[" . 'goto-last-change)
    ("M-\]" . 'goto-last-change-reverse)))
@@ -314,8 +296,10 @@
 
 ;; visual-regexp
 (use-package visual-regexp
+  :disabled
   :config
   (key-chord-define-global "qw" 'vr/query-replace))
+
 
 ;; if you use multiple-cursors, this is for you:
 ;(define-key global-map (kbd "C-c m") 'vr/mc-mark)

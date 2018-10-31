@@ -1,21 +1,3 @@
-; pukiwiki mode
-;(add-to-list load-path "~/.emacs.d/site-lisp/apel")
-;(load "pukiwiki-mode")
-;(setq pukiwiki-auto-insert t)
-;(autoload 'pukiwiki-edit
-;  "pukiwiki-mode" "pukwiki-mode." t)
-;(autoload 'pukiwiki-index
-;  "pukiwiki-mode" "pukwiki-mode." t)
-;(autoload 'pukiwiki-edit-url
-;  "pukiwiki-mode" "pukwiki-mode." t)
-;(setq
-; pukiwiki-site-list
-; '(("local"
-;    "http://localhost/~takahashi/pukiwiki/"
-;    nil utf-8)
-;))
-
-
 ;(add-to-list 'load-path "~/.emacs.d/site-lisp/howm/")
 ;(setq howm-menu-lang 'ja)
 ;(global-set-key "\C-c,," 'howm-menu)
@@ -86,7 +68,7 @@ Creates a buffer if necessary."
 
 ;; popwin
 (require 'popwin)
-(setq display-buffer-function 'popwin:display-buffer)
+;;(setq display-buffer-function 'popwin:display-buffer)
 
 (define-key dired-mode-map "o" '(lambda ()
                                   (interactive)
@@ -109,7 +91,6 @@ Creates a buffer if necessary."
 
 ;; direx
 (require 'direx)
-(require 'popwin)
 ;(setq direx:leaf-icon "  "
 ;      direx:open-icon "- "
 ;      direx:closed-icon "+ ")

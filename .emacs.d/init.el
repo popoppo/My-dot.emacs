@@ -15,15 +15,17 @@
 (require 'package)
 ;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
 (package-initialize)
 
+
 (defvar my:packages
-  '(
-    ac-cider
+  '(ac-cider
     ace-jump-helm-line
+    ace-jump-mode
     apel
     async
     auto-complete
@@ -47,13 +49,14 @@
     edn
     el-get
     el-mock
-    eldoc-extension
+;    eldoc-extension
     epl
     expand-region
     f
     flim
     flycheck
     flycheck-clojure
+    flymake-cursor
     foreign-regexp
     ghub
     git-commit
@@ -64,12 +67,15 @@
     highlight-symbol
     hydra
     inflections
+    jaunte
+    jedi
     key-chord
     let-alist
     lispxmp
     magit
     magit-popup
     mew
+    ; moz
     multiple-cursors
     mykie
     noflet
@@ -79,7 +85,9 @@
     popup
     popwin
     pos-tip
+    python-mode
     queue
+    quickrun
     s
     seq
     shell-pop
@@ -87,12 +95,14 @@
     smooth-scroll
     spinner
     symbol-overlay
+    undo-tree
     use-package
     visual-regexp
     w3m
     with-editor
     yasnippet
     ))
+
 
 (when nil  ;; Enable manually if needed
   (package-refresh-contents)
@@ -177,7 +187,7 @@
  '(org-use-fast-todo-selection t)
  '(package-selected-packages
    (quote
-    (flymake-python-pyflakes python-mode quickrun ace-jump-mode flymake-cursor jaunte moz undo-tree expand-region color-theme color-moccur underwater-theme afternoon-theme w3m visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew magit lispxmp key-chord highlight-symbol goto-chg git-gutter foreign-regexp flycheck-clojure flycheck flim eldoc-extension el-mock el-get dumb-jump direx dired-subtree dired-hacks-utils diminish ddskk dash company-quickhelp company clj-refactor cdb ccc apel ace-jump-helm-line ac-cider use-package smooth-scroll)))
+    (jedi apel ccc cdb color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp w3m flymake-python-pyflakes python-mode quickrun ace-jump-mode flymake-cursor jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew magit key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock el-get dumb-jump direx diminish dash company-quickhelp company clj-refactor ace-jump-helm-line ac-cider use-package smooth-scroll)))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
  '(reb-re-syntax (quote foreign-regexp))

@@ -25,7 +25,7 @@
   (print *gtags-current-buffer-alist*))
 
 (require 'eldoc)
-(require 'eldoc-extension)
+;(require 'eldoc-extension)
 ;(setq eldoc-idle-delay 0.20)
 (setq eldoc-echo-area-use-multiline-p t)
 
@@ -84,6 +84,9 @@
 (setq interpreter-mode-alist (cons '("python" . python-mode)
                                    interpreter-mode-alist))
 (autoload 'python-mode "python-mode" "Python editing mode." t)
+
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 ;; ipython
 ; (setq ipython-command "/usr/local/bin/ipython")

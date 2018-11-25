@@ -23,12 +23,25 @@
 ;(global-set-key (kbd "C-x C-r") 'helm-recentf)
 (global-set-key (kbd "C-.") 'helm-mini)
 (global-set-key (kbd "M-x") 'helm-M-x)
+(key-chord-define-global ";a" 'helm-ag-project-root)
 (key-chord-define-global ";b" 'helm-buffers-list)
 (key-chord-define-global ";f" 'helm-find-files)
+(key-chord-define-global ";g" 'helm-git-grep)
+(key-chord-define-global ";l" 'helm-ls-git-ls)
 (key-chord-define-global ";r" 'helm-recentf)
 (key-chord-define-global "II" 'helm-imenu)
 (key-chord-define-global "qy" 'helm-show-kill-ring)
 (key-chord-define-global "qm" 'helm-mark-ring)
+
+;; For dot files and dirs
+(setq helm-ag-command-option "--hidden")
+
+;; helm-git-grep
+;; Invoke `helm-git-grep' from isearch.
+;; (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
+;; Invoke `helm-git-grep' from other helm.
+(eval-after-load 'helm
+  '(define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm))
 
 
 (require 'ace-jump-helm-line)

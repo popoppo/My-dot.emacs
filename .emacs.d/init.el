@@ -177,7 +177,7 @@
  '(org-use-fast-todo-selection t)
  '(package-selected-packages
    (quote
-    (flymake-python-pyflakes python-mode quickrun ace-jump-mode flymake-cursor jaunte moz undo-tree expand-region color-theme color-moccur underwater-theme afternoon-theme w3m visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew magit lispxmp key-chord highlight-symbol goto-chg git-gutter foreign-regexp flycheck-clojure flycheck flim eldoc-extension el-mock el-get dumb-jump direx dired-subtree dired-hacks-utils diminish ddskk dash company-quickhelp company clj-refactor cdb ccc apel ace-jump-helm-line ac-cider use-package smooth-scroll)))
+    (helm-git-grep helm-ag helm-ls-git flymake-python-pyflakes python-mode quickrun ace-jump-mode flymake-cursor jaunte moz undo-tree expand-region color-theme color-moccur underwater-theme afternoon-theme w3m visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew magit lispxmp key-chord highlight-symbol goto-chg git-gutter foreign-regexp flycheck-clojure flycheck flim eldoc-extension el-mock el-get dumb-jump direx dired-subtree dired-hacks-utils diminish ddskk dash company-quickhelp company clj-refactor cdb ccc apel ace-jump-helm-line ac-cider use-package smooth-scroll)))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
  '(reb-re-syntax (quote foreign-regexp))

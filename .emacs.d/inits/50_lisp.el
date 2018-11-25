@@ -114,8 +114,8 @@ Display the results in a hyperlinked *compilation* buffer."
 (setq nrepl-use-ssh-fallback-for-remote-hosts t)
 
 ;; For repl
-(set! *print-length* 10)
-(set! *print-level* 10)
+; (set! *print-length* 10)
+; (set! *print-level* 10)
 
 ;; paredit
 (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)

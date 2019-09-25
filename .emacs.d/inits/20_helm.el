@@ -1,7 +1,13 @@
-(require 'helm)
-(require 'helm-config)
+(use-package helm
+  :diminish
+  :ensure t
+  :config
+  (helm-mode 1))
 
-(helm-mode +1)
+;(require 'helm)
+;(require 'helm-config)
+
+;;(helm-mode +1)
 
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
 (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
@@ -23,7 +29,7 @@
 ;(global-set-key (kbd "C-x C-r") 'helm-recentf)
 (global-set-key (kbd "C-.") 'helm-mini)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(key-chord-define-global ";a" 'helm-ag-project-root)
+(key-chord-define-global ";a" 'helm-ag)
 (key-chord-define-global ";b" 'helm-buffers-list)
 (key-chord-define-global ";f" 'helm-find-files)
 (key-chord-define-global ";g" 'helm-git-grep)
@@ -31,6 +37,7 @@
 (key-chord-define-global ";r" 'helm-recentf)
 (key-chord-define-global "II" 'helm-imenu)
 (key-chord-define-global "qy" 'helm-show-kill-ring)
+(key-chord-define-global "oo" 'helm-swoop)
 (key-chord-define-global "qm" 'helm-mark-ring)
 
 ;; For dot files and dirs
@@ -47,3 +54,8 @@
 (require 'ace-jump-helm-line)
 (eval-after-load "helm"
   '(define-key helm-map (kbd "C-'") 'ace-jump-helm-line))
+
+
+;; helm-ls-git
+(require 'helm-ls-git)
+(key-chord-define-global ";l" 'helm-ls-git-ls)

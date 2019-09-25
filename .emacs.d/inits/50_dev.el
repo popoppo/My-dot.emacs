@@ -84,9 +84,19 @@
 (setq interpreter-mode-alist (cons '("python" . python-mode)
                                    interpreter-mode-alist))
 (autoload 'python-mode "python-mode" "Python editing mode." t)
+(add-hook 'python-mode-hook '(lambda ()
+                               (eldoc-mode -1)
+                               (flymake-mode -1)
+                               (auto-complete-mode -1)
+                               (company-mode 1)))
 
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:complete-on-dot t)
+
+; (require 'flymake-python-pyflakes)
+; (add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
+; (setq flymake-python-pyflakes-executable "flake8")
+; (setq flymake-python-pyflakes-extra-arguments '("--max-line-length=100"))
 
 ;; ipython
 ; (setq ipython-command "/usr/local/bin/ipython")
@@ -179,6 +189,7 @@
 
 
 (use-package git-gutter
+  :diminish git-gutter-mode
   :init
   (global-git-gutter-mode t))
 
@@ -206,3 +217,8 @@
 
 ;; symbol-overlay
 (require 'symbol-overlay)
+
+
+;; flycheck
+(add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
+(add-hook 'python-mode-hook 'flycheck-mode)

@@ -200,8 +200,8 @@
                                      (next-line)
                                      (let ((e (point)))
                                        (clipboard-kill-ring-save b e))))))
-(key-chord-define-global "`n" 'flymake-goto-next-error)
-(key-chord-define-global "`p" 'flymake-goto-prev-error)
+(key-chord-define-global "`n" 'flycheck-next-error)
+(key-chord-define-global "`p" 'flycheck-previous-error)
 (key-chord-define-global "GN" 'git-gutter:next-hunk)
 (key-chord-define-global "GP" 'git-gutter:previous-hunk)
 

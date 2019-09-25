@@ -15,7 +15,7 @@
 (require 'package)
 ;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
+;; (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
@@ -158,6 +158,7 @@
  '(jde-gen-final-methods nil)
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
  '(large-file-warning-threshold nil)
+ '(lsp-ui-sideline-enable nil)
  '(org-agenda-files (quote ("~/Dropbox/org/gtd.org" "~/Dropbox/org/notes.org")))
  '(org-agenda-include-diary nil)
  '(org-agenda-ndays 7)
@@ -187,7 +188,7 @@
  '(org-use-fast-todo-selection t)
  '(package-selected-packages
    (quote
-    (jedi apel ccc cdb color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp w3m flymake-python-pyflakes python-mode quickrun ace-jump-mode flymake-cursor jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew magit key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock el-get dumb-jump direx diminish dash company-quickhelp company clj-refactor ace-jump-helm-line ac-cider use-package smooth-scroll helm-git-grep helm-ag helm-ls-git)))
+    (company-tabnine company-lsp lsp-mode lsp-ui company-quickhelp company python-mode yasnippet-snippets helm-swoop jedi apel ccc cdb color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp quickrun ace-jump-mode jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew magit key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock el-get dumb-jump direx diminish dash clj-refactor ace-jump-helm-line ac-cider use-package smooth-scroll helm-git-grep helm-ag helm-ls-git)))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
  '(reb-re-syntax (quote foreign-regexp))

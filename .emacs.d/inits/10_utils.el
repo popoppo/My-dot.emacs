@@ -115,6 +115,7 @@
 
 
 (use-package undo-tree
+  :diminish undo-tree-mode
   :config
   (global-undo-tree-mode))
 
@@ -137,6 +138,7 @@
 
 
 (use-package yasnippet
+  :diminish yas-minor-mode
   :config
   (yas/initialize)
   (yas/load-directory "~/.emacs.d/snippets"))
@@ -242,6 +244,7 @@
 
 
 (use-package smooth-scroll
+  :diminish smooth-scroll-mode
   :config
   (smooth-scroll-mode t))
 

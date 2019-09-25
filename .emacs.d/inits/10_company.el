@@ -14,3 +14,10 @@
 (define-key company-active-map (kbd "C-i") 'company-complete-selection)
 
 (company-quickhelp-mode t)
+
+(use-package company-tabnine
+  :ensure t)
+
+(add-to-list 'company-backends #'company-tabnine)
+(global-set-key (kbd "C-M-,") 'company-tabnine)
+;; (key-chord-define-global "" ')

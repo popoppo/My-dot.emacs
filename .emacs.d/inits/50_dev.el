@@ -162,8 +162,12 @@
                 ("\\.rest$" . rst-mode)) auto-mode-alist))
 
 
-;;; Autoloads for magit
+;;; magit
 (use-package magit)
+
+;; forge
+(use-package forge
+  :after magit)
 
 
 ;; Complete parentheses

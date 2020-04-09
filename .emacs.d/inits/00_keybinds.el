@@ -60,17 +60,16 @@
 
 
 (global-unset-key "\C-x\C-c")
-(global-set-key "\M-p" '(lambda () (interactive) (next-line -4)))
-(global-set-key "\M-n" '(lambda () (interactive) (next-line 4)))
-(global-set-key "\M-m" 'just-one-space)
+;;(global-set-key "\M-p" '(lambda () (interactive) (next-line -4)))
+;;(global-set-key "\M-n" '(lambda () (interactive) (next-line 4)))
+;;(global-set-key "\M-m" 'just-one-space)
 (global-set-key "\C-a" '(lambda () (interactive)
                           (let ((beginning 0))
                             (save-excursion
                               (beginning-of-line)
                               (setq beginning (point)))
                             (cond ((= (point) beginning)
-                                   (search-forward-regexp "^[ \t]*[^ \t]")
-                                   (backward-char))
+                                   (back-to-indentation))
                                   (t
                                    (beginning-of-line))))))
 (global-set-key "\M-a" '(lambda () (interactive) (command-execute (kbd "C-M-a"))))

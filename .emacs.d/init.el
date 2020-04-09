@@ -159,36 +159,9 @@
  '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
  '(large-file-warning-threshold nil)
  '(lsp-ui-sideline-enable nil)
- '(org-agenda-files (quote ("~/Dropbox/org/gtd.org" "~/Dropbox/org/notes.org")))
- '(org-agenda-include-diary nil)
- '(org-agenda-ndays 7)
- '(org-agenda-repeating-timestamp-show-all t)
- '(org-agenda-restore-windows-after-quit t)
- '(org-agenda-show-all-dates t)
- '(org-agenda-skip-deadline-if-done t)
- '(org-agenda-skip-scheduled-if-done t)
- '(org-agenda-sorting-strategy
-   (quote
-    ((agenda time-up priority-down tag-up)
-     (todo tag-up))))
- '(org-agenda-start-on-weekday nil)
- '(org-agenda-window-setup (quote other-window))
- '(org-deadline-warning-days 7)
- '(org-fast-tag-selection-single-key nil)
- '(org-insert-mode-line-in-empty-file t)
- '(org-log-done (quote (done)))
- '(org-refile-targets
-   (quote
-    (("gtd.org" :maxlevel . 1)
-     ("archive.org" :maxlevel . 1))))
- '(org-reverse-note-order nil)
- '(org-tags-match-list-sublevels t)
- '(org-time-stamp-rounding-minutes 5)
- '(org-timeline-show-empty-dates t)
- '(org-use-fast-todo-selection t)
  '(package-selected-packages
    (quote
-    (company-tabnine company-lsp lsp-mode lsp-ui company-quickhelp company python-mode yasnippet-snippets helm-swoop jedi apel ccc cdb color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp quickrun ace-jump-mode jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew magit key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock el-get dumb-jump direx diminish dash clj-refactor ace-jump-helm-line ac-cider use-package smooth-scroll helm-git-grep helm-ag helm-ls-git)))
+    (ace-jump-helm-line helm helm-ag helm-core helm-git-grep helm-ls-git helm-swoop docker dockerfile-mode forge magit docker-tramp company-tabnine company-lsp lsp-mode lsp-ui company-quickhelp company python-mode yasnippet-snippets jedi apel ccc cdb color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp quickrun ace-jump-mode jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock el-get dumb-jump direx diminish dash clj-refactor ac-cider use-package smooth-scroll)))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
  '(reb-re-syntax (quote foreign-regexp))

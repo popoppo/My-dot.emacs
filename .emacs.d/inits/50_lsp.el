@@ -1,12 +1,20 @@
 (use-package lsp-mode
-  ;; :custom ((lsp-inhibit-message t)
+  :custom
+  (lsp-prefer-flymake 'flymake)
+  (lsp-enable-completion-at-point nil)
+  ;; ((lsp-inhibit-message t)
   ;;        (lsp-message-project-root-warning t)
   ;;        (create-lockfiles nil))
   :hook   (prog-major-mode . lsp-prog-major-mode-enable))
 
 (use-package lsp-ui
   :after lsp-mode
-  :custom (scroll-margin 0)
+  :custom
+  (scroll-margin 0)
+  (lsp-ui-flycheck-enable nil)
+  (lsp-ui-peek-enable t)
+  (lsp-ui-peek-peek-height 20)
+  (lsp-ui-peek-list-width 50)
   :hook   (lsp-mode . lsp-ui-mode))
 
 (use-package company-lsp

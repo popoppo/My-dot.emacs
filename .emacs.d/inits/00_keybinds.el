@@ -60,8 +60,6 @@
 
 
 (global-unset-key "\C-x\C-c")
-;;(global-set-key "\M-p" '(lambda () (interactive) (next-line -4)))
-;;(global-set-key "\M-n" '(lambda () (interactive) (next-line 4)))
 ;;(global-set-key "\M-m" 'just-one-space)
 (global-set-key "\C-a" '(lambda () (interactive)
                           (let ((beginning 0))
@@ -72,11 +70,11 @@
                                    (back-to-indentation))
                                   (t
                                    (beginning-of-line))))))
-(global-set-key "\M-a" '(lambda () (interactive) (command-execute (kbd "C-M-a"))))
-(global-set-key "\M-e" '(lambda () (interactive) (command-execute (kbd "C-M-e"))))
+;;(global-set-key "\M-a" '(lambda () (interactive) (command-execute (kbd "C-M-a"))))
+;;(global-set-key "\M-e" '(lambda () (interactive) (command-execute (kbd "C-M-e"))))
 (global-set-key "\C-w" 'clipboard-kill-region)
 (global-set-key "\M-w" 'clipboard-kill-ring-save)
-(global-set-key [?\C-\;] 'dabbrev-expand)
+(global-set-key [?\C-\;] 'hippie-expand)
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key (kbd "C-,") 'auto-complete) ;; TODO: move to ?
 (global-set-key "\C-x\C-c\C-k" 'kill-buffer-and-window)
@@ -88,7 +86,7 @@
 (global-set-key "\M-h" 'backward-kill-word)
 (global-set-key "\M-l" '(lambda () (interactive)
                           (set-mark-command 0)))
-(global-set-key "\M-r" 'my:move-to-window-line)
+;;(global-set-key "\M-r" 'my:move-to-window-line)
 (global-set-key (kbd "C-\\") 'mark-word)
 
 
@@ -120,7 +118,7 @@
 (key-chord-define-global "JJ" '(lambda ()
                                  (interactive)
                                  (delete-indentation 1)))
-(key-chord-define-global "MM" 'kill-whitespace)
+(key-chord-define-global "MM" 'just-one-space)
 (key-chord-define-global "GL" 'goto-line)
 (key-chord-define-global "HS" 'hs-minor-mode)
 (key-chord-define-global "HX" 'hs-toggle-hiding)
@@ -129,7 +127,7 @@
 ;(global-set-key "¥C-xj" 'skk-auto-fill-mode)
 ;(global-set-key "¥C-xt" 'skk-tutorial)
 (key-chord-define-global "MS" 'start-kbd-macro)
-(key-chord-define-global "ME" 'end-kbd-macro)
+;;(key-chord-define-global "ME" 'end-kbd-macro)
 ;(key-chord-define-global "ll" 'recenter-top-bottom)
 (key-chord-define-global "MD" 'mark-defun)
 (key-chord-define-global "qn" '(lambda () (interactive)
@@ -184,7 +182,7 @@
 (key-chord-define-global "SP" 'backward-list)
 (key-chord-define-global "SU" 'backward-up-list)
 (key-chord-define-global "SW" 'window-configuration-to-register)
-(key-chord-define-global "qq" 'toggle-view-mode)
+;;(key-chord-define-global "qq" 'toggle-view-mode)
 (key-chord-define-global "qw" 'query-replace-regexp)
 (key-chord-define-global "UU" '(lambda () (interactive)
                                  (let ((e (point)))

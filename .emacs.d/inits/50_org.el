@@ -46,6 +46,8 @@
 (global-set-key (kbd "C-c o a") 'org-agenda)
 (global-set-key (kbd "C-c o l") 'org-store-link)
 
+(setq org-agenda-files (list (concat org-directory "gtd.org") (concat org-directory "notes.org")))
+
 ;;(custom-set-variables
 ;;  ;; custom-set-variables was added by Custom.
 ;;  ;; If you edit it by hand, you could mess it up, so be careful.

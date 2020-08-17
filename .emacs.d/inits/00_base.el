@@ -52,7 +52,6 @@
 (show-paren-mode t)
 (tool-bar-mode -1)
 (windmove-default-keybindings)
-(window-body-height nil)
 
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
@@ -65,7 +64,6 @@
 (setq history-length 1000)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
-(setq make-backup-files nil)
 (setq next-screen-context-lines 10) ;; for C-v, M-v
 ;(setq pop-up-windows nil)
 (setq ring-bell-function 'ignore)
@@ -78,7 +76,6 @@
 ;(setq-default truncate-lines t)
 ;(setq-default truncate-partial-width-windows t)
 
-(add-hook 'shell-mode-hook 'pcomplete-shell-setup) ;; TODO: move to 20_shell.el
 
 ;; Backup file dir
 (setq make-backup-files t)
@@ -88,6 +85,8 @@
 
 
 ;; recentf
+(recentf-mode 1)
+(setq recentf-max-menu-items 1000)
 (setq recentf-max-saved-items 1000)
 (setq recentf-auto-cleanup 'never)
 ;; (setq recentf-exclude
@@ -98,12 +97,7 @@
       (run-with-idle-timer 30 t 'recentf-save-list))
 
 
-;; ac-mode
-;(autoload 'ac-mode "ac-mode" "Minor mode for advanced completion." t nil)
-
-
 ;; desktop (Enable them as needed)
-;;(setq history-length 250)
 ;;(add-to-list 'desktop-globals-to-save 'file-name-history)
 ;;(setq desktop-globals-to-save '(extended-command-history))
 ;;(setq desktop-files-not-to-save "")
@@ -112,5 +106,4 @@
 
 ;; Others
 (require 'cl)
-
 (require 'imenu)

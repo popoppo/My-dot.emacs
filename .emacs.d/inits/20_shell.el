@@ -172,3 +172,6 @@
                                        (if (term-in-char-mode)
                                            (term-line-mode)
                                          (term-char-mode))))))
+
+(add-hook 'shell-mode-hook 'pcomplete-shell-setup) ;; TODO: move to 20_shell.el
+

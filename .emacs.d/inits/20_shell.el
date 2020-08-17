@@ -9,7 +9,7 @@
 
 ;; Term
 (require 'term)
-(add-to-list 'ac-modes 'term-mode)
+;;(add-to-list 'ac-modes 'term-mode)
 
 (global-set-key "\C-ct" '(lambda () (interactive)
                            (ansi-term "/bin/bash")))

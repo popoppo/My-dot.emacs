@@ -37,7 +37,7 @@
 (key-chord-define-global ";r" 'helm-recentf)
 (key-chord-define-global "II" 'helm-imenu)
 (key-chord-define-global "qy" 'helm-show-kill-ring)
-(key-chord-define-global "oo" 'helm-swoop)
+(key-chord-define-global "OO" 'helm-swoop)
 (key-chord-define-global "qm" 'helm-mark-ring)
 
 ;; For dot files and dirs

@@ -21,6 +21,11 @@
 (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
 (package-initialize)
 
+;; el-get
+(add-to-list 'load-path "~/.emacs.d/el-get")
+(require 'el-get)
+(setq el-get-dir "~/.emacs.d/site-lisp")
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 
 (defvar my:packages
   '(ac-cider
@@ -161,7 +166,7 @@
  '(lsp-ui-sideline-enable nil)
  '(package-selected-packages
    (quote
-    (uuidgen markdown-mode markdown-preview-mode ace-jump-helm-line helm helm-ag helm-core helm-git-grep helm-ls-git helm-swoop docker dockerfile-mode forge magit docker-tramp company-tabnine company-lsp lsp-mode lsp-ui company-quickhelp company python-mode yasnippet-snippets apel ccc cdb color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp quickrun ace-jump-mode jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock el-get dumb-jump direx diminish dash clj-refactor ac-cider use-package smooth-scroll)))
+    (uuidgen markdown-mode markdown-preview-mode ace-jump-helm-line helm helm-ag helm-core helm-git-grep helm-ls-git helm-swoop docker dockerfile-mode forge magit docker-tramp company-tabnine company-lsp lsp-mode lsp-ui company-quickhelp company python-mode yasnippet-snippets apel ccc cdb color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp quickrun ace-jump-mode jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock dumb-jump direx diminish dash clj-refactor ac-cider use-package smooth-scroll)))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
  '(reb-re-syntax (quote foreign-regexp))

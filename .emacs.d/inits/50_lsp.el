@@ -1,11 +1,13 @@
 (use-package lsp-mode
+  :commands lsp
   :custom
   (lsp-prefer-flymake 'flymake)
   (lsp-enable-completion-at-point nil)
   ;; ((lsp-inhibit-message t)
   ;;        (lsp-message-project-root-warning t)
   ;;        (create-lockfiles nil))
-  :hook   (prog-major-mode . lsp-prog-major-mode-enable))
+  :hook   ;;(prog-major-mode . lsp-prog-major-mode-enable)
+  (python-mode . lsp))
 
 (use-package lsp-ui
   :after lsp-mode
@@ -19,8 +21,9 @@
 
 (use-package company-lsp
   ;;:after (lsp-mode company yasnippet)
-  :after (lsp-mode company)
-  :config (push 'company-lsp company-backends)
+  ;; :after (lsp-mode company)
+  :commands company-lsp
+  ;;:config (push 'company-lsp company-backends)
   ;; :defines company-backends
   ;; :functions company-backend-with-yas
   ;;:init (cl-pushnew (company-backend-with-yas 'company-lsp) company-backends))

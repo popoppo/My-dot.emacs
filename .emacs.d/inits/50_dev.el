@@ -89,6 +89,7 @@
                                (flymake-mode -1)
                                (auto-complete-mode -1)
                                (company-mode 1)))
+(add-hook 'python-mode-hook #'lsp)
 
 ;; (add-hook 'python-mode-hook 'jedi:setup)
 ;; (setq jedi:complete-on-dot t)

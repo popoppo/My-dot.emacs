@@ -166,6 +166,7 @@
 (key-chord-define-global "`p" 'flycheck-previous-error)
 (key-chord-define-global "GN" 'git-gutter:next-hunk)
 (key-chord-define-global "GP" 'git-gutter:previous-hunk)
+(key-chord-define-global "BM" 'bookmark-jump)
 
 
 ;; Sticky Shift

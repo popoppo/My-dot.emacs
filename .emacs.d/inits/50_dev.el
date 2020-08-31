@@ -24,43 +24,16 @@
   (interactive)
   (print *gtags-current-buffer-alist*))
 
-(require 'eldoc)
-;(require 'eldoc-extension)
-;(setq eldoc-idle-delay 0.20)
-(setq eldoc-echo-area-use-multiline-p t)
-
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 
 ;; C/C++
 (add-hook 'c-mode-hook
     '(lambda ()
        ;(gtags-make-complete-list)))
-       (make-variable-buffer-local 'skeleton-pair)
-       (make-variable-buffer-local 'skeleton-pair-on-word)
-       (make-variable-buffer-local 'skeleton-pair-alist)
-       (setq skeleton-pair-on-word t)
-       (setq skeleton-pair t)
-       (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
-       (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-       (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
-       (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
-       (local-set-key (kbd "\'") 'skeleton-pair-insert-maybe)
        (gtags-mode 1)
        (gtags-make-complete-list)))
 
 (add-hook 'c++-mode-hook
     '(lambda ()
-       (make-variable-buffer-local 'skeleton-pair)
-       (make-variable-buffer-local 'skeleton-pair-on-word)
-       (make-variable-buffer-local 'skeleton-pair-alist)
-       (setq skeleton-pair-on-word t)
-       (setq skeleton-pair t)
-       (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
-       (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-       (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
-       (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
-       (local-set-key (kbd "\'") 'skeleton-pair-insert-maybe)
        (gtags-mode 1)))
 
 
@@ -78,18 +51,17 @@
 
 
 ;; Python
-;; python-mode
-(require 'python-mode)
-(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-(setq interpreter-mode-alist (cons '("python" . python-mode)
-                                   interpreter-mode-alist))
-(autoload 'python-mode "python-mode" "Python editing mode." t)
-(add-hook 'python-mode-hook '(lambda ()
-                               (eldoc-mode -1)
-                               (flymake-mode -1)
-                               (auto-complete-mode -1)
-                               (company-mode 1)))
-(add-hook 'python-mode-hook #'lsp)
+(use-package python-mode
+  :config
+  (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+  (setq interpreter-mode-alist (cons '("python" . python-mode)
+                                     interpreter-mode-alist))
+  (add-hook 'python-mode-hook '(lambda ()
+                                 (eldoc-mode -1)
+                                 (flymake-mode -1)
+                                 (auto-complete-mode -1)
+                                 (company-mode 1)))
+  (add-hook 'python-mode-hook #'lsp))
 
 ;; (add-hook 'python-mode-hook 'jedi:setup)
 ;; (setq jedi:complete-on-dot t)
@@ -164,7 +136,8 @@
 
 
 ;;; magit
-(use-package magit)
+(use-package magit
+  :ensure t)
 
 ;; forge
 (use-package forge
@@ -227,3 +200,10 @@
 ;; flycheck
 (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
 (add-hook 'python-mode-hook 'flycheck-mode)
+(add-hook 'clojure-mode-hook 'flycheck-mode)
+
+
+;; yaml-mode
+(use-package yaml-mode
+  :mode ("\\.ya?ml\\'" . yaml-mode))
+

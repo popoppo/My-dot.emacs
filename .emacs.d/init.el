@@ -8,7 +8,6 @@
 
 ;; load-path
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/auto-install"))
 ;;(setq exec-path (append exec-path '(expand-file-name "~/bin")))
 
 ;; packages
@@ -21,19 +20,11 @@
 (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
 (package-initialize)
 
-;; el-get
-(add-to-list 'load-path "~/.emacs.d/el-get")
-(require 'el-get)
-(setq el-get-dir "~/.emacs.d/site-lisp")
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-
 (defvar my:packages
-  '(ac-cider
-    ace-jump-helm-line
+  '(ace-jump-helm-line
     ace-jump-mode
     apel
     async
-    auto-complete
     avy
     bind-key
     ccc
@@ -144,10 +135,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ac-auto-start nil)
- '(ac-stop-words nil)
- '(ac-use-fuzzy t)
- '(bookmark-save-flag 1)
+ '(bookmark-save-flag 1 t)
  '(default-tab-width 4 t)
  '(dumb-jump-debug nil)
  '(foreign-regexp/regexp-type (quote perl))
@@ -166,10 +154,25 @@
  '(lsp-ui-sideline-enable nil)
  '(package-selected-packages
    (quote
-    (session init-loader uuidgen markdown-mode markdown-preview-mode ace-jump-helm-line helm helm-ag helm-core helm-git-grep helm-ls-git helm-swoop docker dockerfile-mode forge magit docker-tramp company-tabnine company-lsp lsp-mode lsp-ui company-quickhelp company python-mode yasnippet-snippets apel ccc cdb color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp quickrun ace-jump-mode jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock dumb-jump direx diminish dash clj-refactor ac-cider use-package smooth-scroll)))
+    (cider helm-git-grep session init-loader uuidgen markdown-mode markdown-preview-mode ace-jump-helm-line helm helm-ag helm-core helm-ls-git helm-swoop docker dockerfile-mode forge magit docker-tramp company-tabnine company-lsp lsp-mode lsp-ui company-quickhelp company python-mode yasnippet-snippets apel ccc cdb color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp quickrun ace-jump-mode jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock dumb-jump direx diminish dash clj-refactor use-package smooth-scroll)))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
  '(reb-re-syntax (quote foreign-regexp))
+ '(safe-local-variable-values
+   (quote
+    ((eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook"
+           (add-hook
+            (quote write-contents-functions)
+            (lambda nil
+              (delete-trailing-whitespace)
+              nil))
+           (require
+            (quote whitespace))
+           "Sometimes the mode needs to be toggled off and on."
+           (whitespace-mode 0)
+           (whitespace-mode 1))
+     (whitespace-line-column . 80)
+     (whitespace-style face tabs trailing lines-tail))))
  '(session-use-package t nil (session))
  '(tab-width 4))
 
@@ -179,5 +182,21 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(eshell-prompt ((t (:foreground "White" :weight bold)))))
+
+
+;; el-get
+(add-to-list 'load-path "~/.emacs.d/el-get")
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(setq el-get-dir "~/.emacs.d/site-lisp")
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+
+(el-get-bundle cljstyle-mode)
+
 
 (add-hook 'after-init-hook  (lambda() (ansi-term "/bin/bash")))

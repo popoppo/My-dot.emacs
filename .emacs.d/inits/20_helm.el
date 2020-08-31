@@ -36,7 +36,7 @@
 (use-package helm-git-grep
   :requires helm
   :config
-  (key-chord-define-global ";g" 'helm-git-grep)
+  (key-chord-define-global "g;" 'helm-git-grep)
   :bind
   (:map helm-map
    ("C-c g" . helm-git-grep-from-helm)))

@@ -78,4 +78,3 @@
 
 ;; ditaa
 ;; (setq org-ditaa-jar-path "~/bin/ditaa.jar")
-

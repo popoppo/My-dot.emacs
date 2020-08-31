@@ -134,20 +134,6 @@
   ("M-/" . undo-tree-redo))
 
 
-;; ac-mode
-;(autoload 'ac-mode "ac-mode" "Minor mode for advanced completion." t nil)
-
-;; auto-complete
-;; (require 'auto-complete)
-;; ;;(global-auto-complete-mode t)
-;;
-;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/site-lisp/dict")
-;; (require 'auto-complete-config)
-;; (ac-config-default)
-;;
-;; (setq ac-use-menu-map t)
-
-
 (use-package color-moccur)
 
 
@@ -327,5 +313,3 @@
 
 (use-package docker-tramp-compat)
 
-
-(setq markdown-preview-stylesheets (list "github.css"))

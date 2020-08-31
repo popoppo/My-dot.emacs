@@ -27,6 +27,7 @@
     ("c" . scroll-other-window-down)
     ("v" . scroll-other-window)
     ))
+
 (defun define-many-keys (keymap key-table &optional includes)
   (let (key cmd)
     (dolist (key-cmd key-table)

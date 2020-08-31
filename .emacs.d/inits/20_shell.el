@@ -9,7 +9,6 @@
 
 ;; Term
 (require 'term)
-;;(add-to-list 'ac-modes 'term-mode)
 
 (global-set-key "\C-ct" '(lambda () (interactive)
                            (ansi-term "/bin/bash")))
@@ -173,5 +172,4 @@
                                            (term-line-mode)
                                          (term-char-mode))))))
 
-(add-hook 'shell-mode-hook 'pcomplete-shell-setup) ;; TODO: move to 20_shell.el
-
+(add-hook 'shell-mode-hook 'pcomplete-shell-setup)

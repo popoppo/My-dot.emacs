@@ -189,8 +189,9 @@
   :custom
   (dumb-jump-debug nil)
   :config
-  (key-chord-define-global "JB" 'dumb-jump-back)
-  (key-chord-define-global "JG" 'dumb-jump-go))
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+  (key-chord-define-global "JB" 'xref-pop-marker-stack)
+  (key-chord-define-global "JG" 'xref-find-definitions))
 
 
 ;; symbol-overlay

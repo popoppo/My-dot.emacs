@@ -33,13 +33,51 @@
   (setq helm-ag-command-option "--hidden") ;; For dot files and dirs
   (key-chord-define-global "a;" 'helm-ag))
 
+
+(defun my:helm-git-grep-1 (input)
+  (when (and helm-git-grep-at-point-deactivate-mark mark-active)
+    (deactivate-mark)) ;; remove any active regions
+  (helm-git-grep-1 input))
+
+(defun my:extract-fn-name-without-ns (intput)
+  (if intput (-> intput
+                 (concat " ")
+                 (split-string "/")
+                 last
+                 car)
+    ""))
+
+(defun my:helm-git-grep-at-point ()
+  (interactive)
+  (let* ((symbol (helm-git-grep-get-input-symbol))
+         (input (my:extract-fn-name-without-ns symbol)))
+    (my:helm-git-grep-1 input)))
+
+(defun my:helm-git-grep-find-defs-at-point ()
+  (interactive)
+  (let* ((symbol (helm-git-grep-get-input-symbol))
+         (target (my:extract-fn-name-without-ns symbol))
+         (input (if symbol (concat "def.*\\s" target) target)))
+    (my:helm-git-grep-1 input)))
+
+(defun my:helm-git-grep-find-refs-at-point ()
+  (interactive)
+  (let* ((symbol (helm-git-grep-get-input-symbol))
+         (target (my:extract-fn-name-without-ns symbol))
+         (input (if symbol (concat "[/(\\s']" target) "")))
+    (my:helm-git-grep-1 input)))
+
 (use-package helm-git-grep
   :requires helm
+  ;; :bind (:map helm-map ("C-c g" . helm-git-grep-from-helm)) ;; doesn't work
   :config
-  (key-chord-define-global "g;" 'helm-git-grep)
-  :bind
-  (:map helm-map
-   ("C-c g" . helm-git-grep-from-helm)))
+  (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
+  (key-chord-define-global "/g" 'helm-git-grep)
+  (key-chord-define-global "/a" 'my:helm-git-grep-at-point)
+  (key-chord-define-global "/d" 'my:helm-git-grep-find-defs-at-point)
+  (key-chord-define-global "/r" 'my:helm-git-grep-find-refs-at-point)
+  ;;(setq helm-git-grep-pathspecs nil)
+  (setq helm-git-grep-pathspecs '(":/*" ":!/*test*" ":!/*.idea*" ":!/*yarn.lock" ":!/*.iml" ":!/*externs*")))
 
 ;; helm-git-grep
 ;; Invoke `helm-git-grep' from isearch.
@@ -72,3 +110,7 @@
   :requires helm
   :config
   (key-chord-define-global "OO" 'helm-swoop))
+
+;; (use-package helm-gtags
+;;   :requires helm
+;;   )

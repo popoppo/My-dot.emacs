@@ -62,6 +62,7 @@
 (setq delete-by-moving-to-trash t)
 ;(setq display-time-24hr-format t)
 (setq history-length 1000)
+(setq history-delete-duplicates t)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
 (setq next-screen-context-lines 10) ;; for C-v, M-v

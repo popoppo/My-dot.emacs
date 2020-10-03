@@ -45,4 +45,4 @@
    ;; markdown-xhtml-body-preamble "<div class=\"markdown-body\">"
    ;; markdown-xhtml-body-epilogue "</div>")
   ;;(setq markdown-preview-stylesheets (list "github.css"))
-  )
+  ))

@@ -7,14 +7,15 @@
 
 ;;; Clojure
 (use-package clojure-mode
-  :after (cider clj-refactor flycheck-clj-kondo)
+  :after (cider clj-refactor flycheck-clj-kondo cljstyle-mode)
   :mode ("\\.clj\\'" . clojure-mode)
+  :hook ((clojure-mode . cider-mode)
+         (clojure-mode . company-mode)
+         (clojure-mode . clj-refactor-mode)
+         (clojure-mode . flycheck-mode)
+         (clojure-mode . cljstyle-mode))
   :config
-  (require 'flycheck-clj-kondo)
-  (add-hook 'clojure-mode-hook #'cider-mode)
-  (add-hook 'clojure-mode-hook #'company-mode)
-  (add-hook 'clojure-mode-hook #'clj-refactor-mode)
-  (add-hook 'clojure-mode-hook #'flycheck-mode)
+  (define-key clojure-mode-map (kbd "C-c SPC") 'win-toggle-window)
   (define-clojure-indent
     (defroutes 'defun)
     (GET 2)
@@ -24,6 +25,9 @@
     (HEAD 2)
     (ANY 2)
     (context 2)))
+
+(use-package cljstyle-mode
+  :load-path "~/.emacs.d/site-lisp")
 
 (use-package cider
   :config
@@ -36,7 +40,8 @@
         ;;cider-save-file-on-load 'always-save
         ;;cider-font-lock-dynamically '(macro core function var)
         ;;cider-overlays-use-font-lock t
-        ))
+        )
+  (emidje-setup))
 ;;(cider-repl-toggle-pretty-printing)
 
 (use-package clj-refactor

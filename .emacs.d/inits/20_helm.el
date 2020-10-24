@@ -64,7 +64,7 @@
   (interactive)
   (let* ((symbol (helm-git-grep-get-input-symbol))
          (target (my:extract-fn-name-without-ns symbol))
-         (input (if symbol (concat "[/(\\s']" target) "")))
+         (input (if symbol (concat "[/(\\s':]" target) "")))
     (my:helm-git-grep-1 input)))
 
 (use-package helm-git-grep
@@ -72,10 +72,10 @@
   ;; :bind (:map helm-map ("C-c g" . helm-git-grep-from-helm)) ;; doesn't work
   :config
   (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
-  (key-chord-define-global "/g" 'helm-git-grep)
-  (key-chord-define-global "/a" 'my:helm-git-grep-at-point)
-  (key-chord-define-global "/d" 'my:helm-git-grep-find-defs-at-point)
-  (key-chord-define-global "/r" 'my:helm-git-grep-find-refs-at-point)
+  (key-chord-define-global ",g" 'helm-git-grep)
+  (key-chord-define-global ",a" 'my:helm-git-grep-at-point)
+  (key-chord-define-global ",d" 'my:helm-git-grep-find-defs-at-point)
+  (key-chord-define-global ",r" 'my:helm-git-grep-find-refs-at-point)
   ;;(setq helm-git-grep-pathspecs nil)
   (setq helm-git-grep-pathspecs '(":/*" ":!/*test*" ":!/*.idea*" ":!/*yarn.lock" ":!/*.iml" ":!/*externs*")))
 
@@ -109,7 +109,8 @@
 (use-package helm-swoop
   :requires helm
   :config
-  (key-chord-define-global "OO" 'helm-swoop))
+  (key-chord-define-global "OO" 'helm-swoop)
+  (key-chord-define-global "MO" 'helm-multi-swoop))
 
 ;; (use-package helm-gtags
 ;;   :requires helm

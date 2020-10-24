@@ -133,6 +133,7 @@
                                  (search-forward-regexp ",")))
 (key-chord-define-global "q." '(lambda () (interactive)
                                  (search-forward-regexp ".")))
+(key-chord-define-global "MA" 'mark-sexp)
 (key-chord-define-global "NL" '(lambda () (interactive)
                                  (next-line)
                                  (beginning-of-line)

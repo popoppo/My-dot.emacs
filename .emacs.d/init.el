@@ -12,10 +12,10 @@
 
 ;; packages
 (require 'package)
-;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;; (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+;; (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
 (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
 (package-initialize)
@@ -23,12 +23,12 @@
 (defvar my:packages
   '(ace-jump-helm-line
     ace-jump-mode
-    apel
+;;    apel
     async
     avy
     bind-key
-    ccc
-    cdb
+;;    ccc
+;;    cdb
     cider
     clj-refactor
     clojure-mode
@@ -43,7 +43,7 @@
     direx
     dumb-jump
     edn
-    el-get
+;;    el-get
     el-mock
 ;    eldoc-extension
     epl
@@ -100,23 +100,21 @@
     ))
 
 
-(when nil  ;; Enable manually if needed
+(when -1  ;; Enable manually if needed
   (package-refresh-contents)
   (dolist (package my:packages)
     (unless (package-installed-p package)
       (package-install package))))
 
 
-;; el-get for modules in github
-(use-package el-get
-  :disabled
-  :init
-  (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-  :config
-  (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-  (el-get 'sync))
-
-;; (el-get-bundle )
+;; ;; el-get for modules in github
+;; (use-package el-get
+;;   :disabled
+;;   :init
+;;   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+;;   :config
+;;   (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+;;   (el-get 'sync))
 
 ;; org  TODO: move to 90_org.el
 (setq org-directory "~/Dropbox/org/")
@@ -135,12 +133,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(bookmark-save-flag 1 t)
+ '(bookmark-save-flag 1)
  '(default-tab-width 4 t)
  '(dumb-jump-debug nil)
- '(foreign-regexp/regexp-type (quote perl))
+ '(foreign-regexp/regexp-type 'perl)
  '(gud-gdb-command-name "gdb --annotate=1")
- '(ipython-complete-function (quote py-complete))
+ '(ipython-complete-function 'py-complete)
  '(ipython-complete-use-separate-shell-p nil)
  '(jde-ant-enable-find t)
  '(jde-ant-home "/usr/local/dev/ant")
@@ -149,31 +147,27 @@
  '(jde-compile-option-classpath nil)
  '(jde-gen-final-arguments nil)
  '(jde-gen-final-methods nil)
- '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5"))))
+ '(jde-jdk-registry '(("1.5" . "/usr/local/java/jdk-1.5")))
  '(large-file-warning-threshold nil)
  '(lsp-ui-sideline-enable nil)
  '(package-selected-packages
-   (quote
-    (cider helm-git-grep session init-loader uuidgen markdown-mode markdown-preview-mode ace-jump-helm-line helm helm-ag helm-core helm-ls-git helm-swoop docker dockerfile-mode forge magit docker-tramp company-tabnine company-lsp lsp-mode lsp-ui company-quickhelp company python-mode yasnippet-snippets apel ccc cdb color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp quickrun ace-jump-mode jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock dumb-jump direx diminish dash clj-refactor use-package smooth-scroll)))
+   '(lsp-treemacs yaml-mode helm-lsp lsp-mode helm-gtags emidje cider helm-git-grep session init-loader uuidgen markdown-mode markdown-preview-mode ace-jump-helm-line helm helm-ag helm-core helm-ls-git helm-swoop docker dockerfile-mode forge magit docker-tramp company-tabnine company-lsp lsp-ui company-quickhelp company python-mode yasnippet-snippets color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp quickrun ace-jump-mode jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock dumb-jump direx diminish dash clj-refactor use-package smooth-scroll))
  '(pcomplete-cycle-completions nil)
  '(pcomplete-cycle-cutoff-length 1)
- '(reb-re-syntax (quote foreign-regexp))
+ '(reb-re-syntax 'foreign-regexp)
  '(safe-local-variable-values
-   (quote
-    ((eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook"
-           (add-hook
-            (quote write-contents-functions)
-            (lambda nil
-              (delete-trailing-whitespace)
-              nil))
-           (require
-            (quote whitespace))
+   '((eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook"
+           (add-hook 'write-contents-functions
+                     (lambda nil
+                       (delete-trailing-whitespace)
+                       nil))
+           (require 'whitespace)
            "Sometimes the mode needs to be toggled off and on."
            (whitespace-mode 0)
            (whitespace-mode 1))
      (whitespace-line-column . 80)
-     (whitespace-style face tabs trailing lines-tail))))
- '(session-use-package t nil (session))
+     (whitespace-style face tabs trailing lines-tail)))
+ '(session-use-package t)
  '(tab-width 4))
 
 (custom-set-faces
@@ -185,18 +179,19 @@
 
 
 ;; el-get
-(add-to-list 'load-path "~/.emacs.d/el-get")
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-(setq el-get-dir "~/.emacs.d/site-lisp")
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-
-(el-get-bundle cljstyle-mode)
+;; ;;(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+;; ;;(add-to-list 'load-path "~/.emacs.d/el-get")
+;; (unless (require 'el-get nil 'noerror)
+;;   (with-current-buffer
+;;       (url-retrieve-synchronously
+;;        "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+;;     (goto-char (point-max))
+;;     (eval-print-last-sexp)))
+;; 
+;; (setq el-get-dir "~/.emacs.d/site-lisp")
+;; (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+;; 
+;; (el-get-bundle cljstyle-mode)
 
 
 (add-hook 'after-init-hook  (lambda() (ansi-term "/bin/bash")))

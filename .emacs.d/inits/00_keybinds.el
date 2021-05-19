@@ -66,11 +66,11 @@
 (require 'key-chord)
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay 0.3)
-(key-chord-define-global "qh" '(lambda () (interactive)
+(key-chord-define-global "QH" '(lambda () (interactive)
                                  (backward-char)
                                  (forward-whitespace -1)
                                  (forward-char)))
-(key-chord-define-global "ql" 'forward-whitespace)
+(key-chord-define-global "QL" 'forward-whitespace)
 (key-chord-define-global "KS" 'kill-sexp)
 (key-chord-define-global "KK" '(lambda () (interactive)
                                  (beginning-of-line)
@@ -168,6 +168,9 @@
 (key-chord-define-global "GN" 'git-gutter:next-hunk)
 (key-chord-define-global "GP" 'git-gutter:previous-hunk)
 (key-chord-define-global "BM" 'bookmark-jump)
+(key-chord-define-global "LC" 'lsp-execute-code-action)
+(key-chord-define-global "LD" 'lsp-find-definition)
+(key-chord-define-global "LR" 'lsp-find-references)
 
 
 ;; Sticky Shift

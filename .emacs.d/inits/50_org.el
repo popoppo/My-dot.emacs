@@ -4,7 +4,7 @@
 ;;(setq org-startup-truncated nil)
 (setq org-return-follows-link t)
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(setq org-directory "/Users/koji.takahashi/Dropbox/org/")
+(setq org-directory "/Users/takahashi/Dropbox/org/")
 (setq org-default-notes-file (concat org-directory "notes.org"))
 (setq my:org-gtd-file (concat org-directory "gtd.org"))
 (setq org-capture-templates

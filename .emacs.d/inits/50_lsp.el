@@ -27,9 +27,9 @@
 (use-package lsp-mode
   :ensure t
   :init
-  (setq lsp-clojure-server-command '("bash" "-c" "clojure-lsp") ;; Optional: In case `clojure-lsp` is not in your PATH
-        lsp-enable-indentation nil
-        lsp-enable-completion-at-point nil)
+  ;; Optional: In case `clojure-lsp` is not in your PATH
+  (setq lsp-clojure-server-command '("bash" "-c" "clojure-lsp"))
+  (setq lsp-ui-doc-enable nil)
   :hook ((clojure-mode . lsp)
          (clojurec-mode . lsp)
          (clojurescript-mode . lsp))
@@ -37,20 +37,27 @@
   (require 'lsp-clojure)
   (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
   (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojure"))
-  (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript")))
+  (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript"))
+  :custom
+  (lsp-enable-indentation nil)
+  (lsp-enable-completion-at-point t)
+  (lsp-enable-snippet t)
+  (lsp-file-watch-threshold nil))
 
 
 (use-package lsp-ui
   :after lsp-mode
   :custom
   (scroll-margin 0)
+  ;;(lsp-ui-doc-mode nil) ;; doesn't work maybe because of auto-configure
   (lsp-ui-flycheck-enable nil)
-  (lsp-ui-peek-enable t)
+  (lsp-ui-peek-enable nil)
   (lsp-ui-peek-peek-height 20)
   (lsp-ui-peek-list-width 50)
   :hook   (lsp-mode . lsp-ui-mode))
 
 (use-package company-lsp
+  :disabled t
   ;;:after (lsp-mode company yasnippet)
   ;; :after (lsp-mode company)
   :commands company-lsp

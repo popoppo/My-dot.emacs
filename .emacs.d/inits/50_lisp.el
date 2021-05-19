@@ -7,7 +7,7 @@
 
 ;;; Clojure
 (use-package clojure-mode
-  :after (cider clj-refactor flycheck-clj-kondo cljstyle-mode)
+  :after (cider clj-refactor cljstyle-mode) ;; flycheck-clj-kondo
   :mode ("\\.clj\\'" . clojure-mode)
   :hook ((clojure-mode . cider-mode)
          (clojure-mode . company-mode)
@@ -48,6 +48,7 @@
   :config (cljr-add-keybindings-with-prefix "C-c j"))
 
 (use-package flycheck-clj-kondo
+  :disabled t
   :ensure t)
 
 ;; For repl

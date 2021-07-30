@@ -1,8 +1,8 @@
 (use-package company
+  :straight t
   :config
   (setq company-selection-wrap-around t)
   (setq completion-ignore-case t)
-  (company-quickhelp-mode t)
   (global-company-mode)
   (set-face-attribute 'company-tooltip nil
                       :foreground "black" :background "lightgrey")
@@ -24,6 +24,11 @@
          ("C-p" . company-select-previous)
          ("C-s" . company-filter-candidates)
          ("C-i" . company-complete-selection)))
+
+(use-package company-quickhelp
+  :straight t
+  :config
+  (company-quickhelp-mode t))
 
 (use-package company-tabnine
   ;; :config

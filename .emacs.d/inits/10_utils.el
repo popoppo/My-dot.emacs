@@ -1,6 +1,9 @@
 ;; color-theme
-;; Use /usr/share/emacs/site-lisp or /usr/share/emacs/site-lisp/goodies if exists.
-(load-theme 'afternoon t)
+(use-package afternoon-theme
+  :straight
+  (emacs-afternoon-theme :type git :host github :repo "osener/emacs-afternoon-theme")
+  :config
+  (load-theme 'afternoon t))
 
 ;; windows
 (use-package windows
@@ -153,7 +156,7 @@
 ;; jaunte
 (use-package jaunte
   :straight
-  (jaunte :type git :host "kawaguchi/jaunte")
+  (jaunte :type git :host github :host "kawaguchi/jaunte")
   :init
   (key-chord-define-global "z/" 'jaunte)
   :config
@@ -165,17 +168,21 @@
   (global-set-key (kbd "C-M-;") 'avy-goto-word-1))
 
 ;; mark-more-like-thin
-(require 'multiple-cursors)
-(key-chord-define-global "za" 'mc/mark-all-like-this)
-(key-chord-define-global "zp" 'mc/mark-previous-like-this)
-(key-chord-define-global "zn" 'mc/mark-next-like-this)
-(key-chord-define-global "zj" 'mc/skip-to-next-like-this)
-(key-chord-define-global "zk" 'mc/skip-to-previous-like-this)
+(use-package multiple-cursors
+  :straight t
+  :config
+  (key-chord-define-global "za" 'mc/mark-all-like-this)
+  (key-chord-define-global "zp" 'mc/mark-previous-like-this)
+  (key-chord-define-global "zn" 'mc/mark-next-like-this)
+  (key-chord-define-global "zj" 'mc/skip-to-next-like-this)
+  (key-chord-define-global "zk" 'mc/skip-to-previous-like-this))
 
 ;; expand region
-(require 'expand-region)
-(key-chord-define-global "ww" 'er/expand-region)
-(key-chord-define-global "WW" 'er/contract-region)
+(use-package expand-region
+  :straight t
+  :config
+  (key-chord-define-global "ww" 'er/expand-region)
+  (key-chord-define-global "WW" 'er/contract-region))
 
 ;; cua-mode
 (key-chord-define-global "RR" 'cua-mode) ; R := Rectangle

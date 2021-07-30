@@ -121,10 +121,12 @@
 
 
 ;; quickrun
-(require 'popwin)
-(require 'quickrun)
-(push '("*quickrun*") popwin:special-display-config)
-;(global-set-key (kbd "<f5>") 'quickrun)
+(use-package popwin
+  :straight t)
+(use-package quickrun
+  :straight t
+  :config
+  (push '("*quickrun*") popwin:special-display-config))
 
 ; To show last line.
 (defadvice quickrun/apply-outputter
@@ -139,10 +141,9 @@
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
-
 ;; symbol-overlay
-(require 'symbol-overlay)
-
+(use-package symbol-overlay
+  :straight t)
 
 ;; flycheck
 (use-package flycheck
@@ -152,9 +153,9 @@
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 ;; (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
 
-
 ;; yaml-mode
 (use-package yaml-mode
+  :straight t
   :mode ("\\.ya?ml\\'" . yaml-mode))
 
 (use-package restclient

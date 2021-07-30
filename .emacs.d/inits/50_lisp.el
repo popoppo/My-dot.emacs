@@ -7,27 +7,32 @@
 
 ;;; Clojure
 (use-package clojure-mode
-  :after (cider clj-refactor cljstyle-mode) ;; flycheck-clj-kondo
   :mode ("\\.clj\\'" . clojure-mode)
   :hook ((clojure-mode . cider-mode)
          (clojure-mode . company-mode)
          (clojure-mode . clj-refactor-mode)
          (clojure-mode . flycheck-mode)
-         (clojure-mode . cljstyle-mode))
+         (go-mode . lsp-deferred))
   :config
   (define-key clojure-mode-map (kbd "C-c SPC") 'win-toggle-window)
-  (define-clojure-indent
-    (defroutes 'defun)
-    (GET 2)
-    (POST 2)
-    (PUT 2)
-    (DELETE 2)
-    (HEAD 2)
-    (ANY 2)
-    (context 2)))
+  ;; (define-clojure-indent
+  ;;   (defroutes 'defun)
+  ;;   (GET 2)
+  ;;   (POST 2)
+  ;;   (PUT 2)
+  ;;   (DELETE 2)
+  ;;   (HEAD 2)
+  ;;   (ANY 2)
+  ;;   (context 2))
+  )
 
 (use-package cljstyle-mode
-  :load-path "~/.emacs.d/site-lisp")
+  :straight
+  (cljstyle-mode :type git :host github :repo "jstokes/cljstyle-mode")
+  :hook
+  (clojure-mode . cljstyle-mode)
+  :config
+  (setq cljstyle-mode t))
 
 (use-package cider
   :config
@@ -40,17 +45,15 @@
         ;;cider-save-file-on-load 'always-save
         ;;cider-font-lock-dynamically '(macro core function var)
         ;;cider-overlays-use-font-lock t
-        )
-  (emidje-setup))
+        ))
 ;;(cider-repl-toggle-pretty-printing)
 
 (use-package clj-refactor
   :config (cljr-add-keybindings-with-prefix "C-c j"))
 
 (use-package flycheck-clj-kondo
-  :disabled t
-  :ensure t)
-
+  :disabled t)
+  
 ;; For repl
 ;; (setq *print-length* 10)
 ;; (setq *print-level* 10)

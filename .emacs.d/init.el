@@ -1,197 +1,73 @@
-;; .emacs
-(defun set-exec-path-from-shell-PATH ()
-  (interactive)
-  (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-(set-exec-path-from-shell-PATH)
+;;; .emacs
 
-;; load-path
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp"))
-;;(setq exec-path (append exec-path '(expand-file-name "~/bin")))
+(setq ns-function-modifier 'hyper)  ; map fn key to hyper
 
-;; packages
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-;; (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
-;; (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
-(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
-(add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
-(package-initialize)
+;; Adding /usr/local/bin and ~/bin
+(if (not (string-match "\\(^\\|:\\)/usr/local/bin\\($\\|\\:\\)" (getenv "PATH")))
+    (setenv "PATH" (concat '"/usr/local/bin:" (getenv "PATH"))))
+(if (not (member "/usr/local/bin" exec-path))
+    (setq exec-path (cons "/usr/local/bin" exec-path)))
+(setenv "PATH" (concat '"~/bin:" (getenv "PATH")))
+(add-to-list 'exec-path (expand-file-name "~/bin"))
 
-(defvar my:packages
-  '(ace-jump-helm-line
-    ace-jump-mode
-;;    apel
-    async
-    avy
-    bind-key
-;;    ccc
-;;    cdb
-    cider
-    clj-refactor
-    clojure-mode
-    color-moccur
-    company
-    company-quickhelp
-    dash
-    ddskk
-    diminish
-    dired-hacks-utils
-    dired-subtree
-    direx
-    dumb-jump
-    edn
-;;    el-get
-    el-mock
-;    eldoc-extension
-    epl
-    expand-region
-    f
-    flim
-    flycheck
-    flycheck-clojure
-    flymake-cursor
-    foreign-regexp
-    ghub
-    git-commit
-    git-gutter
-    goto-chg
-    helm
-    helm-core
-    highlight-symbol
-    hydra
-    inflections
-    jaunte
-    jedi
-    key-chord
-    let-alist
-    lispxmp
-    magit
-    magit-popup
-    mew
-    ; moz
-    multiple-cursors
-    mykie
-    noflet
-    paredit
-    peg
-    pkg-info
-    popup
-    popwin
-    pos-tip
-    python-mode
-    queue
-    quickrun
-    s
-    seq
-    shell-pop
-    slamhound
-    smooth-scroll
-    spinner
-    symbol-overlay
-    undo-tree
-    use-package
-    visual-regexp
-    w3m
-    with-editor
-    yasnippet
-    ))
+;; Using straight.el for package management
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
+;; use-package compatibility
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
-(when -1  ;; Enable manually if needed
-  (package-refresh-contents)
-  (dolist (package my:packages)
-    (unless (package-installed-p package)
-      (package-install package))))
-
-
-;; ;; el-get for modules in github
-;; (use-package el-get
-;;   :disabled
-;;   :init
-;;   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-;;   :config
-;;   (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-;;   (el-get 'sync))
-
-;; org  TODO: move to 90_org.el
-(setq org-directory "~/Dropbox/org/")
+;;; ログはエラーが出た時のみ
+;;(custom-set-variables '(init-loader-show-log-after-init 'error-only))
 
 ;; INSTALL
-(require 'init-loader)
-(setq init-loader-show-log-after-init t)
+(use-package init-loader)
 (init-loader-load (expand-file-name "~/.emacs.d/inits"))
 
-;; 00 ... Basic configration.
-;; 10 ... Pre-execution, environment constraction, and utilites.
-;; 50 ... Development tools.
-;; 90 ... Misc tools and funcs.
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(bookmark-save-flag 1)
- '(default-tab-width 4 t)
- '(dumb-jump-debug nil)
- '(foreign-regexp/regexp-type 'perl)
- '(gud-gdb-command-name "gdb --annotate=1")
- '(ipython-complete-function 'py-complete)
- '(ipython-complete-use-separate-shell-p nil)
- '(jde-ant-enable-find t)
- '(jde-ant-home "/usr/local/dev/ant")
- '(jde-ant-program "/usr/local/dev/ant/bin/ant" t)
- '(jde-ant-working-directory "")
- '(jde-compile-option-classpath nil)
- '(jde-gen-final-arguments nil)
- '(jde-gen-final-methods nil)
- '(jde-jdk-registry '(("1.5" . "/usr/local/java/jdk-1.5")))
- '(large-file-warning-threshold nil)
- '(lsp-ui-sideline-enable nil)
- '(package-selected-packages
-   '(lsp-treemacs yaml-mode helm-lsp lsp-mode helm-gtags emidje cider helm-git-grep session init-loader uuidgen markdown-mode markdown-preview-mode ace-jump-helm-line helm helm-ag helm-core helm-ls-git helm-swoop docker dockerfile-mode forge magit docker-tramp company-tabnine company-lsp lsp-ui company-quickhelp company python-mode yasnippet-snippets color-moccur ddskk dired-hacks-utils dired-subtree flim foreign-regexp lispxmp quickrun ace-jump-mode jaunte undo-tree expand-region color-theme underwater-theme afternoon-theme visual-regexp symbol-overlay slamhound shell-pop popwin noflet mykie mew key-chord highlight-symbol goto-chg git-gutter flycheck-clojure flycheck el-mock dumb-jump direx diminish dash clj-refactor use-package smooth-scroll))
- '(pcomplete-cycle-completions nil)
- '(pcomplete-cycle-cutoff-length 1)
- '(reb-re-syntax 'foreign-regexp)
- '(safe-local-variable-values
-   '((eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook"
-           (add-hook 'write-contents-functions
-                     (lambda nil
-                       (delete-trailing-whitespace)
-                       nil))
-           (require 'whitespace)
-           "Sometimes the mode needs to be toggled off and on."
-           (whitespace-mode 0)
-           (whitespace-mode 1))
-     (whitespace-line-column . 80)
-     (whitespace-style face tabs trailing lines-tail)))
- '(session-use-package t)
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(org-agenda-files (quote ("~/local/org/gtd.org" "~/local/org/notes.org")))
+ '(org-agenda-include-diary nil)
+ '(org-agenda-ndays 7)
+ '(org-agenda-repeating-timestamp-show-all t)
+ '(org-agenda-restore-windows-after-quit t)
+ '(org-agenda-show-all-dates t)
+ '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-sorting-strategy (quote ((agenda time-up priority-down tag-up) (todo tag-up))))
+ '(org-agenda-start-on-weekday nil)
+ '(org-agenda-window-setup (quote other-window))
+ '(org-babel-load-languages (quote ((emacs-lisp . t) (mscgen . t))))
+ '(org-deadline-warning-days 7)
+ '(org-export-html-table-tag "<table border=\"2\" cellspacing=\"0\" cellpadding=\"6\" frame=\"hsides\"> <!--rules=\"groups\" -->")
+ '(org-fast-tag-selection-single-key nil)
+ '(org-insert-mode-line-in-empty-file t)
+ '(org-log-done (quote (done)))
+ '(org-refile-targets (quote (("gtd.org" :maxlevel . 1) ("archive.org" :maxlevel . 1))))
+ '(org-reverse-note-order nil)
+ '(org-tags-match-list-sublevels t)
+ '(org-time-stamp-rounding-minutes (list 5))
+ '(org-timeline-show-empty-dates t)
+ '(org-use-fast-todo-selection t)
  '(tab-width 4))
 
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(eshell-prompt ((t (:foreground "White" :weight bold)))))
-
-
-;; el-get
-;; ;;(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-;; ;;(add-to-list 'load-path "~/.emacs.d/el-get")
-;; (unless (require 'el-get nil 'noerror)
-;;   (with-current-buffer
-;;       (url-retrieve-synchronously
-;;        "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-;;     (goto-char (point-max))
-;;     (eval-print-last-sexp)))
-;; 
-;; (setq el-get-dir "~/.emacs.d/site-lisp")
-;; (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-;; 
-;; (el-get-bundle cljstyle-mode)
-
-
-(add-hook 'after-init-hook  (lambda() (ansi-term "/bin/bash")))
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )

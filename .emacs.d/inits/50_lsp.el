@@ -25,25 +25,37 @@
 ;;         lsp-enable-indentation nil))
 
 (use-package lsp-mode
-  :ensure t
+  :straight t
   :init
   ;; Optional: In case `clojure-lsp` is not in your PATH
   (setq lsp-clojure-server-command '("bash" "-c" "clojure-lsp"))
   (setq lsp-ui-doc-enable nil)
   :hook ((clojure-mode . lsp)
          (clojurec-mode . lsp)
-         (clojurescript-mode . lsp))
+         (clojurescript-mode . lsp)
+         (go-mode . lsp))
   :config
   (require 'lsp-clojure)
   (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
   (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojure"))
   (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript"))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "/usr/local/bin/clojure-lsp")
+                    :major-modes '(clojure-mode clojurec-mode clojurescript-mode)
+                    :remote? t
+                    :server-id 'clojure-lsp-remote))
+  ;; (lsp-register-client
+  ;;  (make-lsp-client :new-connection (lsp-stdio-connection '("bash" "-c" "clojure-lsp"))
+  ;;                   :major-modes '(clojure-mode clojurec-mode clojurescript-mode)
+  ;;                   :server-id 'clojure-lsp))
   :custom
   (lsp-enable-indentation nil)
   (lsp-enable-completion-at-point t)
+  (lsp-enable-links nil) ;; to suppress "Error running timer ‘lsp--on-idle’ ..."
   (lsp-enable-snippet t)
-  (lsp-file-watch-threshold nil))
-
+  (lsp-file-watch-threshold nil)
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-prefer-flymake nil))
 
 (use-package lsp-ui
   :after lsp-mode
@@ -54,7 +66,9 @@
   (lsp-ui-peek-enable nil)
   (lsp-ui-peek-peek-height 20)
   (lsp-ui-peek-list-width 50)
-  :hook   (lsp-mode . lsp-ui-mode))
+  (lsp-ui-sideline-enable nil)
+  :hook
+  (lsp-mode . lsp-ui-mode))
 
 (use-package company-lsp
   :disabled t
@@ -68,8 +82,9 @@
   )
 
 (use-package python-mode
-  :config
-  (add-hook 'python-mode-hook #'lsp))
+  :hook
+  (python-mode . lsp)
+  (python-mode . flycheck-mode))
 
 
 ;; (lsp-define-stdio-client

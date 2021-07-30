@@ -1,6 +1,6 @@
 (use-package helm
+  :straight t
   :diminish
-  :ensure t
   :config
   (helm-mode 1)
   (key-chord-define-global ";b" 'helm-buffers-list)
@@ -28,7 +28,7 @@
 ;   (kill-new (buffer-substring (point) (field-end))))
 
 (use-package helm-ag
-  :requires helm
+  :straight t
   :config
   (setq helm-ag-command-option "--hidden") ;; For dot files and dirs
   (key-chord-define-global "a;" 'helm-ag))
@@ -68,15 +68,13 @@
     (my:helm-git-grep-1 input)))
 
 (use-package helm-git-grep
-  :requires helm
-  ;; :bind (:map helm-map ("C-c g" . helm-git-grep-from-helm)) ;; doesn't work
+  :straight t
   :config
   (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
   (key-chord-define-global ",g" 'helm-git-grep)
   (key-chord-define-global ",a" 'my:helm-git-grep-at-point)
   (key-chord-define-global ",d" 'my:helm-git-grep-find-defs-at-point)
   (key-chord-define-global ",r" 'my:helm-git-grep-find-refs-at-point)
-  ;;(setq helm-git-grep-pathspecs nil)
   (setq helm-git-grep-pathspecs '(":/*" ":!/*test*" ":!/*.idea*" ":!/*yarn.lock" ":!/*.iml" ":!/*externs*")))
 
 ;; helm-git-grep
@@ -87,31 +85,26 @@
 ;;   '(define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm))
 
 (use-package ace-jump-helm-line
-  :requires helm
-  :bind
-  (:map helm-map
-   ("C-'" . ace-jump-helm-line)))
+   :straight t
+   :bind
+   (:map helm-map
+         ("C-'" . ace-jump-helm-line)))
 
 ;; (require 'ace-jump-helm-line)
 ;; (eval-after-load "helm"
 ;;   '(define-key helm-map (kbd "C-'") 'ace-jump-helm-line))
 
-
 ;; helm-ls-git
 (use-package helm-ls-git
-  :requires helm
+  :straight t
   :config
   (key-chord-define-global ";l" 'helm-ls-git-ls))
 
-;;(require 'helm-ls-git)
-;;(key-chord-define-global ";l" 'helm-ls-git-ls)
-
 (use-package helm-swoop
-  :requires helm
+  :straight t
   :config
   (key-chord-define-global "OO" 'helm-swoop)
   (key-chord-define-global "MO" 'helm-multi-swoop))
 
 ;; (use-package helm-gtags
-;;   :requires helm
-;;   )
+;;   :requires helm)

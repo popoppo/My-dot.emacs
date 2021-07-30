@@ -76,58 +76,6 @@
 ; (require 'ipython)
 
 
-;; Java
-(add-hook 'java-mode-hook
-    '(lambda ()
-       (gtags-mode 1)))
-
-;; jdee
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/jde/lisp"))
-(add-to-list 'load-path
-             (expand-file-name "~/.emacs.d/site-lisp/elib"))
-
-; cedit
-(require 'cedet)
-
-(autoload 'jde-mode "jde" "Java Development Environment for Emacs." t)
-(setq auto-mode-alist (cons '("\.java$" . my-jde-mode) auto-mode-alist))
-(defun my-jde-mode ()
-  (jde-mode)
-  (jde-jdb-minor-mode -1))
-
-(setq jde-ant-enable-fine t)
-(setq jde-ant-program "/usr/bin/ant")
-(setq jde-ant-read-target t)
-(setq jde-build-function (quote (jde-ant-build)))
-(setq jde-enable-abbrev-mode t)
-(setq jde-gen-cflow-enable t)
-(setq tempo-interactive t)
-
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(jde-ant-enable-find t)
- '(jde-ant-home "/usr/local/dev/ant")
- '(jde-ant-program "/usr/local/dev/ant/bin/ant" t)
- '(jde-ant-working-directory "")
- '(jde-compile-option-classpath nil)
- '(jde-gen-final-arguments nil)
- '(jde-gen-final-methods nil)
-
- '(jde-jdk-registry (quote (("1.5" . "/usr/local/java/jdk-1.5")))))
-; '(jde-jdk "1.5")
-
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- )
-
-
 ;; rst-mode
 (autoload 'rst-mode "rst-mode" "mode for editing reStructuredText documents" t)
 (setq auto-mode-alist
@@ -137,7 +85,7 @@
 
 ;;; magit
 (use-package magit
-  :ensure t)
+  :straight t)
 
 ;; forge
 (use-package forge
@@ -197,12 +145,17 @@
 
 
 ;; flycheck
-(add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
-(add-hook 'python-mode-hook 'flycheck-mode)
-(add-hook 'clojure-mode-hook 'flycheck-mode)
+(use-package flycheck
+  :straight t
+  :hook (emacs-lisp-mode . flycheck-mode)
+  :config
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+;; (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
 
 
 ;; yaml-mode
 (use-package yaml-mode
   :mode ("\\.ya?ml\\'" . yaml-mode))
 
+(use-package restclient
+  :straight t)

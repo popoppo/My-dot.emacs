@@ -35,8 +35,7 @@
 ;; Japanese font
 (set-fontset-font
  nil 'japanese-jisx0208
-;; (font-spec :family "Hiragino Mincho Pro")) ;; font
-  (font-spec :family "Hiragino Kaku Gothic ProN")) ;; font
+ (font-spec :family "Hiragino Kaku Gothic ProN")) ;; font
 
 ;; Swap command and alt
 (setq ns-command-modifier 'meta)
@@ -44,7 +43,6 @@
 
 ;; Initial settings
 (column-number-mode t)
-;(display-time)
 (ffap-bindings)
 ;(hide-ifdef-mode)
 (menu-bar-mode -1)

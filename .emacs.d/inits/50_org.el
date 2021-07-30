@@ -4,14 +4,15 @@
 ;;(setq org-startup-truncated nil)
 (setq org-return-follows-link t)
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(setq org-directory "/Users/takahashi/Dropbox/org/")
+(setq org-directory "/Users/koji/Dropbox/org/")
 (setq org-default-notes-file (concat org-directory "notes.org"))
 (setq my:org-gtd-file (concat org-directory "gtd.org"))
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline my:org-gtd-file "TODO")
-         "** %? %t")
+      '(("t" "Todo" entry (file+headline my:org-gtd-file "TODO") "** %? %t\n")
         ("m" "Memo" entry (file+headline org-default-notes-file "MEMO")
-         "** %?")))
+         "** %?\n"
+         :jump-to-captured t
+         :empty-lines-after 1)))
 
 (setq org-agenda-exporter-settings
       '((ps-number-of-columns 1)
@@ -71,7 +72,7 @@
 ;; '(org-refile-targets (quote (("gtd.org" :maxlevel . 1) ("archive.org" :maxlevel . 1))))
 ;; '(org-reverse-note-order nil)
 ;; '(org-tags-match-list-sublevels t)
-;;;; '(org-time-stamp-rounding-minutes (quote (0 5)))
+;; '(org-time-stamp-rounding-minutes (quote (0 5)))
 ;; '(org-timeline-show-empty-dates t)
 ;; '(org-use-fast-todo-selection t))
 

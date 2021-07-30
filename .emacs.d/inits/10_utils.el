@@ -2,19 +2,18 @@
 ;; Use /usr/share/emacs/site-lisp or /usr/share/emacs/site-lisp/goodies if exists.
 (load-theme 'afternoon t)
 
-
 ;; windows
 (use-package windows
+  :straight
+  (windows :type git :host github :repo "conao3/emacs-windows.el")
   :config
   (setq win:use-frame nil)
   (win:startup-with-window)
   (define-key ctl-x-map "C" 'see-you-again))
 
-
 ;;auto-insert
 (auto-insert-mode 1)
 ;(setq auto-insert-query nil)
-
 
 ;; dired
 (setq bookmark-save-flag 1)
@@ -57,11 +56,9 @@
               (list
                '(my-dired-today-search . my-face-f-2)))))
 
-
 (use-package bm
   ;; Visble bookmark in buffer
   :disabled)
-
 
 ;; session.el
 (use-package session
@@ -117,14 +114,13 @@
 (defadvice font-lock-mode (before my-font-lock-mode ())
   (font-lock-add-keywords
    major-mode
-   '(("\t" 0 my-face-b-2 append)
+    '(("\t" 0 my-face-b-2 append)
      ("　" 0 my-face-b-1 append)
      ("[ \t]+$" 0 my-face-u-1 append)
      ;;("[\r]*\n" 0 my-face-r-1 append)
      )))
 (ad-enable-advice 'font-lock-mode 'before 'my-font-lock-mode)
 (ad-activate 'font-lock-mode)
-
 
 (use-package undo-tree
   :diminish undo-tree-mode
@@ -133,9 +129,7 @@
   :bind
   ("M-/" . undo-tree-redo))
 
-
 (use-package color-moccur)
-
 
 (use-package yasnippet
   :diminish yas-minor-mode
@@ -143,26 +137,32 @@
   (yas/initialize)
   (yas/load-directory "~/.emacs.d/snippets"))
 
-
 ;; skk
+(straight-use-package
+ '(ddskk :type git :host github :repo "skk-dev/ddskk"))
+(setq skk-large-jisyo "~/.emacs.d/skk/SKK-JISYO.L")
 (defun skk-mode-hook--unset-key ()
   (define-key skk-j-mode-map ";" nil))
 (add-hook 'skk-mode-hook 'skk-mode-hook--unset-key)
-
 
 ;; ace-jump-mode
 (use-package ace-jump-mode
   :init
   (key-chord-define-global "z." 'ace-jump-mode))
 
-
 ;; jaunte
 (use-package jaunte
+  :straight
+  (jaunte :type git :host "kawaguchi/jaunte")
   :init
   (key-chord-define-global "z/" 'jaunte)
   :config
   (setq jaunte-hint-unit 'whitespace))
 
+(use-package avy
+  :straight t
+  :config
+  (global-set-key (kbd "C-M-;") 'avy-goto-word-1))
 
 ;; mark-more-like-thin
 (require 'multiple-cursors)
@@ -172,17 +172,14 @@
 (key-chord-define-global "zj" 'mc/skip-to-next-like-this)
 (key-chord-define-global "zk" 'mc/skip-to-previous-like-this)
 
-
 ;; expand region
 (require 'expand-region)
 (key-chord-define-global "ww" 'er/expand-region)
 (key-chord-define-global "WW" 'er/contract-region)
 
-
 ;; cua-mode
 (key-chord-define-global "RR" 'cua-mode) ; R := Rectangle
 (setq cua-enable-cua-keys nil)
-
 
 ; from http://d.hatena.ne.jp/kitokitoki/20110305/p2
 (defadvice cua-sequence-rectangle (around my-cua-sequence-rectangle activate)
@@ -225,12 +222,10 @@
   (redisplay))
 (global-set-key (kbd "C-`") 'my-fullscreen)
 
-
 ;; Generate new buffer and switch to it
 (defun create-buffer (buf)
   (interactive "Bbuff:")
   (switch-to-buffer (get-buffer-create buf)))
-
 
 ;; Get value of default-directory in current buffer
 (defun get-default-directory ()
@@ -238,44 +233,12 @@
   (message default-directory)
   (kill-new default-directory))
 
-
 (use-package smooth-scroll
   :diminish smooth-scroll-mode
   :config
   (smooth-scroll-mode t))
 
-
 (use-package lispxmp)
-
-
-;; goto-chg
-(use-package goto-chg
-  :disabled
-  :bind
-  (("M-\[" . 'goto-last-change)
-   ("M-\]" . 'goto-last-change-reverse)))
-
-
-;; look with auto-complete
-(defun my:ac-look ()
-  "`look' command with auto-completelook"
-  (interactive)
-  (unless (executable-find "look")
-    (error "Please install `look' command"))
-  (let ((cmd (format "look %s" ac-prefix)))
-    (with-temp-buffer
-      (call-process-shell-command cmd nil t)
-      (split-string-and-unquote (buffer-string) "\n"))))
-
-(defun ac-look ()
-  (interactive)
-  (let ((ac-menu-height 50)
-        (ac-candidate-limit t))
-  (auto-complete '(ac-source-look))))
-
-(defvar ac-source-look
-  '((candidates . my:ac-look)
-    (requires . 2)))
 
 (defun company-look (command &optional arg &rest ignored)
   (interactive (list 'interactive))
@@ -311,5 +274,11 @@
   (reb-re-syntax 'foreign-regexp))
 
 
-(use-package docker-tramp-compat)
+(use-package docker-tramp-compat
+  :straight
+  (docker-tramp-compat :type git :host github :repo "emacs-pe/docker-tramp.el"))
 
+
+(use-package emojify
+  :straight t
+  :hook (after-init . global-emojify-mode))

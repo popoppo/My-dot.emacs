@@ -70,6 +70,8 @@
 (global-set-key (kbd "C-=") '(lambda (c)
                                (interactive "cChar:")
                                (search-forward-regexp (char-to-string c))))
+(global-set-key (kbd "M-[") 'backward-paragraph)
+(global-set-key (kbd "M-]") 'forward-paragraph)
 
 (defun my:with-mark (func)
   (interactive)

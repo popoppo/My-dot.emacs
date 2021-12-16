@@ -49,12 +49,14 @@
   ;;                   :major-modes '(clojure-mode clojurec-mode clojurescript-mode)
   ;;                   :server-id 'clojure-lsp))
   :custom
+  (lsp-eldoc-enable-hover t)
   (lsp-enable-indentation nil)
   (lsp-enable-completion-at-point t)
   (lsp-enable-links nil) ;; to suppress "Error running timer ‘lsp--on-idle’ ..."
   (lsp-enable-snippet t)
   (lsp-file-watch-threshold nil)
   (lsp-headerline-breadcrumb-enable nil)
+  (lsp-lens-enable nil)
   (lsp-prefer-flymake nil))
 
 (use-package lsp-ui
@@ -114,3 +116,6 @@
 ;; (use-package lsp-python
 ;;   :ensure t)
 ;; (add-hook 'python-module-hook #'lsp-python-enable)
+
+;; disable the cider's feature and use the lsp's one
+(setq cider-eldoc-display-for-symbol-at-point nil)

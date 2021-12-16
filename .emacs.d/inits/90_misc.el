@@ -25,3 +25,14 @@
 
 (use-package markdown-preview-mode
   :straight t)
+
+(use-package restclient
+  :straight t)
+
+(use-package plantuml-mode
+  :straight t
+  :mode "\\.plantuml\\'"
+  :config
+  (setq
+   plantuml-executable-path "/opt/homebrew/bin/plantuml"
+   plantuml-default-exec-mode 'executable))
